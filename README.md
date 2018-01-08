@@ -2,6 +2,8 @@
 
 HTML5 game inspired by Slay.
 
+Demo here: https://alcalyn.github.io/openslay/
+
 
 ## Install
 
@@ -11,6 +13,15 @@ cd openslay/
 
 npm install
 npm start
+```
+
+
+## Deploy
+
+Deploy to `gh-pages`:
+
+``` bash
+npm run deploy
 ```
 
 

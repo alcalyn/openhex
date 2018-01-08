@@ -1,5 +1,6 @@
 {
   "name": "openslay",
+  "homepage": "http://alcalyn.github.io/openslay",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -14,6 +15,8 @@
     "build": "react-scripts build",
     "test": "mocha --recursive --require babel-core/register && CI=false react-scripts test --env=jsdom",
     "test-unit": "mocha --recursive --require babel-core/register",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "eject": "react-scripts eject"
   },
   "devDependencies": {
@@ -21,6 +24,7 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "chai": "^4.1.2",
+    "gh-pages": "^1.1.0",
     "mocha": "^4.1.0"
   }
 }
