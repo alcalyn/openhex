@@ -1,0 +1,31 @@
+html, body, #root, .App {
+    height: 100%;
+}
+#selection {
+    height: 20%;
+}
+#grid {
+    height: 80%;
+}
+
+svg g .hex {
+    fill: #3F51B5;
+}
+svg g .hex.color-0 {
+    fill: #352FB2;
+}
+svg g .hex.color-1 {
+    fill: #FFA876;
+}
+svg g .hex.color-2 {
+    fill: #4FCC35;
+}
+svg g .hex.color-3 {
+    fill: #2CB2B2;
+}
+svg g .hex.color-4 {
+    fill: #FF72D8;
+}
+svg g .hex.color-5 {
+    fill: #CCB332;
+}
