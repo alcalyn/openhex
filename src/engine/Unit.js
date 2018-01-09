@@ -4,7 +4,7 @@ export default class Unit extends Entity {
     constructor() {
         super();
 
-        this.level = 0;
+        this.level = 1;
         this.played = false;
     }
 }

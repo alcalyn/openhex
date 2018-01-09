@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { HexGrid, Layout } from 'react-hexgrid';
 import { WorldGenerator, Hex, Unit, Arbiter } from './engine';
-import { Selection, SlayHex } from './components';
+import { KingdomMenu, Selection, SlayHex } from './components';
 import './App.css';
 
 class App extends Component {
@@ -31,15 +31,19 @@ class App extends Component {
         try {
             this.arbiter.smartAction(hex);
 
-            this.setState({
-                world: this.state.world,
-                selection: this.arbiter.selection,
-            });
+            this.update();
         } catch (e) {
             console.warn(e.message);
         }
 
         console.log('selection', this.arbiter.selection);
+    }
+
+    update() {
+        this.setState({
+            world: this.state.world,
+            selection: this.arbiter.selection,
+        });
     }
 
     render() {
@@ -56,7 +60,10 @@ class App extends Component {
         return (
             <div className="App">
                 <div id="selection">
-                    <Selection id="selection" entity={selection} />
+                    <Selection entity={selection} />
+                </div>
+                <div id="kingdom-menu">
+                    <KingdomMenu arbiter={this.arbiter} onUpdate={() => { this.update(); }} />
                 </div>
                 <div id="grid">
                     <HexGrid id="grid" width={'100%'} height={'100%'} viewBox={viewBox}>

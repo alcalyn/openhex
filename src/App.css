@@ -1,11 +1,18 @@
 html, body, #root, .App {
     height: 100%;
 }
-#selection {
-    height: 20%;
-}
 #grid {
-    height: 80%;
+    height: 100%;
+}
+#selection, #kingdom-menu {
+    position: fixed;
+}
+#selection {
+    right: 50%;
+    top: 20%;
+}
+#kingdom-menu {
+    right: 0;
 }
 
 svg g .hex {
@@ -28,4 +35,14 @@ svg g .hex.color-4 {
 }
 svg g .hex.color-5 {
     fill: #CCB332;
+}
+
+.unit.has-move {
+    animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+ 0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+ 40% {transform: translateY(-.5px);}
+ 60% {transform: translateY(-.25px);}
 }

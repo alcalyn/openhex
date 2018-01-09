@@ -83,7 +83,7 @@ describe('Arbiter', () => {
             arbiter.buyUnit();
 
             arbiter.currentKingdom.money.should.be.equal(15);
-            arbiter.selection.level.should.equal(0);
+            arbiter.selection.level.should.equal(1);
         });
     });
 
@@ -102,12 +102,12 @@ describe('Arbiter', () => {
             arbiter.buyUnit();
 
             arbiter.currentKingdom.money.should.be.equal(15);
-            arbiter.selection.level.should.equal(0);
+            arbiter.selection.level.should.equal(1);
 
             arbiter.buyUnit();
 
             arbiter.currentKingdom.money.should.be.equal(5);
-            arbiter.selection.level.should.equal(1);
+            arbiter.selection.level.should.equal(2);
         });
     });
 
@@ -159,7 +159,7 @@ describe('Arbiter', () => {
             arbiter.placeAt(new Hex(-3, 0, 3));
 
             world.getEntityAt(new Hex(-3, 0, 3)).should.be.an.instanceOf(Unit);
-            world.getEntityAt(new Hex(-3, 0, 3)).should.have.property('level', 1);
+            world.getEntityAt(new Hex(-3, 0, 3)).should.have.property('level', 2);
             kingdom.should.have.property('money', 5);
             expect(arbiter.selection).to.be.null;
         });

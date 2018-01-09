@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Hexagon } from 'react-hexgrid';
-import unitImg from '../themes/default/unit-0.png';
+import Themes from '../themes';
 
 export default class SlayHex extends Component {
     onClick(e) {
@@ -14,10 +14,6 @@ export default class SlayHex extends Component {
 
         classes.push('color-'+hex.player.color);
 
-        if (hex.hasUnit()) {
-            classes.push('unit-'+hex.entity.level);
-        }
-
         return classes.join(' ');
     }
 
@@ -29,7 +25,8 @@ export default class SlayHex extends Component {
                     y={-1}
                     width={2}
                     height={2}
-                    xlinkHref={unitImg}
+                    xlinkHref={Themes.units[hex.entity.level]}
+                    className={hex.entity.played ? 'unit' : 'unit has-move'}
                 />
             );
         }

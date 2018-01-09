@@ -3,7 +3,7 @@ import Unit from './Unit';
 export default class Arbiter {
     static UNIT_PRICE = 10;
     static TOWER_PRICE = 15;
-    static UNIT_MAX_LEVEL = 3;
+    static UNIT_MAX_LEVEL = 4;
 
     constructor(world) {
         this.world = world;
