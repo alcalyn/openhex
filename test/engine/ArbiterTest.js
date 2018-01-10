@@ -45,6 +45,70 @@ describe('Arbiter', () => {
             expect(arbiter.selection).to.be.null;
             world.getEntityAt(new Hex(-3, 0, 3)).should.be.an.instanceOf(Unit);
         });
+
+        it('can no longer move when upgrading an unit that already played a move', () => {
+            const worldGenerator = new WorldGenerator('constant-seed-2');
+            const world = worldGenerator.generate();
+
+            const unitMove = new Unit();
+            const unitCannotMove = new Unit();
+            unitMove.played = false;
+            unitMove.level = 1;
+            unitCannotMove.played = true;
+            unitCannotMove.level = 1;
+
+            const arbiter = new Arbiter(world);
+            const kingdom = world.getHexAt(new Hex(2, -3, 1)).kingdom;
+            arbiter.setCurrentPlayer(kingdom.player);
+            arbiter.setCurrentKingdom(kingdom);
+            arbiter.selection = unitMove;
+            world.setEntityAt(new Hex(4, -4, 0), unitCannotMove);
+
+            arbiter.placeAt(unitCannotMove.hex);
+
+            world.getEntityAt(new Hex(4, -4, 0)).should.have.property('played', true);
+            world.getEntityAt(new Hex(4, -4, 0)).should.have.property('level', 2);
+        });
+
+        it('Can capture a single new hex and unit cannot move again', () => {
+            const worldGenerator = new WorldGenerator('constant-seed-2');
+            const world = worldGenerator.generate();
+
+            const arbiter = new Arbiter(world);
+            const kingdom = world.getHexAt(new Hex(2, -3, 1)).kingdom;
+            arbiter.setCurrentPlayer(kingdom.player);
+            arbiter.setCurrentKingdom(kingdom);
+
+            expect(world.getHexAt(new Hex(4, -3, -1)).kingdom).to.be.null;
+            kingdom.hexs.should.have.lengthOf(5);
+
+            arbiter.buyUnit();
+            arbiter.placeAt(new Hex(4, -3, -1));
+
+            expect(world.getHexAt(new Hex(4, -3, -1)).kingdom).to.not.be.null;
+            world.getHexAt(new Hex(4, -3, -1)).kingdom.should.be.equal(kingdom);
+            world.getHexAt(new Hex(4, -3, -1)).entity.should.be.an.instanceOf(Unit);
+            kingdom.hexs.should.have.lengthOf(6);
+        });
+
+        it('Can not capture an hex not neighbour to kingdom', () => {
+            const worldGenerator = new WorldGenerator('constant-seed-2');
+            const world = worldGenerator.generate();
+
+            const arbiter = new Arbiter(world);
+            const kingdom = world.getHexAt(new Hex(2, -3, 1)).kingdom;
+            arbiter.setCurrentPlayer(kingdom.player);
+            arbiter.setCurrentKingdom(kingdom);
+
+            expect(world.getHexAt(new Hex(4, -1, -3)).kingdom).to.be.null;
+            kingdom.hexs.should.have.lengthOf(5);
+
+            arbiter.buyUnit();
+            expect(() => { arbiter.placeAt(new Hex(4, -1, -3)); }).to.throw(/not capture/);
+
+            expect(world.getHexAt(new Hex(4, -1, -3)).kingdom).to.be.null;
+            kingdom.hexs.should.have.lengthOf(5);
+        });
     });
 
     describe('takeUnitAt and placeAt', () => {
@@ -85,9 +149,7 @@ describe('Arbiter', () => {
             arbiter.currentKingdom.money.should.be.equal(15);
             arbiter.selection.level.should.equal(1);
         });
-    });
 
-    describe('buyUnit', () => {
         it('upgrade selected unit', () => {
             const worldGenerator = new WorldGenerator('constant-seed-2');
             const world = worldGenerator.generate();
@@ -109,9 +171,7 @@ describe('Arbiter', () => {
             arbiter.currentKingdom.money.should.be.equal(5);
             arbiter.selection.level.should.equal(2);
         });
-    });
 
-    describe('buyUnit', () => {
         it('throw error when not enough money', () => {
             const worldGenerator = new WorldGenerator('constant-seed-2');
             const world = worldGenerator.generate();
@@ -124,9 +184,7 @@ describe('Arbiter', () => {
 
             expect(() => arbiter.buyUnit()).to.throw('Not enough money');
         });
-    });
 
-    describe('buyUnit', () => {
         it('throw error when selection already have a max level unit', () => {
             const worldGenerator = new WorldGenerator('constant-seed-2');
             const world = worldGenerator.generate();
@@ -163,9 +221,7 @@ describe('Arbiter', () => {
             kingdom.should.have.property('money', 5);
             expect(arbiter.selection).to.be.null;
         });
-    });
 
-    describe('buyUnit and placeAt', () => {
         it('cannot move an unit to another owned kingdom', () => {
             const worldGenerator = new WorldGenerator('constant-seed-2');
             const world = worldGenerator.generate();
@@ -182,7 +238,7 @@ describe('Arbiter', () => {
 
             arbiter.selection.should.be.an.instanceOf(Unit);
 
-            expect(() => arbiter.placeAt(new Hex(2, -3, 1))).to.throw('Cannot move unit to another owned kingdom');
+            expect(() => arbiter.placeAt(new Hex(2, -3, 1))).to.throw('Cannot capture this hex, too far of kingdom');
 
             arbiter.selection.should.be.an.instanceOf(Unit);
         });
@@ -210,6 +266,52 @@ describe('Arbiter', () => {
             kingdom.should.have.property('money', 15);
             arbiter.selection.should.be.an.instanceOf(Unit);
             arbiter.selection.level.should.be.equal(2);
+        });
+    });
+
+    describe('smartAction', () => {
+        it('Move an unit in kingdom', () => {
+            const worldGenerator = new WorldGenerator('constant-seed-2');
+            const world = worldGenerator.generate();
+
+            world.setEntityAt(new Hex(-3, 0, 3), new Unit());
+
+            const arbiter = new Arbiter(world);
+            const kingdom = world.getHexAt(new Hex(-4, 1, 3)).kingdom;
+            arbiter.setCurrentPlayer(kingdom.player);
+            arbiter.setCurrentKingdom(kingdom);
+
+            world.getEntityAt(new Hex(-3, 0, 3)).should.have.property('played', false);
+
+            arbiter.smartAction(new Hex(-3, 0, 3));
+            arbiter.smartAction(new Hex(-4, 1, 3));
+
+            world.getEntityAt(new Hex(-4, 1, 3)).should.have.property('played', false);
+        });
+
+        it('Captures a hex', () => {
+            const worldGenerator = new WorldGenerator('constant-seed-2');
+            const world = worldGenerator.generate();
+
+            world.setEntityAt(new Hex(-3, 0, 3), new Unit());
+
+            const arbiter = new Arbiter(world);
+            const kingdom = world.getHexAt(new Hex(-4, 1, 3)).kingdom;
+            arbiter.setCurrentPlayer(kingdom.player);
+            arbiter.setCurrentKingdom(kingdom);
+
+            world.getEntityAt(new Hex(-3, 0, 3)).should.have.property('played', false);
+            expect(world.getHexAt(new Hex(-2, -1, 3)).kingdom).to.be.null;
+            world.getHexAt(new Hex(-3, 0, 3)).kingdom.hexs.should.have.lengthOf(5);
+
+            arbiter.smartAction(new Hex(-3, 0, 3));
+            arbiter.smartAction(new Hex(-2, -1, 3));
+
+            expect(world.getEntityAt(new Hex(-2, -1, 3))).to.not.be.null;
+            world.getEntityAt(new Hex(-2, -1, 3)).should.have.property('played', true);
+            expect(world.getHexAt(new Hex(-2, -1, 3)).kingdom).to.not.be.null;
+            world.getHexAt(new Hex(-2, -1, 3)).kingdom.should.be.equal(kingdom);
+            world.getHexAt(new Hex(-2, -1, 3)).kingdom.hexs.should.have.lengthOf(6);
         });
     });
 

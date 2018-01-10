@@ -6,6 +6,7 @@ export default class World {
         this.players = players;
         this.hexs = hexs;
         this.kingdoms = [];
+        this.turn = 0;
 
         this._initHexMap();
     }
@@ -40,10 +41,10 @@ export default class World {
         return this.getHexAt(coords).entity;
     }
 
-    setEntityAt(coords, unit) {
+    setEntityAt(coords, entity) {
         const hex = this.getHexAt(coords);
 
-        hex.entity = unit;
-        unit.hex = hex;
+        hex.entity = entity;
+        entity.hex = hex;
     }
 }

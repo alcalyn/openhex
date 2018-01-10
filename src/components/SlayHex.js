@@ -14,6 +14,10 @@ export default class SlayHex extends Component {
 
         classes.push('color-'+hex.player.color);
 
+        if (this.props.highlight) {
+            classes.push('highlight');
+        }
+
         return classes.join(' ');
     }
 

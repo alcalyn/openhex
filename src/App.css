@@ -4,7 +4,7 @@ html, body, #root, .App {
 #grid {
     height: 100%;
 }
-#selection, #kingdom-menu {
+#selection, #kingdom-menu, #turn-menu {
     position: fixed;
 }
 #selection {
@@ -12,7 +12,12 @@ html, body, #root, .App {
     top: 20%;
 }
 #kingdom-menu {
+    top: 0;
     right: 0;
+}
+#turn-menu {
+    bottom: 0;
+    left: 0;
 }
 
 svg g .hex {
@@ -35,6 +40,10 @@ svg g .hex.color-4 {
 }
 svg g .hex.color-5 {
     fill: #CCB332;
+}
+
+svg g .hex.highlight {
+    fill-opacity: 0.6;
 }
 
 .unit.has-move {

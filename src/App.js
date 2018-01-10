@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { HexGrid, Layout } from 'react-hexgrid';
 import { WorldGenerator, Hex, Unit, Arbiter } from './engine';
-import { KingdomMenu, Selection, SlayHex } from './components';
+import { KingdomMenu, Selection, SlayHex, TurnMenu } from './components';
 import './App.css';
 
 class App extends Component {
@@ -43,6 +43,7 @@ class App extends Component {
         this.setState({
             world: this.state.world,
             selection: this.arbiter.selection,
+            currentKingdom: this.arbiter.currentKingdom,
         });
     }
 
@@ -65,10 +66,18 @@ class App extends Component {
                 <div id="kingdom-menu">
                     <KingdomMenu arbiter={this.arbiter} onUpdate={() => { this.update(); }} />
                 </div>
+                <div id="turn-menu">
+                    <TurnMenu onEndTurn={() => { this.arbiter.endTurn();this.update(); }} />
+                </div>
                 <div id="grid">
                     <HexGrid id="grid" width={'100%'} height={'100%'} viewBox={viewBox}>
                         <Layout size={{ x: 2, y: 2 }} spacing={1.06}>
-                            { world.hexs.map((hex, i) => <SlayHex key={i} hex={hex} onClick={() => { this.clickHex(hex); }} />) }
+                            { world.hexs.map((hex, i) => <SlayHex
+                                key={i}
+                                hex={hex}
+                                highlight={null !== hex.kingdom && hex.kingdom === this.state.currentKingdom}
+                                onClick={() => { this.clickHex(hex); }}
+                            />) }
                         </Layout>
                     </HexGrid>
                 </div>
