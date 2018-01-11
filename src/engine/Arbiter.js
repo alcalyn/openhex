@@ -81,24 +81,35 @@ export default class Arbiter {
     smartAction(coords) {
         const hex = this.world.getHexAt(coords);
 
-        if (null === hex.kingdom) {
-            if (null !== this.selection) {
-                this.placeAt(hex);
-                return;
+        if (null === this.selection) {
+            if (hex.kingdom) {
+                if (hex.kingdom === this.currentKingdom) {
+                    if (hex.hasUnit()) {
+                        this.takeUnitAt(hex);
+                    }
+                } else {
+                    if (hex.kingdom.player === this.currentPlayer) {
+                        this.setCurrentKingdom(hex.kingdom);
+
+                        if (hex.hasUnit()) {
+                            this.takeUnitAt(hex);
+                        }
+                    }
+                }
             }
-        }
-
-        if (null !== this.selection && hex.kingdom !== this.currentKingdom) {
-            throw new Error('Cannot change kingdom while having a selected entity');
-        }
-
-        this.setCurrentKingdom(hex.kingdom);
-
-        if (this.selection) {
-            this.placeAt(hex);
         } else {
-            if (hex.hasUnit()) {
-                this.takeUnitAt(hex);
+            if (hex.kingdom) {
+                if (hex.kingdom === this.currentKingdom) {
+                    this.placeAt(hex);
+                } else {
+                    if (hex.kingdom.player === this.currentPlayer) {
+                        throw new Error('Cannot change kingdom while having a selected entity');
+                    } else {
+                        this.placeAt(hex);
+                    }
+                }
+            } else {
+                this.placeAt(hex);
             }
         }
     }
