@@ -216,6 +216,26 @@ describe('Arbiter', () => {
             expect(world.getKingdomAt(new Hex(-4, 3, 1))).to.be.null;
             expect(world.getKingdomAt(new Hex(-4, 2, 2))).to.be.equal(kingdom);
         });
+
+        it('kill opponent kingdom if I only one hex left', () => {
+            const worldGenerator = new WorldGenerator('constant-seed-5');
+            const world = worldGenerator.generate();
+
+            const arbiter = new Arbiter(world);
+            const kingdom = world.getKingdomAt(new Hex(-3, 1, 2));
+            const opponentKingdom = world.getKingdomAt(new Hex(-2, 3, -1));
+            arbiter.setCurrentPlayer(kingdom.player);
+            arbiter.setCurrentKingdom(kingdom);
+            arbiter.selection = new Unit();
+
+            expect(world.getKingdomAt(new Hex(-2, 3, -1))).to.be.equal(opponentKingdom);
+            expect(world.getKingdomAt(new Hex(-1, 2, -1))).to.be.equal(opponentKingdom);
+
+            arbiter.placeAt(new Hex(-1, 2, -1));
+
+            expect(world.getKingdomAt(new Hex(-2, 3, -1))).to.be.null;
+            expect(world.getKingdomAt(new Hex(-1, 2, -1))).to.be.equal(kingdom);
+        });
     });
 
     describe('takeUnitAt and placeAt', () => {
