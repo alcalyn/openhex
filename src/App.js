@@ -11,6 +11,7 @@ class App extends Component {
         const worldGenerator = new WorldGenerator('constant-seed-5');
         const world = worldGenerator.generate();
 
+        world.setEntityAt(new Hex(-2, 1, 1), new Unit());
         world.setEntityAt(new Hex(-1, 3, -2), new Unit());
 
         const arbiter = new Arbiter(world);
