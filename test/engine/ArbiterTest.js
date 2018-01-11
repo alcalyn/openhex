@@ -157,18 +157,20 @@ describe('Arbiter', () => {
 
             const arbiter = new Arbiter(world);
             const kingdom = world.getHexAt(new Hex(2, -3, 1)).kingdom;
+            const opponentKingdom = world.getHexAt(new Hex(2, -2, 0)).kingdom;
             arbiter.setCurrentPlayer(kingdom.player);
             arbiter.setCurrentKingdom(kingdom);
             arbiter.selection = new Unit();
 
-            expect(world.getHexAt(new Hex(2, -2, 0)).kingdom).to.not.be.null;
-            expect(world.getHexAt(new Hex(2, -2, 0)).kingdom).to.not.be.equal(kingdom);
+            expect(world.getHexAt(new Hex(2, -2, 0)).kingdom).to.be.equal(opponentKingdom);
             kingdom.hexs.should.have.lengthOf(5);
+            opponentKingdom.hexs.should.have.lengthOf(3);
 
             arbiter.placeAt(new Hex(2, -2, 0));
 
             expect(world.getHexAt(new Hex(2, -2, 0)).kingdom).to.be.equal(kingdom);
             kingdom.hexs.should.have.lengthOf(6);
+            opponentKingdom.hexs.should.have.lengthOf(2);
         });
     });
 

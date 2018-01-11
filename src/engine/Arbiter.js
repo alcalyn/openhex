@@ -191,6 +191,10 @@ export default class Arbiter {
             this.selection.played = true;
             this.selection = null;
 
+            if (hex.kingdom) {
+                hex.kingdom.hexs = hex.kingdom.hexs.filter(opponentKingdomHex => opponentKingdomHex !== hex);
+            }
+
             hex.kingdom = this.currentKingdom;
             hex.player = this.currentKingdom.player;
             this.currentKingdom.hexs.push(hex);
