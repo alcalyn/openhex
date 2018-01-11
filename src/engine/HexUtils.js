@@ -1,5 +1,6 @@
 import { HexUtils as HexUtilsBase } from 'react-hexgrid';
 import Unit from './Unit';
+import Kingdom from './Kingdom';
 
 export default class HexUtils extends HexUtilsBase {
     static neighboursHexs(world, hex) {
@@ -102,6 +103,82 @@ export default class HexUtils extends HexUtilsBase {
             hex.kingdom = widestKingdom;
             widestKingdom.hexs.push(hex);
         });
+    }
+
+    /**
+     * @param {World} world
+     * @param {Hex} lastCapturedHex
+     *
+     * @returns {boolean} Wether a kingdom has been cut or not
+     */
+    static splitKingdomsOnCapture(world, lastCapturedHex) {
+        return this.neighboursHexs(world, lastCapturedHex)
+            .filter(neighboursHex => neighboursHex.kingdom !== null)
+            .filter(neighboursHex => neighboursHex.kingdom !== lastCapturedHex.kingdom)
+            .some(opponentHex => this.splitKingdom(world, opponentHex.kingdom))
+        ;
+    }
+
+    /**
+     * @param {World} world
+     * @param {Kingdom} kingdom
+     *
+     * @returns {boolean} Wether kingdom has been cut or not
+     */
+    static splitKingdom(world, kingdom) {
+        if (this.getAllAdjacentHexs(world, kingdom.hexs[0]).length === kingdom.getSize()) {
+            return false;
+        }
+
+        let kingdomHexs = kingdom.hexs.slice();
+
+        const subKingdoms = [];
+        const singleHexs = [];
+        const splittedKingdoms = [];
+
+        // Calculate all kingdom fragments
+        while (kingdomHexs.length > 0) {
+            let subKingdom = this.getAllAdjacentHexs(world, kingdomHexs[0]);
+
+            if (1 === subKingdom.length) {
+                singleHexs.push(subKingdom[0]);
+            } else {
+                subKingdoms.push(subKingdom);
+            }
+
+            kingdomHexs = kingdomHexs.filter(hex => -1 === subKingdom.indexOf(hex));
+        }
+
+        // Put the widest kingdom at first
+        subKingdoms.sort((subKingdomA, subKingdomB) => {
+            return subKingdomB.length > subKingdomA;
+        });
+
+        // Single hexs created by cutting have no longer kingdom
+        singleHexs.forEach(singleHex => singleHex.kingdom = null);
+
+        // Create new kingdoms with a new economy
+        subKingdoms.slice(1).forEach(subKingdom => {
+            const splittedKingdom = new Kingdom(subKingdom);
+
+            splittedKingdom.money = Math.round(kingdom.money * (subKingdom.length / kingdom.getSize()));
+            splittedKingdoms.push(splittedKingdom);
+        });
+
+        // Truncate cut hexs from main kingdom (if the main kingdom has not been slashed)
+        if (subKingdoms.length > 0) {
+            kingdom.hexs = kingdom.hexs.filter(hex => -1 !== subKingdoms[0].indexOf(hex));
+        } else {
+            world.removeKingdom(kingdom);
+        }
+
+        // Add news kingdoms to world and remove extra money from main kingdom to fragmented ones
+        splittedKingdoms.forEach(splittedKingdom => {
+            kingdom.money -= splittedKingdom.money;
+            world.kingdoms.push(splittedKingdom);
+        });
+
+        return true;
     }
 
     static getKingdomIncome(kingdom) {

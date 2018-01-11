@@ -30,7 +30,7 @@ export default class SlayHex extends Component {
                     width={2}
                     height={2}
                     xlinkHref={Themes.units[hex.entity.level]}
-                    className={hex.entity.played ? 'unit' : 'unit has-move'}
+                    className={this.props.unitHasMove ? 'unit has-move' : 'unit'}
                 />
             );
         }

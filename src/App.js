@@ -8,10 +8,9 @@ class App extends Component {
     constructor(props, context) {
         super(props, context);
 
-        const worldGenerator = new WorldGenerator('constant-seed-2');
+        const worldGenerator = new WorldGenerator('constant-seed-5');
         const world = worldGenerator.generate();
 
-        world.setEntityAt(new Hex(3, -3, 0), new Unit());
         world.setEntityAt(new Hex(-1, 3, -2), new Unit());
 
         const arbiter = new Arbiter(world);
@@ -38,6 +37,18 @@ class App extends Component {
         this.update();
 
         console.log('selection', this.arbiter.selection);
+    }
+
+    hexUnitHasMove(hex) {
+        if (this.arbiter.currentPlayer !== hex.player) {
+            return false;
+        }
+
+        if (!hex.hasUnit()) {
+            return false;
+        }
+
+        return !hex.entity.played;
     }
 
     update() {
@@ -77,6 +88,7 @@ class App extends Component {
                                 key={i}
                                 hex={hex}
                                 highlight={null !== hex.kingdom && hex.kingdom === this.state.currentKingdom}
+                                unitHasMove={this.hexUnitHasMove(hex)}
                                 onClick={() => { this.clickHex(hex); }}
                             />) }
                         </Layout>

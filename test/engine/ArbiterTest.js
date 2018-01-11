@@ -13,8 +13,8 @@ describe('Arbiter', () => {
             world.setEntityAt(new Hex(-3, 0, 3), new Unit());
 
             const arbiter = new Arbiter(world);
-            arbiter.setCurrentPlayer(world.getHexAt(new Hex(-4, 1, 3)).kingdom.player);
-            arbiter.setCurrentKingdom(world.getHexAt(new Hex(-4, 1, 3)).kingdom);
+            arbiter.setCurrentPlayer(world.getKingdomAt(new Hex(-4, 1, 3)).player);
+            arbiter.setCurrentKingdom(world.getKingdomAt(new Hex(-4, 1, 3)));
 
             expect(arbiter.selection).to.be.null;
             world.getEntityAt(new Hex(-3, 0, 3)).should.be.an.instanceOf(Unit);
@@ -32,7 +32,7 @@ describe('Arbiter', () => {
             const world = worldGenerator.generate();
 
             const arbiter = new Arbiter(world);
-            const kingdom = world.getHexAt(new Hex(-4, 1, 3)).kingdom;
+            const kingdom = world.getKingdomAt(new Hex(-4, 1, 3));
             arbiter.setCurrentPlayer(kingdom.player);
             arbiter.setCurrentKingdom(kingdom);
             arbiter.selection = new Unit();
@@ -58,7 +58,7 @@ describe('Arbiter', () => {
             unitCannotMove.level = 1;
 
             const arbiter = new Arbiter(world);
-            const kingdom = world.getHexAt(new Hex(2, -3, 1)).kingdom;
+            const kingdom = world.getKingdomAt(new Hex(2, -3, 1));
             arbiter.setCurrentPlayer(kingdom.player);
             arbiter.setCurrentKingdom(kingdom);
             arbiter.selection = unitMove;
@@ -75,18 +75,18 @@ describe('Arbiter', () => {
             const world = worldGenerator.generate();
 
             const arbiter = new Arbiter(world);
-            const kingdom = world.getHexAt(new Hex(2, -3, 1)).kingdom;
+            const kingdom = world.getKingdomAt(new Hex(2, -3, 1));
             arbiter.setCurrentPlayer(kingdom.player);
             arbiter.setCurrentKingdom(kingdom);
             arbiter.selection = new Unit();
 
-            expect(world.getHexAt(new Hex(4, -3, -1)).kingdom).to.be.null;
+            expect(world.getKingdomAt(new Hex(4, -3, -1))).to.be.null;
             kingdom.hexs.should.have.lengthOf(5);
 
             arbiter.placeAt(new Hex(4, -3, -1));
 
-            expect(world.getHexAt(new Hex(4, -3, -1)).kingdom).to.not.be.null;
-            world.getHexAt(new Hex(4, -3, -1)).kingdom.should.be.equal(kingdom);
+            expect(world.getKingdomAt(new Hex(4, -3, -1))).to.not.be.null;
+            world.getKingdomAt(new Hex(4, -3, -1)).should.be.equal(kingdom);
             world.getHexAt(new Hex(4, -3, -1)).entity.should.be.an.instanceOf(Unit);
             kingdom.hexs.should.have.lengthOf(6);
         });
@@ -96,17 +96,17 @@ describe('Arbiter', () => {
             const world = worldGenerator.generate();
 
             const arbiter = new Arbiter(world);
-            const kingdom = world.getHexAt(new Hex(2, -3, 1)).kingdom;
+            const kingdom = world.getKingdomAt(new Hex(2, -3, 1));
             arbiter.setCurrentPlayer(kingdom.player);
             arbiter.setCurrentKingdom(kingdom);
             arbiter.selection = new Unit();
 
-            expect(world.getHexAt(new Hex(4, -1, -3)).kingdom).to.be.null;
+            expect(world.getKingdomAt(new Hex(4, -1, -3))).to.be.null;
             kingdom.hexs.should.have.lengthOf(5);
 
             expect(() => { arbiter.placeAt(new Hex(4, -1, -3)); }).to.throw(/not capture/);
 
-            expect(world.getHexAt(new Hex(4, -1, -3)).kingdom).to.be.null;
+            expect(world.getKingdomAt(new Hex(4, -1, -3))).to.be.null;
             kingdom.hexs.should.have.lengthOf(5);
         });
 
@@ -115,18 +115,18 @@ describe('Arbiter', () => {
             const world = worldGenerator.generate();
 
             const arbiter = new Arbiter(world);
-            const kingdom = world.getHexAt(new Hex(2, -3, 1)).kingdom;
+            const kingdom = world.getKingdomAt(new Hex(2, -3, 1));
             arbiter.setCurrentPlayer(kingdom.player);
             arbiter.setCurrentKingdom(kingdom);
             arbiter.selection = new Unit();
 
-            expect(world.getHexAt(new Hex(2, 0, -2)).kingdom).to.be.null;
+            expect(world.getKingdomAt(new Hex(2, 0, -2))).to.be.null;
             world.getHexAt(new Hex(2, 0, -2)).player.should.be.equal(kingdom.player);
             kingdom.hexs.should.have.lengthOf(5);
 
             arbiter.placeAt(new Hex(2, -1, -1));
 
-            world.getHexAt(new Hex(2, 0, -2)).kingdom.should.be.equal(kingdom);
+            world.getKingdomAt(new Hex(2, 0, -2)).should.be.equal(kingdom);
             kingdom.hexs.should.have.lengthOf(7);
         });
 
@@ -135,19 +135,19 @@ describe('Arbiter', () => {
             const world = worldGenerator.generate();
 
             const arbiter = new Arbiter(world);
-            const kingdom = world.getHexAt(new Hex(2, -2, 0)).kingdom;
+            const kingdom = world.getKingdomAt(new Hex(2, -2, 0));
             arbiter.setCurrentPlayer(kingdom.player);
             arbiter.setCurrentKingdom(kingdom);
             arbiter.selection = new Unit();
 
-            expect(world.getHexAt(new Hex(2, -1, -1)).kingdom).to.be.null;
-            world.getHexAt(new Hex(3, -1, -2)).kingdom.should.not.be.equal(kingdom);
+            expect(world.getKingdomAt(new Hex(2, -1, -1))).to.be.null;
+            world.getKingdomAt(new Hex(3, -1, -2)).should.not.be.equal(kingdom);
             kingdom.hexs.should.have.lengthOf(3);
 
             arbiter.placeAt(new Hex(2, -1, -1));
 
-            expect(world.getHexAt(new Hex(2, -1, -1)).kingdom).to.be.equal(kingdom);
-            world.getHexAt(new Hex(3, -1, -2)).kingdom.should.be.equal(kingdom);
+            expect(world.getKingdomAt(new Hex(2, -1, -1))).to.be.equal(kingdom);
+            world.getKingdomAt(new Hex(3, -1, -2)).should.be.equal(kingdom);
             kingdom.hexs.should.have.lengthOf(6);
         });
 
@@ -156,21 +156,65 @@ describe('Arbiter', () => {
             const world = worldGenerator.generate();
 
             const arbiter = new Arbiter(world);
-            const kingdom = world.getHexAt(new Hex(2, -3, 1)).kingdom;
-            const opponentKingdom = world.getHexAt(new Hex(2, -2, 0)).kingdom;
+            const kingdom = world.getKingdomAt(new Hex(2, -3, 1));
+            const opponentKingdom = world.getKingdomAt(new Hex(2, -2, 0));
             arbiter.setCurrentPlayer(kingdom.player);
             arbiter.setCurrentKingdom(kingdom);
             arbiter.selection = new Unit();
 
-            expect(world.getHexAt(new Hex(2, -2, 0)).kingdom).to.be.equal(opponentKingdom);
+            expect(world.getKingdomAt(new Hex(2, -2, 0))).to.be.equal(opponentKingdom);
             kingdom.hexs.should.have.lengthOf(5);
             opponentKingdom.hexs.should.have.lengthOf(3);
 
             arbiter.placeAt(new Hex(2, -2, 0));
 
-            expect(world.getHexAt(new Hex(2, -2, 0)).kingdom).to.be.equal(kingdom);
+            expect(world.getKingdomAt(new Hex(2, -2, 0))).to.be.equal(kingdom);
             kingdom.hexs.should.have.lengthOf(6);
             opponentKingdom.hexs.should.have.lengthOf(2);
+        });
+
+        it('split opponent kingdom in two little kingdoms when cutting', () => {
+            const worldGenerator = new WorldGenerator('constant-seed-5');
+            const world = worldGenerator.generate();
+
+            const arbiter = new Arbiter(world);
+            const kingdom = world.getKingdomAt(new Hex(0, -2, 2));
+            const opponentKingdom = world.getKingdomAt(new Hex(-3, 1, 2));
+            arbiter.setCurrentPlayer(kingdom.player);
+            arbiter.setCurrentKingdom(kingdom);
+            arbiter.selection = new Unit();
+
+            world.getKingdomAt(new Hex(0, -1, 1)).should.be.equal(opponentKingdom);
+            world.getKingdomAt(new Hex(-2, 0, 2)).should.be.equal(opponentKingdom);
+            world.getKingdomAt(new Hex(2, -2, 0)).should.be.equal(opponentKingdom);
+            opponentKingdom.hexs.should.have.lengthOf(9);
+            kingdom.hexs.should.have.lengthOf(2);
+
+            arbiter.placeAt(new Hex(0, -1, 1));
+
+            world.getKingdomAt(new Hex(0, -1, 1)).should.be.equal(kingdom);
+            kingdom.hexs.should.have.lengthOf(3);
+            world.getKingdomAt(new Hex(-2, 0, 2)).should.not.be.equal(world.getKingdomAt(new Hex(2, -2, 0)));
+            world.getKingdomAt(new Hex(-2, 0, 2)).player.should.be.equal(world.getKingdomAt(new Hex(2, -2, 0)).player);
+            expect(world.getKingdomAt(new Hex(-2, 0, 2)).getSize() + world.getKingdomAt(new Hex(2, -2, 0)).getSize()).to.be.equal(9 - 1);
+        });
+
+        it('split opponent kingdom in two single hexs and kill main kingdom if kingdom has only 3 hexs', () => {
+            const worldGenerator = new WorldGenerator('constant-seed-5');
+            const world = worldGenerator.generate();
+
+            const arbiter = new Arbiter(world);
+            const kingdom = world.getKingdomAt(new Hex(-2, 0, 2));
+            const opponentKingdom = world.getKingdomAt(new Hex(-4, 1, 3));
+            arbiter.setCurrentPlayer(kingdom.player);
+            arbiter.setCurrentKingdom(kingdom);
+            arbiter.selection = new Unit();
+
+            arbiter.placeAt(new Hex(-4, 2, 2));
+
+            expect(world.getKingdomAt(new Hex(-4, 1, 3))).to.be.null;
+            expect(world.getKingdomAt(new Hex(-4, 3, 1))).to.be.null;
+            expect(world.getKingdomAt(new Hex(-4, 2, 2))).to.be.equal(kingdom);
         });
     });
 
@@ -182,7 +226,7 @@ describe('Arbiter', () => {
             world.setEntityAt(new Hex(-3, 0, 3), new Unit());
 
             const arbiter = new Arbiter(world);
-            const kingdom = world.getHexAt(new Hex(-4, 1, 3)).kingdom;
+            const kingdom = world.getKingdomAt(new Hex(-4, 1, 3));
             arbiter.setCurrentPlayer(kingdom.player);
             arbiter.setCurrentKingdom(kingdom);
 
@@ -201,7 +245,7 @@ describe('Arbiter', () => {
             const world = worldGenerator.generate();
 
             const arbiter = new Arbiter(world);
-            const kingdom = world.getHexAt(new Hex(-4, 1, 3)).kingdom;
+            const kingdom = world.getKingdomAt(new Hex(-4, 1, 3));
             arbiter.setCurrentPlayer(kingdom.player);
             arbiter.setCurrentKingdom(kingdom);
 
@@ -218,7 +262,7 @@ describe('Arbiter', () => {
             const world = worldGenerator.generate();
 
             const arbiter = new Arbiter(world);
-            const kingdom = world.getHexAt(new Hex(-4, 1, 3)).kingdom;
+            const kingdom = world.getKingdomAt(new Hex(-4, 1, 3));
             arbiter.setCurrentPlayer(kingdom.player);
             arbiter.setCurrentKingdom(kingdom);
 
@@ -240,7 +284,7 @@ describe('Arbiter', () => {
             const world = worldGenerator.generate();
 
             const arbiter = new Arbiter(world);
-            const kingdom = world.getHexAt(new Hex(-4, 1, 3)).kingdom;
+            const kingdom = world.getKingdomAt(new Hex(-4, 1, 3));
             kingdom.money = 7;
             arbiter.setCurrentPlayer(kingdom.player);
             arbiter.setCurrentKingdom(kingdom);
@@ -253,7 +297,7 @@ describe('Arbiter', () => {
             const world = worldGenerator.generate();
 
             const arbiter = new Arbiter(world);
-            const kingdom = world.getHexAt(new Hex(-4, 1, 3)).kingdom;
+            const kingdom = world.getKingdomAt(new Hex(-4, 1, 3));
             arbiter.setCurrentPlayer(kingdom.player);
             arbiter.setCurrentKingdom(kingdom);
 
@@ -270,7 +314,7 @@ describe('Arbiter', () => {
             const world = worldGenerator.generate();
 
             const arbiter = new Arbiter(world);
-            const kingdom = world.getHexAt(new Hex(-4, 1, 3)).kingdom;
+            const kingdom = world.getKingdomAt(new Hex(-4, 1, 3));
             arbiter.setCurrentPlayer(kingdom.player);
             arbiter.setCurrentKingdom(kingdom);
 
@@ -290,8 +334,8 @@ describe('Arbiter', () => {
             const world = worldGenerator.generate();
 
             const arbiter = new Arbiter(world);
-            const kingdom0 = world.getHexAt(new Hex(-1, 3, -2)).kingdom;
-            const kingdom1 = world.getHexAt(new Hex(2, -3, 1)).kingdom;
+            const kingdom0 = world.getKingdomAt(new Hex(-1, 3, -2));
+            const kingdom1 = world.getKingdomAt(new Hex(2, -3, 1));
             arbiter.setCurrentPlayer(kingdom0.player);
             arbiter.setCurrentKingdom(kingdom0);
 
@@ -318,7 +362,7 @@ describe('Arbiter', () => {
             world.setEntityAt(new Hex(-3, 0, 3), level1Unit);
 
             const arbiter = new Arbiter(world);
-            const kingdom = world.getHexAt(new Hex(-4, 1, 3)).kingdom;
+            const kingdom = world.getKingdomAt(new Hex(-4, 1, 3));
             arbiter.setCurrentPlayer(kingdom.player);
             arbiter.setCurrentKingdom(kingdom);
 
@@ -340,7 +384,7 @@ describe('Arbiter', () => {
             world.setEntityAt(new Hex(3, -3, 0), new Unit());
 
             const arbiter = new Arbiter(world);
-            const kingdom = world.getHexAt(new Hex(-2, 3, -1)).kingdom;
+            const kingdom = world.getKingdomAt(new Hex(-2, 3, -1));
             arbiter.setCurrentPlayer(kingdom.player);
             arbiter.setCurrentKingdom(kingdom);
 
@@ -350,7 +394,7 @@ describe('Arbiter', () => {
             arbiter.smartAction(new Hex(3, -3, 0));
 
             arbiter.currentKingdom.should.not.be.equal(kingdom);
-            arbiter.currentKingdom.should.be.equal(world.getHexAt(new Hex(3, -3, 0)).kingdom);
+            arbiter.currentKingdom.should.be.equal(world.getKingdomAt(new Hex(3, -3, 0)));
             expect(arbiter.selection).to.not.be.null;
         });
 
@@ -361,7 +405,7 @@ describe('Arbiter', () => {
             world.setEntityAt(new Hex(-3, 0, 3), new Unit());
 
             const arbiter = new Arbiter(world);
-            const kingdom = world.getHexAt(new Hex(-4, 1, 3)).kingdom;
+            const kingdom = world.getKingdomAt(new Hex(-4, 1, 3));
             arbiter.setCurrentPlayer(kingdom.player);
             arbiter.setCurrentKingdom(kingdom);
 
@@ -380,22 +424,22 @@ describe('Arbiter', () => {
             world.setEntityAt(new Hex(-3, 0, 3), new Unit());
 
             const arbiter = new Arbiter(world);
-            const kingdom = world.getHexAt(new Hex(-4, 1, 3)).kingdom;
+            const kingdom = world.getKingdomAt(new Hex(-4, 1, 3));
             arbiter.setCurrentPlayer(kingdom.player);
             arbiter.setCurrentKingdom(kingdom);
 
             world.getEntityAt(new Hex(-3, 0, 3)).should.have.property('played', false);
-            expect(world.getHexAt(new Hex(-2, -1, 3)).kingdom).to.be.null;
-            world.getHexAt(new Hex(-3, 0, 3)).kingdom.hexs.should.have.lengthOf(5);
+            expect(world.getKingdomAt(new Hex(-2, -1, 3))).to.be.null;
+            world.getKingdomAt(new Hex(-3, 0, 3)).hexs.should.have.lengthOf(5);
 
             arbiter.smartAction(new Hex(-3, 0, 3));
             arbiter.smartAction(new Hex(-2, -1, 3));
 
             expect(world.getEntityAt(new Hex(-2, -1, 3))).to.not.be.null;
             world.getEntityAt(new Hex(-2, -1, 3)).should.have.property('played', true);
-            expect(world.getHexAt(new Hex(-2, -1, 3)).kingdom).to.not.be.null;
-            world.getHexAt(new Hex(-2, -1, 3)).kingdom.should.be.equal(kingdom);
-            world.getHexAt(new Hex(-2, -1, 3)).kingdom.hexs.should.have.lengthOf(6);
+            expect(world.getKingdomAt(new Hex(-2, -1, 3))).to.not.be.null;
+            world.getKingdomAt(new Hex(-2, -1, 3)).should.be.equal(kingdom);
+            world.getKingdomAt(new Hex(-2, -1, 3)).hexs.should.have.lengthOf(6);
         });
 
         it('can capture a hex from an opponent kingdom', () => {
@@ -403,18 +447,18 @@ describe('Arbiter', () => {
             const world = worldGenerator.generate();
 
             const arbiter = new Arbiter(world);
-            const kingdom = world.getHexAt(new Hex(2, -3, 1)).kingdom;
+            const kingdom = world.getKingdomAt(new Hex(2, -3, 1));
             arbiter.setCurrentPlayer(kingdom.player);
             arbiter.setCurrentKingdom(kingdom);
             arbiter.selection = new Unit();
 
-            expect(world.getHexAt(new Hex(2, -2, 0)).kingdom).to.not.be.null;
-            expect(world.getHexAt(new Hex(2, -2, 0)).kingdom).to.not.be.equal(kingdom);
+            expect(world.getKingdomAt(new Hex(2, -2, 0))).to.not.be.null;
+            expect(world.getKingdomAt(new Hex(2, -2, 0))).to.not.be.equal(kingdom);
             kingdom.hexs.should.have.lengthOf(5);
 
             arbiter.smartAction(new Hex(2, -2, 0));
 
-            expect(world.getHexAt(new Hex(2, -2, 0)).kingdom).to.be.equal(kingdom);
+            expect(world.getKingdomAt(new Hex(2, -2, 0))).to.be.equal(kingdom);
             kingdom.hexs.should.have.lengthOf(6);
         });
     });

@@ -213,6 +213,7 @@ export default class Arbiter {
         }
 
         HexUtils.mergeKingdomsOnCapture(this.world, hex);
+        HexUtils.splitKingdomsOnCapture(this.world, hex);
     }
 
     _checkPlayerSelected() {

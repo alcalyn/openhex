@@ -23,6 +23,10 @@ export default class World {
         return this._hexMap.get(HexUtils.getID(hex));
     }
 
+    getKingdomAt(hex) {
+        return this.getHexAt(hex).kingdom;
+    }
+
     removeUnitAt(coords) {
         const hex = this.getHexAt(coords);
         const entity = hex.entity;
@@ -46,5 +50,9 @@ export default class World {
 
         hex.entity = entity;
         entity.hex = hex;
+    }
+
+    removeKingdom(kingdom) {
+        this.kingdoms = this.kingdoms.filter(k => k !== kingdom);
     }
 }
