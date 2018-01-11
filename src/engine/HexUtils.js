@@ -123,4 +123,32 @@ export default class HexUtils extends HexUtilsBase {
     static getUnitMaintenanceCost(unit) {
         return 2 * (3 ** (unit.level - 1));
     }
+
+    /**
+     * Returns all units that can be an obstacle
+     * when capturing a hex.
+     *
+     * @param {World} world
+     * @param {Hex} hex
+     *
+     * @returns {Unit[]} Protecting units, from the strongest to the weakest.
+     */
+    static getProtectingUnits(world, hex) {
+        const protectingUnits = [];
+
+        this.neighboursHexsSamePlayer(world, hex)
+            .concat([hex])
+            .forEach(hex => {
+                if (hex.hasUnit()) {
+                    protectingUnits.push(hex.entity);
+                }
+            })
+        ;
+
+        protectingUnits.sort((unitA, unitB) => {
+            return unitA.level < unitB.level;
+        });
+
+        return protectingUnits;
+    }
 }

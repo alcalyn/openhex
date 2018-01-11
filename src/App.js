@@ -31,10 +31,11 @@ class App extends Component {
         try {
             this.arbiter.smartAction(hex);
 
-            this.update();
         } catch (e) {
             console.warn(e.message);
         }
+
+        this.update();
 
         console.log('selection', this.arbiter.selection);
     }

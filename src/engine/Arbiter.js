@@ -175,6 +175,18 @@ export default class Arbiter {
                 throw new Error('Cannot capture this hex, too far of kingdom');
             }
 
+            if (hex.kingdom) {
+                const protectingUnits = HexUtils
+                    .getProtectingUnits(this.world, hex)
+                    .filter(protectingUnits => protectingUnits.level >= this.selection.level)
+                ;
+
+                if (protectingUnits.length > 0) {
+                    console.warn(protectingUnits);
+                    throw new Error('Cannot capture this hex, units protecting it');
+                }
+            }
+
             this.world.setEntityAt(hex, this.selection);
             this.selection.played = true;
             this.selection = null;
