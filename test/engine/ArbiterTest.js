@@ -1,14 +1,18 @@
 import chai from 'chai';
-import { Arbiter, Player, Hex, LocalPlayer, Unit, World, WorldGenerator } from '../../src/engine';
+import { Arbiter, Player, Hex, Unit, World, WorldGenerator } from '../../src/engine';
 
 chai.should();
 const expect = chai.expect;
+
+const createTestPlayers = () => {
+    return Array.apply(null, Array(6)).map(p => new Player());
+};
 
 describe('Arbiter', () => {
     describe('takeUnitAt', () => {
         it('put unit in selection and remove it from hex', () => {
             const worldGenerator = new WorldGenerator('constant-seed-2');
-            const world = worldGenerator.generate();
+            const world = worldGenerator.generate(createTestPlayers());
 
             world.setEntityAt(new Hex(-3, 0, 3), new Unit());
 
@@ -29,7 +33,7 @@ describe('Arbiter', () => {
     describe('placeAt', () => {
         it('place an unit from selection to a hex of the same kingdom', () => {
             const worldGenerator = new WorldGenerator('constant-seed-2');
-            const world = worldGenerator.generate();
+            const world = worldGenerator.generate(createTestPlayers());
 
             const arbiter = new Arbiter(world);
             const kingdom = world.getKingdomAt(new Hex(-4, 1, 3));
@@ -48,7 +52,7 @@ describe('Arbiter', () => {
 
         it('can no longer move when upgrading an unit that already played a move', () => {
             const worldGenerator = new WorldGenerator('constant-seed-2');
-            const world = worldGenerator.generate();
+            const world = worldGenerator.generate(createTestPlayers());
 
             const unitMove = new Unit();
             const unitCannotMove = new Unit();
@@ -72,7 +76,7 @@ describe('Arbiter', () => {
 
         it('Can capture a single new hex and unit cannot move again', () => {
             const worldGenerator = new WorldGenerator('constant-seed-2');
-            const world = worldGenerator.generate();
+            const world = worldGenerator.generate(createTestPlayers());
 
             const arbiter = new Arbiter(world);
             const kingdom = world.getKingdomAt(new Hex(2, -3, 1));
@@ -93,7 +97,7 @@ describe('Arbiter', () => {
 
         it('Can not capture an hex not neighbour to kingdom', () => {
             const worldGenerator = new WorldGenerator('constant-seed-2');
-            const world = worldGenerator.generate();
+            const world = worldGenerator.generate(createTestPlayers());
 
             const arbiter = new Arbiter(world);
             const kingdom = world.getKingdomAt(new Hex(2, -3, 1));
@@ -112,7 +116,7 @@ describe('Arbiter', () => {
 
         it('can link a single owned hex to our kingdom', () => {
             const worldGenerator = new WorldGenerator('constant-seed-2');
-            const world = worldGenerator.generate();
+            const world = worldGenerator.generate(createTestPlayers());
 
             const arbiter = new Arbiter(world);
             const kingdom = world.getKingdomAt(new Hex(2, -3, 1));
@@ -132,7 +136,7 @@ describe('Arbiter', () => {
 
         it('can merge two kingdoms to a single one', () => {
             const worldGenerator = new WorldGenerator('constant-seed-2');
-            const world = worldGenerator.generate();
+            const world = worldGenerator.generate(createTestPlayers());
 
             const arbiter = new Arbiter(world);
             const kingdom = world.getKingdomAt(new Hex(2, -2, 0));
@@ -153,7 +157,7 @@ describe('Arbiter', () => {
 
         it('can capture a hex from an opponent kingdom', () => {
             const worldGenerator = new WorldGenerator('constant-seed-2');
-            const world = worldGenerator.generate();
+            const world = worldGenerator.generate(createTestPlayers());
 
             const arbiter = new Arbiter(world);
             const kingdom = world.getKingdomAt(new Hex(2, -3, 1));
@@ -175,7 +179,7 @@ describe('Arbiter', () => {
 
         it('split opponent kingdom in two little kingdoms when cutting', () => {
             const worldGenerator = new WorldGenerator('constant-seed-5');
-            const world = worldGenerator.generate();
+            const world = worldGenerator.generate(createTestPlayers());
 
             const arbiter = new Arbiter(world);
             const kingdom = world.getKingdomAt(new Hex(0, -2, 2));
@@ -201,7 +205,7 @@ describe('Arbiter', () => {
 
         it('split opponent kingdom in two single hexs and kill main kingdom if kingdom has only 3 hexs', () => {
             const worldGenerator = new WorldGenerator('constant-seed-5');
-            const world = worldGenerator.generate();
+            const world = worldGenerator.generate(createTestPlayers());
 
             const arbiter = new Arbiter(world);
             const kingdom = world.getKingdomAt(new Hex(-2, 0, 2));
@@ -219,7 +223,7 @@ describe('Arbiter', () => {
 
         it('kill opponent kingdom if I only one hex left', () => {
             const worldGenerator = new WorldGenerator('constant-seed-5');
-            const world = worldGenerator.generate();
+            const world = worldGenerator.generate(createTestPlayers());
 
             const arbiter = new Arbiter(world);
             const kingdom = world.getKingdomAt(new Hex(-3, 1, 2));
@@ -241,7 +245,7 @@ describe('Arbiter', () => {
     describe('takeUnitAt and placeAt', () => {
         it('just moving an unit should still having a move', () => {
             const worldGenerator = new WorldGenerator('constant-seed-2');
-            const world = worldGenerator.generate();
+            const world = worldGenerator.generate(createTestPlayers());
 
             world.setEntityAt(new Hex(-3, 0, 3), new Unit());
 
@@ -262,7 +266,7 @@ describe('Arbiter', () => {
     describe('buyUnit', () => {
         it('must decrease kingdom money', () => {
             const worldGenerator = new WorldGenerator('constant-seed-2');
-            const world = worldGenerator.generate();
+            const world = worldGenerator.generate(createTestPlayers());
 
             const arbiter = new Arbiter(world);
             const kingdom = world.getKingdomAt(new Hex(-4, 1, 3));
@@ -279,7 +283,7 @@ describe('Arbiter', () => {
 
         it('upgrade selected unit', () => {
             const worldGenerator = new WorldGenerator('constant-seed-2');
-            const world = worldGenerator.generate();
+            const world = worldGenerator.generate(createTestPlayers());
 
             const arbiter = new Arbiter(world);
             const kingdom = world.getKingdomAt(new Hex(-4, 1, 3));
@@ -301,7 +305,7 @@ describe('Arbiter', () => {
 
         it('throw error when not enough money', () => {
             const worldGenerator = new WorldGenerator('constant-seed-2');
-            const world = worldGenerator.generate();
+            const world = worldGenerator.generate(createTestPlayers());
 
             const arbiter = new Arbiter(world);
             const kingdom = world.getKingdomAt(new Hex(-4, 1, 3));
@@ -314,7 +318,7 @@ describe('Arbiter', () => {
 
         it('throw error when selection already have a max level unit', () => {
             const worldGenerator = new WorldGenerator('constant-seed-2');
-            const world = worldGenerator.generate();
+            const world = worldGenerator.generate(createTestPlayers());
 
             const arbiter = new Arbiter(world);
             const kingdom = world.getKingdomAt(new Hex(-4, 1, 3));
@@ -331,7 +335,7 @@ describe('Arbiter', () => {
     describe('buyUnit and placeAt', () => {
         it('places a new upgraded unit', () => {
             const worldGenerator = new WorldGenerator('constant-seed-2');
-            const world = worldGenerator.generate();
+            const world = worldGenerator.generate(createTestPlayers());
 
             const arbiter = new Arbiter(world);
             const kingdom = world.getKingdomAt(new Hex(-4, 1, 3));
@@ -351,7 +355,7 @@ describe('Arbiter', () => {
 
         it('cannot move an unit to another owned kingdom', () => {
             const worldGenerator = new WorldGenerator('constant-seed-2');
-            const world = worldGenerator.generate();
+            const world = worldGenerator.generate(createTestPlayers());
 
             const arbiter = new Arbiter(world);
             const kingdom0 = world.getKingdomAt(new Hex(-1, 3, -2));
@@ -374,7 +378,7 @@ describe('Arbiter', () => {
     describe('takeUnitAt and buyUnit', () => {
         it('upgrades an existing unit', () => {
             const worldGenerator = new WorldGenerator('constant-seed-2');
-            const world = worldGenerator.generate();
+            const world = worldGenerator.generate(createTestPlayers());
 
             const level1Unit = new Unit();
             level1Unit.level = 1;
@@ -399,7 +403,7 @@ describe('Arbiter', () => {
     describe('smartAction', () => {
         it('selects kingdom AND takes unit when clicking on a unit in another kingdom, and not only selects kingdom', () => {
             const worldGenerator = new WorldGenerator('constant-seed-2');
-            const world = worldGenerator.generate();
+            const world = worldGenerator.generate(createTestPlayers());
 
             world.setEntityAt(new Hex(3, -3, 0), new Unit());
 
@@ -420,7 +424,7 @@ describe('Arbiter', () => {
 
         it('Move an unit in kingdom', () => {
             const worldGenerator = new WorldGenerator('constant-seed-2');
-            const world = worldGenerator.generate();
+            const world = worldGenerator.generate(createTestPlayers());
 
             world.setEntityAt(new Hex(-3, 0, 3), new Unit());
 
@@ -439,7 +443,7 @@ describe('Arbiter', () => {
 
         it('Captures a hex', () => {
             const worldGenerator = new WorldGenerator('constant-seed-2');
-            const world = worldGenerator.generate();
+            const world = worldGenerator.generate(createTestPlayers());
 
             world.setEntityAt(new Hex(-3, 0, 3), new Unit());
 
@@ -464,7 +468,7 @@ describe('Arbiter', () => {
 
         it('can capture a hex from an opponent kingdom', () => {
             const worldGenerator = new WorldGenerator('constant-seed-2');
-            const world = worldGenerator.generate();
+            const world = worldGenerator.generate(createTestPlayers());
 
             const arbiter = new Arbiter(world);
             const kingdom = world.getKingdomAt(new Hex(2, -3, 1));
@@ -480,6 +484,18 @@ describe('Arbiter', () => {
 
             expect(world.getKingdomAt(new Hex(2, -2, 0))).to.be.equal(kingdom);
             kingdom.hexs.should.have.lengthOf(6);
+        });
+    });
+
+    describe('endTurn', () => {
+        it('kills units if not enough money to pay them', () => {
+            const worldGenerator = new WorldGenerator('constant-seed-5');
+            const world = worldGenerator.generate(createTestPlayers());
+
+            const arbiter = new Arbiter(world);
+            const kingdom = world.getKingdomAt(new Hex(2, -3, 1));
+            arbiter.setCurrentPlayer(kingdom.player);
+            arbiter.setCurrentKingdom(kingdom);
         });
     });
 

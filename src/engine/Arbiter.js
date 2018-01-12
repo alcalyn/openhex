@@ -17,6 +17,8 @@ export default class Arbiter {
     setCurrentPlayer(player) {
         this.currentPlayer = player;
         this.currentKingdom = null;
+
+        player.notifyTurn(this);
     }
 
     setCurrentKingdom(kingdom) {
@@ -132,11 +134,11 @@ export default class Arbiter {
 
         const nextPlayer = this.world.players[nextIndex];
 
-        this.setCurrentPlayer(nextPlayer);
-
         if (this.world.turn > 0) {
-            this._payKingdomsIncome(this.currentPlayer);
+            this._payKingdomsIncome(nextPlayer);
         }
+
+        this.setCurrentPlayer(nextPlayer);
     }
 
     _resetUnitsMove(player) {
@@ -153,7 +155,7 @@ export default class Arbiter {
     }
 
     _payKingdomsIncome(player) {
-        console.log('_payKingdomsIncome');
+        console.log('_payKingdomsIncome', player);
 
         this.world.kingdoms
             .filter(kingdom => kingdom.player === player)
@@ -177,8 +179,7 @@ export default class Arbiter {
 
             if (hex.kingdom) {
                 const protectingUnits = HexUtils
-                    .getProtectingUnits(this.world, hex)
-                    .filter(protectingUnits => protectingUnits.level >= this.selection.level)
+                    .getProtectingUnits(this.world, hex, this.selection.level)
                 ;
 
                 if (protectingUnits.length > 0) {
@@ -192,7 +193,11 @@ export default class Arbiter {
             this.selection = null;
 
             if (hex.kingdom) {
-                hex.kingdom.hexs = hex.kingdom.hexs.filter(opponentKingdomHex => opponentKingdomHex !== hex);
+                hex.kingdom.removeHex(hex);
+                if (hex.kingdom.hexs.length < 2) {
+                    hex.kingdom.hexs.forEach(hex => hex.kingdom = null);
+                    this.world.removeKingdom(hex.kingdom);
+                }
             }
 
             hex.kingdom = this.currentKingdom;

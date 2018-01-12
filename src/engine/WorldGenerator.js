@@ -12,15 +12,17 @@ export default class WorldGenerator {
         this._random = seed === undefined ? seedrandom() : seedrandom(seed);
     }
 
-    generate() {
-        const players = [
-            new LocalPlayer(),
-            new AIPlayer(),
-            new AIPlayer(),
-            new AIPlayer(),
-            new AIPlayer(),
-            new AIPlayer(),
-        ];
+    generate(players) {
+        if (!players) {
+            players = [
+                new LocalPlayer(),
+                new AIPlayer(),
+                new AIPlayer(),
+                new AIPlayer(),
+                new AIPlayer(),
+                new AIPlayer(),
+            ];
+        }
 
         const hexs = this.hexagon(4);
         const world = new World(players, hexs);

@@ -11,11 +11,11 @@ class App extends Component {
         const worldGenerator = new WorldGenerator('constant-seed-5');
         const world = worldGenerator.generate();
 
-        world.setEntityAt(new Hex(-2, 1, 1), new Unit());
-        world.setEntityAt(new Hex(-1, 3, -2), new Unit());
+        world.setEntityAt(new Hex(2, 0, -2), new Unit());
+        world.setEntityAt(new Hex(0, -4, 4), new Unit());
 
         const arbiter = new Arbiter(world);
-        arbiter.setCurrentPlayer(world.players[4]);
+        arbiter.setCurrentPlayer(world.players[0]);
 
         this.state = {
             world,

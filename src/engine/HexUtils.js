@@ -207,10 +207,11 @@ export default class HexUtils extends HexUtilsBase {
      *
      * @param {World} world
      * @param {Hex} hex
+     * @param {integer} level Optional, Level of unit who want to capture hex
      *
      * @returns {Unit[]} Protecting units, from the strongest to the weakest.
      */
-    static getProtectingUnits(world, hex) {
+    static getProtectingUnits(world, hex, level) {
         const protectingUnits = [];
 
         this.neighboursHexsSamePlayer(world, hex)
@@ -226,6 +227,30 @@ export default class HexUtils extends HexUtilsBase {
             return unitA.level < unitB.level;
         });
 
-        return protectingUnits;
+        if (undefined === level) {
+            level = -10;
+        }
+
+        return protectingUnits
+            .filter(protectingUnit => protectingUnit.level >= level)
+        ;
+    }
+
+    static getHexsAdjacentToKingdom(world, kingdom) {
+        const adjacentHexs = [];
+
+        kingdom.hexs.forEach(hex => {
+            this
+                .neighboursHexs(world, hex)
+                .filter(hex => hex.kingdom !== kingdom)
+                .forEach(neighboursHex => {
+                    if (-1 === adjacentHexs.indexOf(neighboursHex)) {
+                        adjacentHexs.push(neighboursHex);
+                    }
+                })
+            ;
+        });
+
+        return adjacentHexs;
     }
 }

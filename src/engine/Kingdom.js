@@ -16,4 +16,15 @@ export default class Kingdom {
     getSize() {
         return this.hexs.length;
     }
+
+    getUnits() {
+        return this.hexs
+            .filter(hex => hex.hasUnit())
+            .map(hex => hex.entity)
+        ;
+    }
+
+    removeHex(hex) {
+        this.hexs = this.hexs.filter(h => h !== hex);
+    }
 }
