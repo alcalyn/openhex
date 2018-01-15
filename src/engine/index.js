@@ -1,5 +1,6 @@
 import AIPlayer from './AIPlayer';
 import Arbiter from './Arbiter';
+import Died from './Died';
 import Entity from './Entity';
 import Hex from './Hex';
 import HexUtils from './HexUtils';
@@ -15,6 +16,7 @@ import WorldGenerator from './WorldGenerator';
 export {
     AIPlayer,
     Arbiter,
+    Died,
     Entity,
     Hex,
     HexUtils,

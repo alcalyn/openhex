@@ -1,5 +1,5 @@
 import chai from 'chai';
-import { Arbiter, Player, Hex, Unit, World, WorldGenerator } from '../../src/engine';
+import { Arbiter, Player, Hex, Unit, Died, Tree, World, WorldGenerator } from '../../src/engine';
 
 chai.should();
 const expect = chai.expect;
@@ -72,6 +72,25 @@ describe('Arbiter', () => {
 
             world.getEntityAt(new Hex(4, -4, 0)).should.have.property('played', true);
             world.getEntityAt(new Hex(4, -4, 0)).should.have.property('level', 2);
+        });
+
+        it('makes the unit played his turn after cutting a tree', () => {
+            const worldGenerator = new WorldGenerator('constant-seed-5');
+            const world = worldGenerator.generate(createTestPlayers());
+
+            const arbiter = new Arbiter(world);
+            const kingdom = world.getKingdomAt(new Hex(2, -1, -1));
+            arbiter.setCurrentPlayer(kingdom.player);
+            arbiter.setCurrentKingdom(kingdom);
+            const lumberjack = new Unit();
+            lumberjack.played = false;
+            arbiter.selection = lumberjack;
+            world.setEntityAt(new Hex(3, -1, -2), new Tree(Tree.CONTINENTAL));
+
+            arbiter.placeAt(new Hex(3, -1, -2));
+
+            lumberjack.should.have.property('played', true);
+            world.getEntityAt(new Hex(3, -1, -2)).should.be.equal(lumberjack);
         });
 
         it('Can capture a single new hex and unit cannot move again', () => {
@@ -175,6 +194,48 @@ describe('Arbiter', () => {
             expect(world.getKingdomAt(new Hex(2, -2, 0))).to.be.equal(kingdom);
             kingdom.hexs.should.have.lengthOf(6);
             opponentKingdom.hexs.should.have.lengthOf(2);
+        });
+
+        it('Cannot capture a hex protected by opponent', () => {
+            const worldGenerator = new WorldGenerator('constant-seed-5');
+            const world = worldGenerator.generate(createTestPlayers());
+
+            const arbiter = new Arbiter(world);
+            const kingdom = world.getKingdomAt(new Hex(-1, 0, 1));
+            arbiter.setCurrentPlayer(kingdom.player);
+            arbiter.setCurrentKingdom(kingdom);
+            world.setEntityAt(new Hex(2, 0, -2), new Unit());
+            arbiter.selection = new Unit();
+
+            expect(() => { arbiter.placeAt(new Hex(2, -1, -1)); }).to.throw(/protect/);
+        });
+
+        it('Cannot kill an opponent unit if same level', () => {
+            const worldGenerator = new WorldGenerator('constant-seed-5');
+            const world = worldGenerator.generate(createTestPlayers());
+
+            const arbiter = new Arbiter(world);
+            const kingdom = world.getKingdomAt(new Hex(-1, 0, 1));
+            arbiter.setCurrentPlayer(kingdom.player);
+            arbiter.setCurrentKingdom(kingdom);
+            world.setEntityAt(new Hex(2, -1, -1), new Unit());
+            arbiter.selection = new Unit();
+
+            expect(() => { arbiter.placeAt(new Hex(2, -1, -1)); }).to.throw(/protect/);
+        });
+
+        it('Cannot capture a single opponent hex if there is still an unit on it', () => {
+            const worldGenerator = new WorldGenerator('constant-seed-5');
+            const world = worldGenerator.generate(createTestPlayers());
+
+            const arbiter = new Arbiter(world);
+            const kingdom = world.getKingdomAt(new Hex(1, -2, 1));
+            arbiter.setCurrentPlayer(kingdom.player);
+            arbiter.setCurrentKingdom(kingdom);
+            arbiter.selection = new Unit();
+            world.setEntityAt(new Hex(1, -3, 2), new Unit());
+
+            expect(() => { arbiter.placeAt(new Hex(1, -3, 2)); }).to.throw(/protect/);
         });
 
         it('split opponent kingdom in two little kingdoms when cutting', () => {
@@ -493,9 +554,38 @@ describe('Arbiter', () => {
             const world = worldGenerator.generate(createTestPlayers());
 
             const arbiter = new Arbiter(world);
-            const kingdom = world.getKingdomAt(new Hex(2, -3, 1));
+            const kingdom = world.getKingdomAt(new Hex(2, -1, -1));
             arbiter.setCurrentPlayer(kingdom.player);
             arbiter.setCurrentKingdom(kingdom);
+            world.setEntityAt(new Hex(2, -1, -1), new Unit(2));
+            world.setEntityAt(new Hex(1, 0, -1), new Unit(3));
+            world.setEntityAt(new Hex(3, 0, -3), new Unit(4));
+
+            for (let i = 0; i < 6; i++) {
+                arbiter.endTurn();
+            }
+
+            expect(world.getEntityAt(new Hex(2, -1, -1))).to.be.an.instanceOf(Died);
+            expect(world.getEntityAt(new Hex(1, 0, -1))).to.be.an.instanceOf(Died);
+            expect(world.getEntityAt(new Hex(3, 0, -3))).to.be.an.instanceOf(Died);
+            kingdom.money.should.be.equal(-48);
+        });
+
+        it('transforms dieds to trees', () => {
+            const worldGenerator = new WorldGenerator('constant-seed-5');
+            const world = worldGenerator.generate(createTestPlayers());
+
+            const arbiter = new Arbiter(world);
+            const kingdom = world.getKingdomAt(new Hex(2, -1, -1));
+            arbiter.setCurrentPlayer(kingdom.player);
+            arbiter.setCurrentKingdom(kingdom);
+            world.setEntityAt(new Hex(2, -1, -1), new Died());
+
+            for (let i = 0; i < 6; i++) {
+                arbiter.endTurn();
+            }
+
+            expect(world.getEntityAt(new Hex(2, -1, -1))).to.be.an.instanceOf(Tree);
         });
     });
 

@@ -21,16 +21,30 @@ export default class SlayHex extends Component {
         return classes.join(' ');
     }
 
-    hexContent(hex) {
+    hexContentClasses(hex) {
+        const classes = [];
+
         if (hex.hasUnit()) {
+            classes.push('unit');
+
+            if (this.props.unitHasMove) {
+                classes.push('has-move');
+            }
+        }
+
+        return classes.join(' ');
+    }
+
+    hexContent(hex) {
+        if (hex.entity) {
             return (
                 <image
                     x={-1}
                     y={-1}
                     width={2}
                     height={2}
-                    xlinkHref={Themes.units[hex.entity.level]}
-                    className={this.props.unitHasMove ? 'unit has-move' : 'unit'}
+                    xlinkHref={Themes.getImageFor(hex.entity)}
+                    className={this.hexContentClasses(hex)}
                 />
             );
         }

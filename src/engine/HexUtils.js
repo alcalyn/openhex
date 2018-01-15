@@ -1,6 +1,7 @@
 import { HexUtils as HexUtilsBase } from 'react-hexgrid';
 import Unit from './Unit';
 import Kingdom from './Kingdom';
+import Tree from './Tree';
 
 export default class HexUtils extends HexUtilsBase {
     static neighboursHexs(world, hex) {
@@ -182,7 +183,11 @@ export default class HexUtils extends HexUtilsBase {
     }
 
     static getKingdomIncome(kingdom) {
-        return kingdom.hexs.length;
+        return kingdom.hexs
+            .filter(hex => !hex.hasTree())
+            .filter(hex => !hex.hasDied())
+            .length
+        ;
     }
 
     static getKingdomMaintenanceCost(kingdom) {
@@ -252,5 +257,22 @@ export default class HexUtils extends HexUtilsBase {
         });
 
         return adjacentHexs;
+    }
+
+    static isHexCoastal(world, hex) {
+        return this
+            .neighbours(hex)
+            .map(neighbourCoords => world.getHexAt(neighbourCoords))
+            .some(hex => hex === undefined)
+        ;
+    }
+
+    static createTreeForHex(world, hex) {
+        const treeType = this.isHexCoastal(world, hex) ? Tree.COASTAL : Tree.CONTINENTAL;
+        const tree = new Tree(treeType);
+
+        tree.hex = hex;
+
+        return tree;
     }
 }

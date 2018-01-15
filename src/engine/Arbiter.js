@@ -1,5 +1,6 @@
 import Unit from './Unit';
 import HexUtils from './HexUtils';
+import Died from './Died';
 
 export default class Arbiter {
     static UNIT_PRICE = 10;
@@ -160,12 +161,48 @@ export default class Arbiter {
         this.world.kingdoms
             .filter(kingdom => kingdom.player === player)
             .forEach(kingdom => {
+                // Reset kingdom economy if bankrupt last turn
+                if (kingdom.money < 0) {
+                    kingdom.money = 0;
+                }
+
                 console.log('+', HexUtils.getKingdomIncome(kingdom));
                 console.log('-', HexUtils.getKingdomMaintenanceCost(kingdom));
 
+                // Get income and pay units maintenance
                 kingdom.money += HexUtils.getKingdomIncome(kingdom);
                 kingdom.money -= HexUtils.getKingdomMaintenanceCost(kingdom);
+
+                // Replace dieds with trees
+                kingdom.hexs.filter(hex => hex.hasDied()).forEach(hex => {
+                    hex.entity = HexUtils.createTreeForHex(this.world, hex);
+                });
+
+                // Kill unpaid units
+                if (kingdom.money < 0) {
+                    kingdom.hexs.filter(hex => hex.hasUnit()).forEach(hex => {
+                        hex.entity = new Died();
+                    });
+                }
             })
+        ;
+
+        // On single hexs...
+        const singleHexs = this.world.hexs
+            .filter(hex => hex.player === player)
+            .filter(hex => !hex.kingdom)
+        ;
+
+        // Replace dieds with trees
+        singleHexs
+            .filter(hex => hex.hasDied())
+            .forEach(hex => hex.entity = HexUtils.createTreeForHex(this.world, hex))
+        ;
+
+        // Kill units on a single hex kingdom
+        singleHexs
+            .filter(hex => hex.hasUnit())
+            .forEach(hex => hex.entity = new Died())
         ;
     }
 
@@ -177,15 +214,13 @@ export default class Arbiter {
                 throw new Error('Cannot capture this hex, too far of kingdom');
             }
 
-            if (hex.kingdom) {
-                const protectingUnits = HexUtils
-                    .getProtectingUnits(this.world, hex, this.selection.level)
-                ;
+            const protectingUnits = HexUtils
+                .getProtectingUnits(this.world, hex, this.selection.level)
+            ;
 
-                if (protectingUnits.length > 0) {
-                    console.warn(protectingUnits);
-                    throw new Error('Cannot capture this hex, units protecting it');
-                }
+            if (protectingUnits.length > 0) {
+                console.warn(protectingUnits);
+                throw new Error('Cannot capture this hex, units protecting it');
             }
 
             this.world.setEntityAt(hex, this.selection);
@@ -212,6 +247,10 @@ export default class Arbiter {
                 hex.entity.level += this.selection.level;
                 this.selection = null;
             } else {
+                if (hex.hasDied() || hex.hasTree()) {
+                    this.selection.played = true;
+                }
+
                 this.world.setEntityAt(hex, this.selection);
                 this.selection = null;
             }

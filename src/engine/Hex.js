@@ -1,5 +1,7 @@
 import { Hex as HexBase } from 'react-hexgrid';
 import Unit from './Unit';
+import Died from './Died';
+import Tree from './Tree';
 
 export default class Hex extends HexBase {
     constructor(q, r, s) {
@@ -16,6 +18,14 @@ export default class Hex extends HexBase {
 
     hasUnit() {
         return this.entity instanceof Unit;
+    }
+
+    hasTree() {
+        return this.entity instanceof Tree;
+    }
+
+    hasDied() {
+        return this.entity instanceof Died;
     }
 
     getUnit() {
