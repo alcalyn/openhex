@@ -54,79 +54,113 @@ export default class HexUtils extends HexUtilsBase {
         return this.neighboursHexs(world, hex).some(hex => hex.kingdom === kingdom);
     }
 
+    /**
+     * Check if capturing lastCapturedHex can merge kingdoms into one.
+     *
+     * @param {World} world
+     * @param {Hex} lastCapturedHex
+     *
+     * @returns {Callback} Callback to call to undo the merge operations
+     */
     static mergeKingdomsOnCapture(world, lastCapturedHex) {
+        const undoCallbacks = [];
         const capturingKingdom = lastCapturedHex.kingdom;
         const capturingPlayer = capturingKingdom.player;
 
         const singleHexs = [];
         const alliedKingdoms = [capturingKingdom];
 
-        this.neighboursHexs(world, lastCapturedHex).forEach(hex => {
-            if (null === hex.kingdom) {
-                if (hex.player === capturingPlayer) {
+        this.neighboursHexs(world, lastCapturedHex)
+            .filter(hex => hex.player === capturingPlayer)
+            .forEach(hex => {
+                if (null === hex.kingdom) {
                     singleHexs.push(hex);
-                }
-            } else {
-                if (hex.kingdom !== capturingKingdom) {
-                    if (hex.kingdom.player === capturingPlayer) {
+                } else {
+                    if (hex.kingdom !== capturingKingdom) {
                         alliedKingdoms.push(hex.kingdom);
                     }
                 }
-            }
+            })
+        ;
+
+        alliedKingdoms.sort((kingdomA, kingdomB) => {
+            return kingdomB.hexs.length > kingdomA.hexs.length;
         });
 
-        let widestKingdom = alliedKingdoms[0];
+        const widestKingdom = alliedKingdoms[0];
+        const removedKingdoms = alliedKingdoms.slice(1);
 
-        if (alliedKingdoms.length > 1) {
-            alliedKingdoms.forEach(kingdom => {
-                if (kingdom.hexs.length > widestKingdom.hexs.length) {
-                    widestKingdom = kingdom;
-                }
-            });
+        removedKingdoms.forEach(alliedKingdom => {
+            alliedKingdom.hexs.forEach(hex => {
+                const lastHexKingdom = hex.kingdom;
+                hex.kingdom = widestKingdom;
+                widestKingdom.hexs.push(hex);
 
-            alliedKingdoms.forEach(alliedKingdom => {
-                if (alliedKingdom === widestKingdom) {
-                    return;
-                }
-
-                alliedKingdom.hexs.forEach(hex => {
-                    hex.kingdom = widestKingdom;
-                    widestKingdom.hexs.push(hex);
+                undoCallbacks.push(() => {
+                    hex.kingdom = lastHexKingdom;
+                    widestKingdom.removeHex(hex);
                 });
-
-                widestKingdom.money += alliedKingdom.money;
-                alliedKingdom.money = 0;
-                world.kingdoms = world.kingdoms.filter(worldKingdom => worldKingdom !== alliedKingdom);
             });
-        }
+
+            widestKingdom.money += alliedKingdom.money;
+            world.removeKingdom(alliedKingdom);
+
+            undoCallbacks.push(() => {
+                widestKingdom.money -= alliedKingdom.money;
+                world.kingdoms.push(alliedKingdom);
+            });
+        });
 
         singleHexs.forEach(hex => {
+            const lastHexKingdom = hex.kingdom;
             hex.kingdom = widestKingdom;
             widestKingdom.hexs.push(hex);
+
+            undoCallbacks.push(() => {
+                hex.kingdom = lastHexKingdom;
+                widestKingdom.removeHex(hex);
+            });
         });
+
+        return () => {
+            undoCallbacks
+                .reverse()
+                .forEach(undoCallback => undoCallback())
+            ;
+        };
     }
 
     /**
      * @param {World} world
      * @param {Hex} lastCapturedHex
      *
-     * @returns {boolean} Wether a kingdom has been cut or not
+     * @returns {Callback} Callback to call to undo kingdom split
      */
     static splitKingdomsOnCapture(world, lastCapturedHex) {
-        return this.neighboursHexs(world, lastCapturedHex)
+        let undoCallbacks = false;
+
+        this.neighboursHexs(world, lastCapturedHex)
             .filter(neighboursHex => neighboursHex.kingdom !== null)
             .filter(neighboursHex => neighboursHex.kingdom !== lastCapturedHex.kingdom)
-            .some(opponentHex => this.splitKingdom(world, opponentHex.kingdom))
+            .some(opponentHex => {
+                undoCallbacks = this.splitKingdom(world, opponentHex.kingdom);
+
+                return false !== undoCallbacks;
+            })
         ;
+
+        return undoCallbacks ? undoCallbacks : () => {};
     }
 
     /**
      * @param {World} world
      * @param {Kingdom} kingdom
      *
-     * @returns {boolean} Wether kingdom has been cut or not
+     * @returns {Callback} Callback to call to undo kingdom split
      */
     static splitKingdom(world, kingdom) {
+        const undoCallbacks = [];
+
         if (this.getAllAdjacentHexs(world, kingdom.hexs[0]).length === kingdom.getSize()) {
             return false;
         }
@@ -156,7 +190,14 @@ export default class HexUtils extends HexUtilsBase {
         });
 
         // Single hexs created by cutting have no longer kingdom
-        singleHexs.forEach(singleHex => singleHex.kingdom = null);
+        singleHexs.forEach(singleHex => {
+            const lastHexKingdom = singleHex.kingdom;
+            singleHex.kingdom = null;
+
+            undoCallbacks.push(() => {
+                singleHex.kingdom = lastHexKingdom;
+            });
+        });
 
         // Create new kingdoms with a new economy
         subKingdoms.slice(1).forEach(subKingdom => {
@@ -164,6 +205,13 @@ export default class HexUtils extends HexUtilsBase {
 
             splittedKingdom.money = Math.round(kingdom.money * (subKingdom.length / kingdom.getSize()));
             splittedKingdoms.push(splittedKingdom);
+
+            undoCallbacks.push(() => {
+                splittedKingdom.hexs.forEach(hex => {
+                    hex.kingdom = kingdom;
+                    kingdom.hexs.push(hex);
+                });
+            });
         });
 
         // Truncate cut hexs from main kingdom (if the main kingdom has not been slashed)
@@ -171,15 +219,29 @@ export default class HexUtils extends HexUtilsBase {
             kingdom.hexs = kingdom.hexs.filter(hex => -1 !== subKingdoms[0].indexOf(hex));
         } else {
             world.removeKingdom(kingdom);
+
+            undoCallbacks.push(() => {
+                world.kingdoms.push(kingdom);
+            });
         }
 
         // Add news kingdoms to world and remove extra money from main kingdom to fragmented ones
         splittedKingdoms.forEach(splittedKingdom => {
             kingdom.money -= splittedKingdom.money;
             world.kingdoms.push(splittedKingdom);
+
+            undoCallbacks.push(() => {
+                kingdom.money += splittedKingdom.money;
+                world.removeKingdom(splittedKingdom);
+            });
         });
 
-        return true;
+        return () => {
+            undoCallbacks
+                .reverse()
+                .forEach(callback => callback())
+            ;
+        };
     }
 
     static getKingdomIncome(kingdom) {

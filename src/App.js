@@ -80,7 +80,12 @@ class App extends Component {
                     <KingdomMenu arbiter={this.arbiter} onUpdate={() => { this.update(); }} />
                 </div>
                 <div id="turn-menu">
-                    <TurnMenu onEndTurn={() => { this.arbiter.endTurn();this.update(); }} />
+                    <TurnMenu
+                        onEndTurn={() => { this.arbiter.endTurn();this.update(); }}
+                        onUndo={() => { this.arbiter.undo();this.update(); }}
+                        onRedo={() => { this.arbiter.redo();this.update(); }}
+                        onUndoAll={() => { this.arbiter.undoAll();this.update(); }}
+                    />
                 </div>
                 <div id="grid">
                     <HexGrid id="grid" width={'100%'} height={'100%'} viewBox={viewBox}>

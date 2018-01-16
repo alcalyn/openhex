@@ -1,3 +1,4 @@
+import UndoManager from 'undo-manager';
 import Unit from './Unit';
 import HexUtils from './HexUtils';
 import Died from './Died';
@@ -13,11 +14,14 @@ export default class Arbiter {
         this.selection = null;
         this.currentPlayer = null;
         this.currentKingdom = null;
+        this.undoManager = new UndoManager();
     }
 
     setCurrentPlayer(player) {
         this.currentPlayer = player;
         this.currentKingdom = null;
+
+        this.undoManager.clear();
 
         player.notifyTurn(this);
     }
@@ -25,12 +29,23 @@ export default class Arbiter {
     setCurrentKingdom(kingdom) {
         this._checkPlayerSelected();
 
-        if (kingdom.player !== this.currentPlayer) {
+        if (kingdom && kingdom.player !== this.currentPlayer) {
             console.log(kingdom.player, this.currentPlayer);
             throw new Error('Cannot select opponent kingdom');
         }
 
+        const lastKingdom = this.currentKingdom;
+
         this.currentKingdom = kingdom;
+
+        this.undoManager.add({
+            undo: () => {
+                this.setCurrentKingdom(lastKingdom);
+            },
+            redo: () => {
+                this.setCurrentKingdom(kingdom);
+            },
+        });
     }
 
     takeUnitAt(hexCoords) {
@@ -55,6 +70,15 @@ export default class Arbiter {
         }
 
         this.selection = this.world.removeUnitAt(hexCoords);
+
+        this.undoManager.add({
+            undo: () => {
+                this.placeAt(hexCoords);
+            },
+            redo: () => {
+                this.takeUnitAt(hexCoords);
+            },
+        });
     }
 
     placeAt(hexCoords) {
@@ -79,6 +103,21 @@ export default class Arbiter {
         }
 
         this.currentKingdom.money -= Arbiter.UNIT_PRICE;
+
+        this.undoManager.add({
+            undo: () => {
+                this.selection.level--;
+
+                if (0 === this.selection.level) {
+                    this.selection = null;
+                }
+
+                this.currentKingdom.money += Arbiter.UNIT_PRICE;
+            },
+            redo: () => {
+                this.buyUnit();
+            },
+        });
     }
 
     smartAction(coords) {
@@ -140,6 +179,20 @@ export default class Arbiter {
         }
 
         this.setCurrentPlayer(nextPlayer);
+    }
+
+    undo() {
+        this.undoManager.undo();
+    }
+
+    redo() {
+        this.undoManager.redo();
+    }
+
+    undoAll() {
+        while (this.undoManager.hasUndo()) {
+            this.undoManager.undo();
+        }
     }
 
     _resetUnitsMove(player) {
@@ -223,29 +276,76 @@ export default class Arbiter {
                 throw new Error('Cannot capture this hex, units protecting it');
             }
 
+            const lastEntity = this.world.getEntityAt(hex);
+            const lastHexKingdom = hex.kingdom;
+            const lastHexPlayer = hex.player;
+
+            // Place unit from selection to hex
             this.world.setEntityAt(hex, this.selection);
             this.selection.played = true;
             this.selection = null;
 
+            // Take hex from opponent kingdom to ours
             if (hex.kingdom) {
                 hex.kingdom.removeHex(hex);
+
+                // Delete kingdom if it remains only one hex
                 if (hex.kingdom.hexs.length < 2) {
                     hex.kingdom.hexs.forEach(hex => hex.kingdom = null);
+                    hex.kingdom.hexs = [];
                     this.world.removeKingdom(hex.kingdom);
                 }
             }
 
+            // Move hex from opponent kingdom to capturing kingdom
             hex.kingdom = this.currentKingdom;
             hex.player = this.currentKingdom.player;
             this.currentKingdom.hexs.push(hex);
+
+            const unmergeKingdoms = HexUtils.mergeKingdomsOnCapture(this.world, hex);
+            const unsplitKingdoms = HexUtils.splitKingdomsOnCapture(this.world, hex);
+
+            this.undoManager.add({
+                undo: () => {
+                    unsplitKingdoms();
+                    unmergeKingdoms();
+
+                    // Undo hex capture
+                    this.currentKingdom.removeHex(hex);
+                    hex.player = lastHexPlayer;
+                    hex.kingdom = lastHexKingdom;
+
+                    // Put unit back in selection
+                    this.selection = this.world.getEntityAt(hex);
+                    this.selection.played = false;
+
+                    // Restore last entity in captured hex
+                    this.world.setEntityAt(hex, lastEntity);
+                },
+                redo: () => {
+                    this._placeUnitAt(hexCoords);
+                },
+            });
         } else {
             if (hex.hasUnit()) {
                 if ((hex.entity.level + this.selection.level) > Arbiter.UNIT_MAX_LEVEL) {
                     throw new Error('Cannot merge units as the sum of levels is too high');
                 }
 
+                const lastSelection = this.selection;
+
                 hex.entity.level += this.selection.level;
                 this.selection = null;
+
+                this.undoManager.add({
+                    undo: () => {
+                        this.selection = lastSelection;
+                        hex.entity.level -= this.selection.level;
+                    },
+                    redo: () => {
+                        this._placeUnitAt(hexCoords);
+                    },
+                });
             } else {
                 if (hex.hasDied() || hex.hasTree()) {
                     this.selection.played = true;
@@ -253,11 +353,18 @@ export default class Arbiter {
 
                 this.world.setEntityAt(hex, this.selection);
                 this.selection = null;
+
+                this.undoManager.add({
+                    undo: () => {
+                        this.selection = this.world.getEntityAt(hex);
+                        this.world.setEntityAt(hex, null);
+                    },
+                    redo: () => {
+                        this._placeUnitAt(hexCoords);
+                    },
+                });
             }
         }
-
-        HexUtils.mergeKingdomsOnCapture(this.world, hex);
-        HexUtils.splitKingdomsOnCapture(this.world, hex);
     }
 
     _checkPlayerSelected() {

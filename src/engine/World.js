@@ -49,7 +49,10 @@ export default class World {
         const hex = this.getHexAt(coords);
 
         hex.entity = entity;
-        entity.hex = hex;
+
+        if (null !== entity) {
+            entity.hex = hex;
+        }
     }
 
     removeKingdom(kingdom) {
