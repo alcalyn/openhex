@@ -279,6 +279,7 @@ export default class Arbiter {
             const lastEntity = this.world.getEntityAt(hex);
             const lastHexKingdom = hex.kingdom;
             const lastHexPlayer = hex.player;
+            let lastHexKingdomHexs = false;
 
             // Place unit from selection to hex
             this.world.setEntityAt(hex, this.selection);
@@ -291,6 +292,8 @@ export default class Arbiter {
 
                 // Delete kingdom if it remains only one hex
                 if (hex.kingdom.hexs.length < 2) {
+                    lastHexKingdomHexs = hex.kingdom.hexs;
+
                     hex.kingdom.hexs.forEach(hex => hex.kingdom = null);
                     hex.kingdom.hexs = [];
                     this.world.removeKingdom(hex.kingdom);
@@ -314,6 +317,17 @@ export default class Arbiter {
                     this.currentKingdom.removeHex(hex);
                     hex.player = lastHexPlayer;
                     hex.kingdom = lastHexKingdom;
+
+                    if (hex.kingdom) {
+                        hex.kingdom.hexs.push(hex);
+
+                        // Restore kingdom if it remains only one hex
+                        if (hex.kingdom.hexs.length < 2) {
+                            this.world.kingdoms.push(hex.kingdom);
+                            hex.kingdom.hexs = lastHexKingdomHexs;
+                            hex.kingdom.hexs.push(hex);
+                        }
+                    }
 
                     // Put unit back in selection
                     this.selection = this.world.getEntityAt(hex);

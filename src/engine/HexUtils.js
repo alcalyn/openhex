@@ -209,14 +209,19 @@ export default class HexUtils extends HexUtilsBase {
             undoCallbacks.push(() => {
                 splittedKingdom.hexs.forEach(hex => {
                     hex.kingdom = kingdom;
-                    kingdom.hexs.push(hex);
                 });
             });
         });
 
         // Truncate cut hexs from main kingdom (if the main kingdom has not been slashed)
         if (subKingdoms.length > 0) {
-            kingdom.hexs = kingdom.hexs.filter(hex => -1 !== subKingdoms[0].indexOf(hex));
+            const truncatedHexs = kingdom.hexs.filter(hex => !subKingdoms[0].includes(hex));
+
+            kingdom.hexs = kingdom.hexs.filter(hex => !truncatedHexs.includes(hex));
+
+            undoCallbacks.push(() => {
+                truncatedHexs.forEach(truncatedHex => kingdom.hexs.push(truncatedHex));
+            });
         } else {
             world.removeKingdom(kingdom);
 
