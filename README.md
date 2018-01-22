@@ -1,15 +1,15 @@
-# OpenSlay
+# OpenHex
 
 HTML5 game inspired by Slay.
 
-Demo here: https://alcalyn.github.io/openslay/
+Demo here: https://alcalyn.github.io/openhex/
 
 
 ## Install
 
 ``` bash
-git clone git@github.com:alcalyn/openslay.git
-cd openslay/
+git clone git@github.com:alcalyn/openhex.git
+cd openhex/
 
 npm install
 npm start

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Hexagon } from 'react-hexgrid';
 import Themes from '../themes';
 
-export default class SlayHex extends Component {
+export default class HexCell extends Component {
     onClick(e) {
         if (this.props.onClick) {
             this.props.onClick(e, this);

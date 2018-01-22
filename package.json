@@ -1,6 +1,6 @@
 {
-  "name": "openslay",
-  "homepage": "http://alcalyn.github.io/openslay",
+  "name": "openhex",
+  "homepage": "http://alcalyn.github.io/openhex",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

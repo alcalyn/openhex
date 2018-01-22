@@ -1,11 +1,11 @@
 import KingdomMenu from './KingdomMenu';
 import Selection from './Selection';
-import SlayHex from './SlayHex';
+import HexCell from './HexCell';
 import TurnMenu from './TurnMenu';
 
 export {
     KingdomMenu,
     Selection,
-    SlayHex,
+    HexCell,
     TurnMenu,
 };

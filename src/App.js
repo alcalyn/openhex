@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { HexGrid, Layout } from 'react-hexgrid';
 import { WorldGenerator, Hex, Unit, Arbiter } from './engine';
-import { KingdomMenu, Selection, SlayHex, TurnMenu } from './components';
+import { KingdomMenu, Selection, HexCell, TurnMenu } from './components';
 import './App.css';
 
 class App extends Component {
@@ -90,7 +90,7 @@ class App extends Component {
                 <div id="grid">
                     <HexGrid id="grid" width={'100%'} height={'100%'} viewBox={viewBox}>
                         <Layout size={{ x: 2, y: 2 }} spacing={1.06}>
-                            { world.hexs.map((hex, i) => <SlayHex
+                            { world.hexs.map((hex, i) => <HexCell
                                 key={i}
                                 hex={hex}
                                 highlight={null !== hex.kingdom && hex.kingdom === this.state.currentKingdom}
