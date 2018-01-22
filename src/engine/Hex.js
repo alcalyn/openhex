@@ -1,5 +1,6 @@
 import { Hex as HexBase } from 'react-hexgrid';
 import Unit from './Unit';
+import Tower from './Tower';
 import Died from './Died';
 import Tree from './Tree';
 
@@ -18,6 +19,10 @@ export default class Hex extends HexBase {
 
     hasUnit() {
         return this.entity instanceof Unit;
+    }
+
+    hasTower() {
+        return this.entity instanceof Tower;
     }
 
     hasTree() {

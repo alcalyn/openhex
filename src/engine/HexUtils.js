@@ -281,7 +281,7 @@ export default class HexUtils extends HexUtilsBase {
      * @param {Hex} hex
      * @param {integer} level Optional, Level of unit who want to capture hex
      *
-     * @returns {Unit[]} Protecting units, from the strongest to the weakest.
+     * @returns {Entity[]} Protecting entitise (units or tower), from the strongest to the weakest.
      */
     static getProtectingUnits(world, hex, level) {
         const protectingUnits = [];
@@ -289,7 +289,7 @@ export default class HexUtils extends HexUtilsBase {
         this.neighboursHexsSamePlayer(world, hex)
             .concat([hex])
             .forEach(hex => {
-                if (hex.hasUnit()) {
+                if (hex.hasUnit() || hex.hasTower()) {
                     protectingUnits.push(hex.entity);
                 }
             })

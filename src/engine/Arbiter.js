@@ -1,5 +1,6 @@
 import UndoManager from 'undo-manager';
 import Unit from './Unit';
+import Tower from './Tower';
 import HexUtils from './HexUtils';
 import Died from './Died';
 
@@ -82,8 +83,14 @@ export default class Arbiter {
     }
 
     placeAt(hexCoords) {
+        const hex = this.world.getHexAt(hexCoords);
+
         if (this.selection instanceof Unit) {
-            this._placeUnitAt(hexCoords);
+            this._placeUnitAt(hex);
+        }
+
+        if (this.selection instanceof Tower) {
+            this._placeTowerAt(hex);
         }
     }
 
@@ -116,6 +123,29 @@ export default class Arbiter {
             },
             redo: () => {
                 this.buyUnit();
+            },
+        });
+    }
+
+    buyTower() {
+        if (this.currentKingdom.money < Arbiter.TOWER_PRICE) {
+            throw new Error('Not enough money');
+        }
+
+        if (null !== this.selection) {
+            throw new Error('Cannot buy tower, place selected entity first');
+        }
+
+        this.currentKingdom.money -= Arbiter.TOWER_PRICE;
+        this.selection = new Tower();
+
+        this.undoManager.add({
+            undo: () => {
+                this.currentKingdom.money += Arbiter.TOWER_PRICE;
+                this.selection = null;
+            },
+            redo: () => {
+                this.buyTower();
             },
         });
     }
@@ -259,9 +289,7 @@ export default class Arbiter {
         ;
     }
 
-    _placeUnitAt(hexCoords) {
-        const hex = this.world.getHexAt(hexCoords);
-
+    _placeUnitAt(hex) {
         if (hex.kingdom !== this.currentKingdom) {
             if (!HexUtils.isHexAdjacentKingdom(this.world, hex, this.currentKingdom)) {
                 throw new Error('Cannot capture this hex, too far of kingdom');
@@ -337,10 +365,14 @@ export default class Arbiter {
                     this.world.setEntityAt(hex, lastEntity);
                 },
                 redo: () => {
-                    this._placeUnitAt(hexCoords);
+                    this._placeUnitAt(hex);
                 },
             });
         } else {
+            if (hex.hasTower()) {
+                throw new Error('Cannot place unit, there is a tower here');
+            }
+
             if (hex.hasUnit()) {
                 if ((hex.entity.level + this.selection.level) > Arbiter.UNIT_MAX_LEVEL) {
                     throw new Error('Cannot merge units as the sum of levels is too high');
@@ -357,7 +389,7 @@ export default class Arbiter {
                         hex.entity.level -= this.selection.level;
                     },
                     redo: () => {
-                        this._placeUnitAt(hexCoords);
+                        this._placeUnitAt(hex);
                     },
                 });
             } else {
@@ -374,11 +406,34 @@ export default class Arbiter {
                         this.world.setEntityAt(hex, null);
                     },
                     redo: () => {
-                        this._placeUnitAt(hexCoords);
+                        this._placeUnitAt(hex);
                     },
                 });
             }
         }
+    }
+
+    _placeTowerAt(hex) {
+        if (hex.kingdom !== this.currentKingdom) {
+            throw new Error('Must place tower inside current kingdom');
+        }
+
+        if (hex.entity !== null) {
+            throw new Error('Must place tower on empty hex');
+        }
+
+        hex.entity = this.selection;
+        this.selection = null;
+
+        this.undoManager.add({
+            undo: () => {
+                this.selection = hex.entity;
+                hex.entity = null;
+            },
+            redo: () => {
+                this._placeTowerAt(hex);
+            },
+        });
     }
 
     _checkPlayerSelected() {
