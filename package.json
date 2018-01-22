@@ -16,6 +16,7 @@
     "build": "react-scripts build",
     "test": "mocha --recursive --require babel-core/register && CI=false react-scripts test --env=jsdom",
     "test-unit": "mocha --recursive --require babel-core/register",
+    "coverage": "nyc --reporter=text --reporter=html mocha --recursive --require babel-core/register && echo '\n > Check HTML result at ./coverage/index.html\n'",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "eject": "react-scripts eject"
@@ -26,6 +27,7 @@
     "babel-preset-stage-0": "^6.24.1",
     "chai": "^4.1.2",
     "gh-pages": "^1.1.0",
-    "mocha": "^4.1.0"
+    "mocha": "^4.1.0",
+    "nyc": "^11.4.1"
   }
 }
