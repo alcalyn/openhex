@@ -3,9 +3,12 @@ html, body, #root, .App {
 }
 #grid {
     height: 100%;
+    position: relative;
+    z-index: 5;
 }
 #selection, #kingdom-menu, #turn-menu {
     position: fixed;
+    z-index: 10;
 }
 #selection {
     right: 50%;

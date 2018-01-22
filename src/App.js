@@ -1,3 +1,4 @@
+import {ReactSVGPanZoom} from 'react-svg-pan-zoom';
 import React, { Component } from 'react';
 import { HexGrid, Layout } from 'react-hexgrid';
 import { WorldGenerator, Hex, Unit, Arbiter } from './engine';
@@ -88,17 +89,27 @@ class App extends Component {
                     />
                 </div>
                 <div id="grid">
-                    <HexGrid id="grid" width={'100%'} height={'100%'} viewBox={viewBox}>
-                        <Layout size={{ x: 2, y: 2 }} spacing={1.06}>
-                            { world.hexs.map((hex, i) => <HexCell
-                                key={i}
-                                hex={hex}
-                                highlight={null !== hex.kingdom && hex.kingdom === this.state.currentKingdom}
-                                unitHasMove={this.hexUnitHasMove(hex)}
-                                onClick={() => { this.clickHex(hex); }}
-                            />) }
-                        </Layout>
-                    </HexGrid>
+                    <ReactSVGPanZoom
+                        width={'100%'} height={'100%'}
+                        tool={'auto'}
+                        SVGBackground={'rgba(0, 0, 0, 0)'}
+                        background={'rgba(0, 0, 0, 0)'}
+                        toolbarPosition={'none'}
+                        miniaturePosition={'none'}
+                        disableDoubleClickZoomWithToolAuto={true}
+                    >
+                        <HexGrid id="grid" width={100} height={100} viewBox={viewBox}>
+                            <Layout size={{ x: 2, y: 2 }} spacing={1.06}>
+                                { world.hexs.map((hex, i) => <HexCell
+                                    key={i}
+                                    hex={hex}
+                                    highlight={null !== hex.kingdom && hex.kingdom === this.state.currentKingdom}
+                                    unitHasMove={this.hexUnitHasMove(hex)}
+                                    onClick={() => { this.clickHex(hex); }}
+                                />) }
+                            </Layout>
+                        </HexGrid>
+                    </ReactSVGPanZoom>
                 </div>
             </div>
         );
