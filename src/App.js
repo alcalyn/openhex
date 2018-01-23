@@ -1,3 +1,4 @@
+import { AutoSizer } from 'react-virtualized';
 import {ReactSVGPanZoom} from 'react-svg-pan-zoom';
 import React, { Component } from 'react';
 import { HexGrid, Layout } from 'react-hexgrid';
@@ -61,16 +62,18 @@ class App extends Component {
         });
     }
 
+    initView(viewer) {
+        if (!this.viewInitialized && viewer) {
+            this.viewInitialized = true;
+
+            viewer.setPointOnViewerCenter(0, 0, 1);
+        }
+    }
+
     render() {
         const { world, selection } = this.state;
 
-        const viewBoxSize = 64;
-        const viewBox = [
-            -viewBoxSize / 2,
-            -viewBoxSize / 2,
-            viewBoxSize,
-            viewBoxSize
-        ].join(' ');
+        this.initView();
 
         return (
             <div className="App">
@@ -89,27 +92,38 @@ class App extends Component {
                     />
                 </div>
                 <div id="grid">
-                    <ReactSVGPanZoom
-                        width={'100%'} height={'100%'}
-                        tool={'auto'}
-                        SVGBackground={'rgba(0, 0, 0, 0)'}
-                        background={'rgba(0, 0, 0, 0)'}
-                        toolbarPosition={'none'}
-                        miniaturePosition={'none'}
-                        disableDoubleClickZoomWithToolAuto={true}
-                    >
-                        <HexGrid id="grid" width={100} height={100} viewBox={viewBox}>
-                            <Layout size={{ x: 2, y: 2 }} spacing={1.06}>
-                                { world.hexs.map((hex, i) => <HexCell
-                                    key={i}
-                                    hex={hex}
-                                    highlight={null !== hex.kingdom && hex.kingdom === this.state.currentKingdom}
-                                    unitHasMove={this.hexUnitHasMove(hex)}
-                                    onClick={() => { this.clickHex(hex); }}
-                                />) }
-                            </Layout>
-                        </HexGrid>
-                    </ReactSVGPanZoom>
+
+                    <AutoSizer>
+                        {(({width, height}) => width === 0 || height === 0 ? null : (
+
+                            <ReactSVGPanZoom
+                                width={width} height={height}
+                                tool={'auto'}
+                                ref={viewer => this.initView(viewer)}
+                                SVGBackground={'rgba(0, 0, 0, 0)'}
+                                background={'rgba(0, 0, 0, 0)'}
+                                toolbarPosition={'none'}
+                                miniaturePosition={'none'}
+                                detectAutoPan={false}
+                                scaleFactorOnWheel={1.15}
+                                disableDoubleClickZoomWithToolAuto={true}
+                            >
+                                <HexGrid id="grid" width={400} height={400}>
+                                    <Layout size={{ x: 20, y: 20 }} spacing={1.06}>
+                                        { world.hexs.map((hex, i) => <HexCell
+                                            key={i}
+                                            hex={hex}
+                                            highlight={null !== hex.kingdom && hex.kingdom === this.state.currentKingdom}
+                                            unitHasMove={this.hexUnitHasMove(hex)}
+                                            onClick={() => { this.clickHex(hex); }}
+                                        />) }
+                                    </Layout>
+                                </HexGrid>
+                            </ReactSVGPanZoom>
+
+                        ))}
+                    </AutoSizer>
+
                 </div>
             </div>
         );
