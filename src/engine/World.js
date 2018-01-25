@@ -46,13 +46,7 @@ export default class World {
     }
 
     setEntityAt(coords, entity) {
-        const hex = this.getHexAt(coords);
-
-        hex.entity = entity;
-
-        if (null !== entity) {
-            entity.hex = hex;
-        }
+        this.getHexAt(coords).setEntity(entity);
     }
 
     removeKingdom(kingdom) {

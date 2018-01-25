@@ -16,6 +16,10 @@ export default class AIPlayer extends Player {
         } catch (e) {
             // If AI try to do an illegal move, just catch it and pass turn
             console.warn('AI illegal move', e);
+
+            if (arbiter.selection) {
+                arbiter.undoAll();
+            }
         }
 
         arbiter.endTurn();

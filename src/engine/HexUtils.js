@@ -2,6 +2,7 @@ import { HexUtils as HexUtilsBase } from 'react-hexgrid';
 import Unit from './Unit';
 import Kingdom from './Kingdom';
 import Tree from './Tree';
+import Capital from './Capital';
 
 export default class HexUtils extends HexUtilsBase {
     static neighboursHexs(world, hex) {
@@ -12,10 +13,18 @@ export default class HexUtils extends HexUtilsBase {
         ;
     }
 
-    static neighboursHexsSamePlayer(world, hex) {
-        return this
+    static neighboursHexsSamePlayer(world, hex, subHexs) {
+        const neighboursHexsSamePlayer = this
             .neighboursHexs(world, hex)
             .filter(neighbourHex => neighbourHex.player === hex.player)
+        ;
+
+        if (undefined === subHexs) {
+            return neighboursHexsSamePlayer;
+        }
+
+        return neighboursHexsSamePlayer
+            .filter(hex => subHexs.includes(hex))
         ;
     }
 
@@ -289,7 +298,7 @@ export default class HexUtils extends HexUtilsBase {
         this.neighboursHexsSamePlayer(world, hex)
             .concat([hex])
             .forEach(hex => {
-                if (hex.hasUnit() || hex.hasTower()) {
+                if (hex.hasUnit() || hex.hasTower() || hex.hasCapital()) {
                     protectingUnits.push(hex.entity);
                 }
             })
@@ -341,5 +350,107 @@ export default class HexUtils extends HexUtilsBase {
         tree.hex = hex;
 
         return tree;
+    }
+
+    /**
+     * Returns sorted hexs that is the most interior in a kingdom.
+     * Used to find the best location for a kingdom capital: far away from frontier.
+     *
+     * @param {World} world
+     * @param {Kingdom} kingdom
+     *
+     * @returns {Hex[]}
+     */
+    static getMostInteriorHexs(world, kingdom) {
+        const mostInteriorHexs = [];
+        let hexs = kingdom.hexs.slice();
+        let lastLength;
+
+        do {
+            lastLength = hexs.length;
+
+            // eslint-disable-next-line no-loop-func
+            hexs.forEach(hex => {
+                hex._neighboursCount = this.neighboursHexsSamePlayer(world, hex, hexs).length;
+            });
+
+            let maxNeighboursCount = hexs.reduce((prev, current) => {
+                return prev._neighboursCount > current._neighboursCount ? prev : current;
+            })._neighboursCount;
+
+            hexs
+                .filter(hex => hex._neighboursCount !== maxNeighboursCount)
+                .forEach(hex => mostInteriorHexs.push(hex))
+            ;
+
+            hexs = hexs.filter(hex => hex._neighboursCount === maxNeighboursCount);
+        } while (hexs.length < lastLength);
+
+        hexs.forEach(hex => mostInteriorHexs.push(hex));
+
+        kingdom.hexs.forEach(hex => {
+            delete hex._neighboursCount;
+        });
+
+        return mostInteriorHexs.reverse();
+    }
+
+    static getMiddleHex(world, kingdom) {
+        return this.getMostInteriorHexs(world, kingdom)[0];
+    }
+
+    /**
+     * @param {World} world
+     * @param {Kingdom} kingdom
+     *
+     * @returns {Hex} hex choosen to build the capital
+     */
+    static createKingdomCapital(world, kingdom) {
+        let capitalHex = null;
+
+        this.getMostInteriorHexs(world, kingdom).some(hex => {
+            if (null === hex.entity) {
+                world.setEntityAt(hex, new Capital());
+                capitalHex = hex;
+                return true;
+            }
+
+            return false;
+        });
+
+        return capitalHex;
+    }
+
+    static kingdomHasCapital(kingdom) {
+        return kingdom.hexs.some(hex => hex.hasCapital());
+    }
+
+    /**
+     * Check all kingdoms that have lost their capital,
+     * then rebuild it, and reset money.
+     *
+     * @param {World} world
+     *
+     * @returns {Callback} Callback to call to undo rebuild
+     */
+    static rebuildKingdomsCapitals(world) {
+        const undoCallbacks = [];
+
+        world.kingdoms.filter(kingdom => kingdom.hexs.length >= 2).forEach(kingdom => {
+            if (!this.kingdomHasCapital(kingdom)) {
+                const capitalHex = this.createKingdomCapital(world, kingdom);
+
+                undoCallbacks.push(() => {
+                    capitalHex.entity = null;
+                });
+            }
+        });
+
+        return () => {
+            undoCallbacks
+                .reverse()
+                .forEach(callback => callback())
+            ;
+        };
     }
 }

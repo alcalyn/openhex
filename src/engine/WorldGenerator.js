@@ -30,6 +30,7 @@ export default class WorldGenerator {
         this.setPlayerColors(players);
         this.setRandomHexColors(world);
         this.initKingdoms(world);
+        this.createCapitals(world);
 
         return world;
     }
@@ -78,6 +79,12 @@ export default class WorldGenerator {
 
             world.kingdoms.push(kingdom);
             hexs.forEach(hex => hex.kingdom = kingdom);
+        });
+    }
+
+    createCapitals(world) {
+        world.kingdoms.forEach(kingdom => {
+            HexUtils.createKingdomCapital(world, kingdom);
         });
     }
 

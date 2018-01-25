@@ -1,11 +1,8 @@
 import { Player, LocalPlayer, Hex, World, WorldGenerator } from '../../src/engine';
 import chai from 'chai';
+import { createTestPlayers } from './TestUtils';
 
 chai.should();
-
-const createTestPlayers = () => {
-    return Array.apply(null, Array(6)).map(p => new Player());
-};
 
 describe('WorldGenerator', function() {
     describe('generate', function() {

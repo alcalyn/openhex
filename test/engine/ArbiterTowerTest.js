@@ -1,12 +1,9 @@
 import chai from 'chai';
 import { Arbiter, Player, Hex, Unit, Tower, Died, Tree, World, WorldGenerator } from '../../src/engine';
+import { createTestPlayers } from './TestUtils';
 
 chai.should();
 const expect = chai.expect;
-
-const createTestPlayers = () => {
-    return Array.apply(null, Array(6)).map(p => new Player());
-};
 
 describe('Arbiter', () => {
     describe('Tower', () => {

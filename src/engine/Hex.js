@@ -3,6 +3,7 @@ import Unit from './Unit';
 import Tower from './Tower';
 import Died from './Died';
 import Tree from './Tree';
+import Capital from './Capital';
 
 export default class Hex extends HexBase {
     constructor(q, r, s) {
@@ -15,6 +16,14 @@ export default class Hex extends HexBase {
 
     static fromBaseHex(baseHex) {
         return new Hex(baseHex.q, baseHex.r, baseHex.s);
+    }
+
+    setEntity(entity) {
+        this.entity = entity;
+
+        if (null !== entity) {
+            entity.hex = this;
+        }
     }
 
     hasUnit() {
@@ -31,6 +40,10 @@ export default class Hex extends HexBase {
 
     hasDied() {
         return this.entity instanceof Died;
+    }
+
+    hasCapital() {
+        return this.entity instanceof Capital;
     }
 
     getUnit() {

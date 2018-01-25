@@ -1,12 +1,9 @@
 import chai from 'chai';
 import { Arbiter, Player, Hex, Unit, Died, Tree, World, WorldGenerator } from '../../src/engine';
+import { createTestPlayers } from './TestUtils';
 
 chai.should();
 const expect = chai.expect;
-
-const createTestPlayers = () => {
-    return Array.apply(null, Array(6)).map(p => new Player());
-};
 
 describe('Arbiter', () => {
     describe('takeUnitAt', () => {
@@ -54,24 +51,22 @@ describe('Arbiter', () => {
             arbiter.selection = new Unit();
 
             arbiter.selection.should.be.an.instanceOf(Unit);
-            expect(world.getEntityAt(new Hex(-3, 0, 3))).to.be.null;
+            expect(world.getEntityAt(new Hex(-2, 0, 2))).to.be.null;
 
-            arbiter.placeAt(new Hex(-3, 0, 3));
+            arbiter.placeAt(new Hex(-2, 0, 2));
 
             expect(arbiter.selection).to.be.null;
-            world.getEntityAt(new Hex(-3, 0, 3)).should.be.an.instanceOf(Unit);
+            world.getEntityAt(new Hex(-2, 0, 2)).should.be.an.instanceOf(Unit);
         });
 
         it('can no longer move when upgrading an unit that already played a move', () => {
             const worldGenerator = new WorldGenerator('constant-seed-2');
             const world = worldGenerator.generate(createTestPlayers());
 
-            const unitMove = new Unit();
-            const unitCannotMove = new Unit();
+            const unitMove = new Unit(1);
+            const unitCannotMove = new Unit(1);
             unitMove.played = false;
-            unitMove.level = 1;
             unitCannotMove.played = true;
-            unitCannotMove.level = 1;
 
             const arbiter = new Arbiter(world);
             const kingdom = world.getKingdomAt(new Hex(2, -3, 1));
@@ -187,25 +182,25 @@ describe('Arbiter', () => {
         });
 
         it('can capture a hex from an opponent kingdom', () => {
-            const worldGenerator = new WorldGenerator('constant-seed-2');
+            const worldGenerator = new WorldGenerator('constant-seed-5');
             const world = worldGenerator.generate(createTestPlayers());
 
             const arbiter = new Arbiter(world);
-            const kingdom = world.getKingdomAt(new Hex(2, -3, 1));
-            const opponentKingdom = world.getKingdomAt(new Hex(2, -2, 0));
+            const kingdom = world.getKingdomAt(new Hex(3, -1, -2));
+            const opponentKingdom = world.getKingdomAt(new Hex(-1, 0, 1));
             arbiter.setCurrentPlayer(kingdom.player);
             arbiter.setCurrentKingdom(kingdom);
             arbiter.selection = new Unit();
 
             expect(world.getKingdomAt(new Hex(2, -2, 0))).to.be.equal(opponentKingdom);
             kingdom.hexs.should.have.lengthOf(5);
-            opponentKingdom.hexs.should.have.lengthOf(3);
+            opponentKingdom.hexs.should.have.lengthOf(9);
 
             arbiter.placeAt(new Hex(2, -2, 0));
 
             expect(world.getKingdomAt(new Hex(2, -2, 0))).to.be.equal(kingdom);
             kingdom.hexs.should.have.lengthOf(6);
-            opponentKingdom.hexs.should.have.lengthOf(2);
+            opponentKingdom.hexs.should.have.lengthOf(8);
         });
 
         it('Cannot capture a hex protected by opponent', () => {
@@ -285,7 +280,7 @@ describe('Arbiter', () => {
             const opponentKingdom = world.getKingdomAt(new Hex(-4, 1, 3));
             arbiter.setCurrentPlayer(kingdom.player);
             arbiter.setCurrentKingdom(kingdom);
-            arbiter.selection = new Unit();
+            arbiter.selection = new Unit(3);
 
             arbiter.placeAt(new Hex(-4, 2, 2));
 
@@ -294,7 +289,7 @@ describe('Arbiter', () => {
             expect(world.getKingdomAt(new Hex(-4, 2, 2))).to.be.equal(kingdom);
         });
 
-        it('kill opponent kingdom if I only one hex left', () => {
+        it('kill opponent 2-hex kingdom if I capture one of them', () => {
             const worldGenerator = new WorldGenerator('constant-seed-5');
             const world = worldGenerator.generate(createTestPlayers());
 
@@ -303,7 +298,7 @@ describe('Arbiter', () => {
             const opponentKingdom = world.getKingdomAt(new Hex(-2, 3, -1));
             arbiter.setCurrentPlayer(kingdom.player);
             arbiter.setCurrentKingdom(kingdom);
-            arbiter.selection = new Unit();
+            arbiter.selection = new Unit(3);
 
             expect(world.getKingdomAt(new Hex(-2, 3, -1))).to.be.equal(opponentKingdom);
             expect(world.getKingdomAt(new Hex(-1, 2, -1))).to.be.equal(opponentKingdom);
@@ -398,8 +393,7 @@ describe('Arbiter', () => {
             arbiter.setCurrentPlayer(kingdom.player);
             arbiter.setCurrentKingdom(kingdom);
 
-            arbiter.selection = new Unit();
-            arbiter.selection.level = Arbiter.UNIT_MAX_LEVEL;
+            arbiter.selection = new Unit(Arbiter.UNIT_MAX_LEVEL);
 
             expect(() => arbiter.buyUnit()).to.throw(/already max level/);
         });
@@ -418,10 +412,10 @@ describe('Arbiter', () => {
             arbiter.buyUnit();
             arbiter.buyUnit();
 
-            arbiter.placeAt(new Hex(-3, 0, 3));
+            arbiter.placeAt(new Hex(-3, 1, 2));
 
-            world.getEntityAt(new Hex(-3, 0, 3)).should.be.an.instanceOf(Unit);
-            world.getEntityAt(new Hex(-3, 0, 3)).should.have.property('level', 2);
+            world.getEntityAt(new Hex(-3, 1, 2)).should.be.an.instanceOf(Unit);
+            world.getEntityAt(new Hex(-3, 1, 2)).should.have.property('level', 2);
             kingdom.should.have.property('money', 5);
             expect(arbiter.selection).to.be.null;
         });
@@ -453,8 +447,7 @@ describe('Arbiter', () => {
             const worldGenerator = new WorldGenerator('constant-seed-2');
             const world = worldGenerator.generate(createTestPlayers());
 
-            const level1Unit = new Unit();
-            level1Unit.level = 1;
+            const level1Unit = new Unit(1);
 
             world.setEntityAt(new Hex(-3, 0, 3), level1Unit);
 
@@ -547,7 +540,7 @@ describe('Arbiter', () => {
             const kingdom = world.getKingdomAt(new Hex(2, -3, 1));
             arbiter.setCurrentPlayer(kingdom.player);
             arbiter.setCurrentKingdom(kingdom);
-            arbiter.selection = new Unit();
+            arbiter.selection = new Unit(3);
 
             expect(world.getKingdomAt(new Hex(2, -2, 0))).to.not.be.null;
             expect(world.getKingdomAt(new Hex(2, -2, 0))).to.not.be.equal(kingdom);
@@ -630,8 +623,7 @@ describe('Arbiter', () => {
             arbiter.setCurrentPlayer(kingdom.player);
             arbiter.setCurrentKingdom(kingdom);
 
-            arbiter.selection = new Unit();
-            arbiter.selection.level = 1;
+            arbiter.selection = new Unit(1);
             kingdom.money = 15;
 
             arbiter.buyUnit();
@@ -698,64 +690,4 @@ describe('Arbiter', () => {
             kingdom.money.should.be.equal(42);
         });
     });
-
-    /*
-    describe('all', function() {
-        it('all', function() {
-            const me = new LocalPlayer();
-
-            const players = [
-                me,
-                new AIPlayer(),
-                new AIPlayer(),
-                new AIPlayer(),
-                new AIPlayer(),
-                new AIPlayer(),
-            ];
-
-            const world = new World(players);
-            const arbiter = new Arbiter(world);
-
-            const myKingdoms = world.getPlayerKingdoms(me);
-
-            arbiter.setCurrentPlayer(me);
-            arbiter.setCurrentKingdom(myKingdoms[0]);
-
-            // Move unit
-            arbiter.takeUnitAt(new Hex(0, 2, 5));
-            arbiter.placeAt(new Hex(0, 2, 6));
-
-            // Buy and place unit
-            arbiter.buyUnit();
-            arbiter.placeAt(new Hex(0, 2, 6));
-
-            // Buy and place tower
-            arbiter.buyTower();
-            arbiter.placeAt(new Hex(0, 2, 6));
-
-            // Buy and place level 2 unit
-            arbiter.buyUnit();
-            arbiter.buyUnit();
-            arbiter.placeAt(new Hex(0, 2, 6));
-
-            // Upgrade and move unit
-            arbiter.takeUnitAt(new Hex(0, 2, 5));
-            arbiter.buyUnit();
-            arbiter.placeAt(new Hex(0, 2, 6));
-
-            // Get current selection
-            arbiter.buyUnit();
-            arbiter.getSelection();
-
-            // Undo last action
-            arbiter.undo();
-
-            // Undo whole current turn
-            arbiter.undoCurrentTurn();
-
-            // Finish current turn
-            arbiter.validateTurn();
-        });
-    });
-    */
 });

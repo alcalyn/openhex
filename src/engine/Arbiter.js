@@ -307,7 +307,14 @@ export default class Arbiter {
             const lastEntity = this.world.getEntityAt(hex);
             const lastHexKingdom = hex.kingdom;
             const lastHexPlayer = hex.player;
+            let lastHexKingdomMoney = null;
             let lastHexKingdomHexs = false;
+            let lastHexLastEntity = null;
+
+            if (lastHexKingdom && hex.hasCapital()) {
+                lastHexKingdomMoney = hex.kingdom.money;
+                hex.kingdom.money = 0;
+            }
 
             // Place unit from selection to hex
             this.world.setEntityAt(hex, this.selection);
@@ -320,9 +327,11 @@ export default class Arbiter {
 
                 // Delete kingdom if it remains only one hex
                 if (hex.kingdom.hexs.length < 2) {
+                    lastHexLastEntity = hex.kingdom.hexs[0].entity;
                     lastHexKingdomHexs = hex.kingdom.hexs;
 
-                    hex.kingdom.hexs.forEach(hex => hex.kingdom = null);
+                    hex.kingdom.hexs[0].kingdom = null;
+                    hex.kingdom.hexs[0].setEntity(HexUtils.createTreeForHex(this.world, hex));
                     hex.kingdom.hexs = [];
                     this.world.removeKingdom(hex.kingdom);
                 }
@@ -336,8 +345,11 @@ export default class Arbiter {
             const unmergeKingdoms = HexUtils.mergeKingdomsOnCapture(this.world, hex);
             const unsplitKingdoms = HexUtils.splitKingdomsOnCapture(this.world, hex);
 
+            const undoRebuildCapitals = HexUtils.rebuildKingdomsCapitals(this.world);
+
             this.undoManager.add({
                 undo: () => {
+                    undoRebuildCapitals();
                     unsplitKingdoms();
                     unmergeKingdoms();
 
@@ -353,6 +365,7 @@ export default class Arbiter {
                         if (hex.kingdom.hexs.length < 2) {
                             this.world.kingdoms.push(hex.kingdom);
                             hex.kingdom.hexs = lastHexKingdomHexs;
+                            lastHexKingdomHexs[0].setEntity(lastHexLastEntity);
                             hex.kingdom.hexs.push(hex);
                         }
                     }
@@ -363,6 +376,10 @@ export default class Arbiter {
 
                     // Restore last entity in captured hex
                     this.world.setEntityAt(hex, lastEntity);
+
+                    if (hex.kingdom && hex.hasCapital()) {
+                        hex.kingdom.money = lastHexKingdomMoney;
+                    }
                 },
                 redo: () => {
                     this._placeUnitAt(hex);
@@ -371,6 +388,10 @@ export default class Arbiter {
         } else {
             if (hex.hasTower()) {
                 throw new Error('Cannot place unit, there is a tower here');
+            }
+
+            if (hex.hasCapital()) {
+                throw new Error('Cannot place unit, there is the kingdom capital here');
             }
 
             if (hex.hasUnit()) {
