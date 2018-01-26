@@ -160,25 +160,32 @@ describe('Arbiter', () => {
             kingdom.hexs.should.have.lengthOf(7);
         });
 
-        it('can merge two kingdoms to a single one', () => {
+        it('can merge two kingdoms to a single one, with money of these two kingdoms', () => {
             const worldGenerator = new WorldGenerator('constant-seed-2');
             const world = worldGenerator.generate(createTestPlayers());
 
             const arbiter = new Arbiter(world);
-            const kingdom = world.getKingdomAt(new Hex(2, -2, 0));
-            arbiter.setCurrentPlayer(kingdom.player);
-            arbiter.setCurrentKingdom(kingdom);
+
+            const hexInKingdom = world.getHexAt(new Hex(2, -2, 0));
+            const hexInOtherKingdom = world.getHexAt(new Hex(3, -1, -2));
+
+            const kingdomMoney = hexInKingdom.kingdom.money;
+            const otherKingdomMoney = hexInOtherKingdom.kingdom.money;
+
+            arbiter.setCurrentPlayer(hexInKingdom.player);
+            arbiter.setCurrentKingdom(hexInKingdom.kingdom);
             arbiter.selection = new Unit();
 
             expect(world.getKingdomAt(new Hex(2, -1, -1))).to.be.null;
-            world.getKingdomAt(new Hex(3, -1, -2)).should.not.be.equal(kingdom);
-            kingdom.hexs.should.have.lengthOf(3);
+            hexInKingdom.kingdom.should.not.be.equal(hexInOtherKingdom.kingdom);
+            hexInKingdom.kingdom.hexs.should.have.lengthOf(3);
 
             arbiter.placeAt(new Hex(2, -1, -1));
 
-            expect(world.getKingdomAt(new Hex(2, -1, -1))).to.be.equal(kingdom);
-            world.getKingdomAt(new Hex(3, -1, -2)).should.be.equal(kingdom);
-            kingdom.hexs.should.have.lengthOf(6);
+            expect(world.getKingdomAt(new Hex(2, -1, -1))).to.be.equal(hexInKingdom.kingdom);
+            hexInKingdom.kingdom.should.be.equal(hexInOtherKingdom.kingdom);
+            hexInKingdom.kingdom.hexs.should.have.lengthOf(6);
+            hexInKingdom.kingdom.money.should.be.equal(kingdomMoney + otherKingdomMoney);
         });
 
         it('can capture a hex from an opponent kingdom', () => {
@@ -591,103 +598,6 @@ describe('Arbiter', () => {
             }
 
             expect(world.getEntityAt(new Hex(2, -1, -1))).to.be.an.instanceOf(Tree);
-        });
-    });
-
-    describe('undo', () => {
-        it('undo unit buy when selection is empty', () => {
-            const worldGenerator = new WorldGenerator('constant-seed-5');
-            const world = worldGenerator.generate(createTestPlayers());
-
-            const arbiter = new Arbiter(world);
-            const kingdom = world.getKingdomAt(new Hex(2, -1, -1));
-            arbiter.setCurrentPlayer(kingdom.player);
-            arbiter.setCurrentKingdom(kingdom);
-
-            arbiter.selection = null;
-            kingdom.money = 15;
-
-            arbiter.buyUnit();
-            arbiter.undo();
-
-            expect(arbiter.selection).to.be.null;
-            kingdom.money.should.be.equal(15);
-        });
-
-        it('undo unit buy/upgrade', () => {
-            const worldGenerator = new WorldGenerator('constant-seed-5');
-            const world = worldGenerator.generate(createTestPlayers());
-
-            const arbiter = new Arbiter(world);
-            const kingdom = world.getKingdomAt(new Hex(2, -1, -1));
-            arbiter.setCurrentPlayer(kingdom.player);
-            arbiter.setCurrentKingdom(kingdom);
-
-            arbiter.selection = new Unit(1);
-            kingdom.money = 15;
-
-            arbiter.buyUnit();
-            arbiter.undo();
-
-            expect(arbiter.selection).to.be.an.instanceOf(Unit);
-            arbiter.selection.level.should.be.equal(1);
-            kingdom.money.should.equal(15);
-        });
-
-        it('undo takeUnit', () => {
-            const worldGenerator = new WorldGenerator('constant-seed-5');
-            const world = worldGenerator.generate(createTestPlayers());
-
-            const arbiter = new Arbiter(world);
-            const kingdom = world.getKingdomAt(new Hex(2, -1, -1));
-            arbiter.setCurrentPlayer(kingdom.player);
-            arbiter.setCurrentKingdom(kingdom);
-            world.setEntityAt(new Hex(2, -1, -1), new Unit());
-
-            arbiter.takeUnitAt(new Hex(2, -1, -1));
-            arbiter.undo();
-
-            expect(arbiter.selection).to.be.null;
-            expect(world.getEntityAt(new Hex(2, -1, -1))).to.be.an.instanceOf(Unit);
-        });
-
-        it('undo placeAt when placed in own kingdom', () => {
-            const worldGenerator = new WorldGenerator('constant-seed-5');
-            const world = worldGenerator.generate(createTestPlayers());
-
-            const arbiter = new Arbiter(world);
-            const kingdom = world.getKingdomAt(new Hex(2, -1, -1));
-            arbiter.setCurrentPlayer(kingdom.player);
-            arbiter.setCurrentKingdom(kingdom);
-            arbiter.selection = new Unit();
-
-            arbiter.placeAt(new Hex(2, -1, -1));
-            arbiter.undo();
-
-            expect(arbiter.selection).to.be.an.instanceOf(Unit);
-            expect(world.getEntityAt(new Hex(2, -1, -1))).to.be.null;
-        });
-    });
-
-    describe('undoAll', () => {
-        it('undo double unit buy when selection is empty', () => {
-            const worldGenerator = new WorldGenerator('constant-seed-5');
-            const world = worldGenerator.generate(createTestPlayers());
-
-            const arbiter = new Arbiter(world);
-            const kingdom = world.getKingdomAt(new Hex(2, -1, -1));
-            arbiter.setCurrentPlayer(kingdom.player);
-            arbiter.setCurrentKingdom(kingdom);
-
-            arbiter.selection = null;
-            kingdom.money = 42;
-
-            arbiter.buyUnit();
-            arbiter.buyUnit();
-            arbiter.undoAll();
-
-            expect(arbiter.selection).to.be.null;
-            kingdom.money.should.be.equal(42);
         });
     });
 });

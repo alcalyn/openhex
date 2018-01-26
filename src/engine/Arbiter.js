@@ -3,6 +3,7 @@ import Unit from './Unit';
 import Tower from './Tower';
 import HexUtils from './HexUtils';
 import Died from './Died';
+import Capital from './Capital';
 
 export default class Arbiter {
     static UNIT_PRICE = 10;
@@ -291,146 +292,165 @@ export default class Arbiter {
 
     _placeUnitAt(hex) {
         if (hex.kingdom !== this.currentKingdom) {
-            if (!HexUtils.isHexAdjacentKingdom(this.world, hex, this.currentKingdom)) {
-                throw new Error('Cannot capture this hex, too far of kingdom');
-            }
+            this._placeUnitCapture(hex);
+        } else {
+            this._placeUnitInsideKingdom(hex);
+        }
+    }
 
-            const protectingUnits = HexUtils
-                .getProtectingUnits(this.world, hex, this.selection.level)
-            ;
+    _placeUnitCapture(hex) {
+        const undoCallbacks = [];
 
-            if (protectingUnits.length > 0) {
-                console.warn(protectingUnits);
-                throw new Error('Cannot capture this hex, units protecting it');
-            }
+        if (!HexUtils.isHexAdjacentKingdom(this.world, hex, this.currentKingdom)) {
+            throw new Error('Cannot capture this hex, too far of kingdom');
+        }
 
-            const lastEntity = this.world.getEntityAt(hex);
-            const lastHexKingdom = hex.kingdom;
-            const lastHexPlayer = hex.player;
-            let lastHexKingdomMoney = null;
-            let lastHexKingdomHexs = false;
-            let lastHexLastEntity = null;
+        const protectingUnits = HexUtils
+            .getProtectingUnits(this.world, hex, this.selection.level)
+        ;
 
-            if (lastHexKingdom && hex.hasCapital()) {
-                lastHexKingdomMoney = hex.kingdom.money;
-                hex.kingdom.money = 0;
-            }
+        if (protectingUnits.length > 0) {
+            console.warn(protectingUnits);
+            throw new Error('Cannot capture this hex, units protecting it');
+        }
 
-            // Place unit from selection to hex
-            this.world.setEntityAt(hex, this.selection);
-            this.selection.played = true;
-            this.selection = null;
+        const lastHexEntity = hex.entity;
+        const lastHexKingdom = hex.kingdom;
+        const lastHexPlayer = hex.player;
 
-            // Take hex from opponent kingdom to ours
-            if (hex.kingdom) {
-                hex.kingdom.removeHex(hex);
+        if (hex.hasCapital()) {
+            const lastHexKingdomMoney = hex.kingdom.money;
+            hex.kingdom.money = 0;
 
-                // Delete kingdom if it remains only one hex
-                if (hex.kingdom.hexs.length < 2) {
-                    lastHexLastEntity = hex.kingdom.hexs[0].entity;
-                    lastHexKingdomHexs = hex.kingdom.hexs;
+            undoCallbacks.push(() => {
+                hex.kingdom.money = lastHexKingdomMoney;
+            });
+        }
 
-                    hex.kingdom.hexs[0].kingdom = null;
+        // Place unit from selection to hex
+        hex.setEntity(this.selection);
+        this.selection.played = true;
+        this.selection = null;
+
+        undoCallbacks.push(() => {
+            this.selection = hex.entity;
+            this.selection.played = false;
+            hex.setEntity(lastHexEntity);
+        });
+
+        // Take hex from opponent kingdom to ours
+        if (hex.kingdom) {
+            hex.kingdom.removeHex(hex);
+
+            undoCallbacks.push(() => {
+                hex.kingdom.hexs.push(hex);
+            });
+
+            // Delete kingdom if it remains only one hex
+            if (hex.kingdom.hexs.length < 2) {
+                const lastKingdom = hex.kingdom;
+                const lastKingdomEntity = hex.kingdom.hexs[0].entity;
+                const lastKingdomHexs = hex.kingdom.hexs;
+
+                hex.kingdom.hexs[0].kingdom = null;
+
+                undoCallbacks.push(() => {
+                    hex.kingdom.hexs[0].kingdom = lastKingdom;
+                });
+
+                if (lastKingdomEntity instanceof Capital) {
                     hex.kingdom.hexs[0].setEntity(HexUtils.createTreeForHex(this.world, hex));
-                    hex.kingdom.hexs = [];
-                    this.world.removeKingdom(hex.kingdom);
+
+                    undoCallbacks.push(() => {
+                        hex.kingdom.hexs[0].setEntity(lastKingdomEntity);
+                    });
                 }
+
+                hex.kingdom.hexs = [];
+                this.world.removeKingdom(hex.kingdom);
+
+                undoCallbacks.push(() => {
+                    this.world.kingdoms.push(hex.kingdom);
+                    hex.kingdom.hexs = lastKingdomHexs;
+                    hex.kingdom.hexs.push(hex);
+                });
+            }
+        }
+
+        // Move hex from opponent kingdom to capturing kingdom
+        hex.kingdom = this.currentKingdom;
+        hex.player = this.currentKingdom.player;
+        this.currentKingdom.hexs.push(hex);
+
+        undoCallbacks.push(() => {
+            this.currentKingdom.removeHex(hex);
+            hex.player = lastHexPlayer;
+            hex.kingdom = lastHexKingdom;
+        });
+
+        undoCallbacks.push(HexUtils.mergeKingdomsOnCapture(this.world, hex));
+        undoCallbacks.push(HexUtils.splitKingdomsOnCapture(this.world, hex));
+
+        undoCallbacks.push(HexUtils.rebuildKingdomsCapitals(this.world));
+
+        this.undoManager.add({
+            undo: () => {
+                undoCallbacks
+                    .reverse()
+                    .forEach(undoCallback => undoCallback())
+                ;
+            },
+            redo: () => {
+                this._placeUnitAt(hex);
+            },
+        });
+    }
+
+    _placeUnitInsideKingdom(hex) {
+        if (hex.hasTower()) {
+            throw new Error('Cannot place unit, there is a tower here');
+        }
+
+        if (hex.hasCapital()) {
+            throw new Error('Cannot place unit, there is the kingdom capital here');
+        }
+
+        if (hex.hasUnit()) {
+            if ((hex.entity.level + this.selection.level) > Arbiter.UNIT_MAX_LEVEL) {
+                throw new Error('Cannot merge units as the sum of levels is too high');
             }
 
-            // Move hex from opponent kingdom to capturing kingdom
-            hex.kingdom = this.currentKingdom;
-            hex.player = this.currentKingdom.player;
-            this.currentKingdom.hexs.push(hex);
+            const lastSelection = this.selection;
 
-            const unmergeKingdoms = HexUtils.mergeKingdomsOnCapture(this.world, hex);
-            const unsplitKingdoms = HexUtils.splitKingdomsOnCapture(this.world, hex);
-
-            const undoRebuildCapitals = HexUtils.rebuildKingdomsCapitals(this.world);
+            hex.entity.level += this.selection.level;
+            this.selection = null;
 
             this.undoManager.add({
                 undo: () => {
-                    undoRebuildCapitals();
-                    unsplitKingdoms();
-                    unmergeKingdoms();
-
-                    // Undo hex capture
-                    this.currentKingdom.removeHex(hex);
-                    hex.player = lastHexPlayer;
-                    hex.kingdom = lastHexKingdom;
-
-                    if (hex.kingdom) {
-                        hex.kingdom.hexs.push(hex);
-
-                        // Restore kingdom if it remains only one hex
-                        if (hex.kingdom.hexs.length < 2) {
-                            this.world.kingdoms.push(hex.kingdom);
-                            hex.kingdom.hexs = lastHexKingdomHexs;
-                            lastHexKingdomHexs[0].setEntity(lastHexLastEntity);
-                            hex.kingdom.hexs.push(hex);
-                        }
-                    }
-
-                    // Put unit back in selection
-                    this.selection = this.world.getEntityAt(hex);
-                    this.selection.played = false;
-
-                    // Restore last entity in captured hex
-                    this.world.setEntityAt(hex, lastEntity);
-
-                    if (hex.kingdom && hex.hasCapital()) {
-                        hex.kingdom.money = lastHexKingdomMoney;
-                    }
+                    this.selection = lastSelection;
+                    hex.entity.level -= this.selection.level;
                 },
                 redo: () => {
                     this._placeUnitAt(hex);
                 },
             });
         } else {
-            if (hex.hasTower()) {
-                throw new Error('Cannot place unit, there is a tower here');
+            if (hex.hasDied() || hex.hasTree()) {
+                this.selection.played = true;
             }
 
-            if (hex.hasCapital()) {
-                throw new Error('Cannot place unit, there is the kingdom capital here');
-            }
+            this.world.setEntityAt(hex, this.selection);
+            this.selection = null;
 
-            if (hex.hasUnit()) {
-                if ((hex.entity.level + this.selection.level) > Arbiter.UNIT_MAX_LEVEL) {
-                    throw new Error('Cannot merge units as the sum of levels is too high');
-                }
-
-                const lastSelection = this.selection;
-
-                hex.entity.level += this.selection.level;
-                this.selection = null;
-
-                this.undoManager.add({
-                    undo: () => {
-                        this.selection = lastSelection;
-                        hex.entity.level -= this.selection.level;
-                    },
-                    redo: () => {
-                        this._placeUnitAt(hex);
-                    },
-                });
-            } else {
-                if (hex.hasDied() || hex.hasTree()) {
-                    this.selection.played = true;
-                }
-
-                this.world.setEntityAt(hex, this.selection);
-                this.selection = null;
-
-                this.undoManager.add({
-                    undo: () => {
-                        this.selection = this.world.getEntityAt(hex);
-                        this.world.setEntityAt(hex, null);
-                    },
-                    redo: () => {
-                        this._placeUnitAt(hex);
-                    },
-                });
-            }
+            this.undoManager.add({
+                undo: () => {
+                    this.selection = this.world.getEntityAt(hex);
+                    this.world.setEntityAt(hex, null);
+                },
+                redo: () => {
+                    this._placeUnitAt(hex);
+                },
+            });
         }
     }
 

@@ -1,4 +1,4 @@
-import { Unit, Tower, Died, Tree } from '../engine';
+import { Unit, Tower, Died, Tree, Capital } from '../engine';
 import unit1Img from './default/unit-1.png';
 import unit2Img from './default/unit-2.png';
 import unit3Img from './default/unit-3.png';
@@ -6,6 +6,7 @@ import unit4Img from './default/unit-4.png';
 import tower from './default/tower.png';
 import died from './default/died.png';
 import wtf from './default/wtf.png';
+import capital from './default/capital.png';
 import treeCoastal0 from './default/trees/coastal/tree-0.png';
 import treeCoastal1 from './default/trees/coastal/tree-1.png';
 import treeCoastal2 from './default/trees/coastal/tree-2.png';
@@ -51,6 +52,10 @@ export default class Themes {
 
         if (entity instanceof Died) {
             return died;
+        }
+
+        if (entity instanceof Capital) {
+            return capital;
         }
 
         if (entity instanceof Tree) {
