@@ -258,6 +258,30 @@ export default class HexUtils extends HexUtilsBase {
         };
     }
 
+    static transformCapitalsOnSingleHexsToTrees(world) {
+        const undoCallbacks = [];
+
+        world.hexs
+            .filter(hex => !hex.kingdom && hex.hasCapital())
+            .forEach(hex => {
+                const lastEntity = hex.entity;
+
+                hex.setEntity(HexUtils.createTreeForHex(world, hex));
+
+                undoCallbacks.push(() => {
+                    hex.setEntity(lastEntity);
+                });
+            })
+        ;
+
+        return () => {
+            undoCallbacks
+                .reverse()
+                .forEach(callback => callback())
+            ;
+        };
+    }
+
     static getKingdomIncome(kingdom) {
         return kingdom.hexs
             .filter(hex => !hex.hasTree())

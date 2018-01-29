@@ -3,8 +3,6 @@ import HexUtils from './HexUtils';
 
 export default class AIPlayer extends Player {
     notifyTurn(arbiter) {
-        console.log('AI is playing');
-
         try {
             arbiter.world.kingdoms
                 .filter(kingdom => kingdom.player === this)

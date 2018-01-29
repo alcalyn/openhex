@@ -32,7 +32,6 @@ export default class Arbiter {
         this._checkPlayerSelected();
 
         if (kingdom && kingdom.player !== this.currentPlayer) {
-            console.log(kingdom.player, this.currentPlayer);
             throw new Error('Cannot select opponent kingdom');
         }
 
@@ -201,8 +200,6 @@ export default class Arbiter {
             this.world.turn++;
         }
 
-        console.log('nextindex', nextIndex, 'turn', this.world.turn);
-
         const nextPlayer = this.world.players[nextIndex];
 
         if (this.world.turn > 0) {
@@ -240,8 +237,6 @@ export default class Arbiter {
     }
 
     _payKingdomsIncome(player) {
-        console.log('_payKingdomsIncome', player);
-
         this.world.kingdoms
             .filter(kingdom => kingdom.player === player)
             .forEach(kingdom => {
@@ -249,9 +244,6 @@ export default class Arbiter {
                 if (kingdom.money < 0) {
                     kingdom.money = 0;
                 }
-
-                console.log('+', HexUtils.getKingdomIncome(kingdom));
-                console.log('-', HexUtils.getKingdomMaintenanceCost(kingdom));
 
                 // Get income and pay units maintenance
                 kingdom.money += HexUtils.getKingdomIncome(kingdom);
@@ -310,7 +302,6 @@ export default class Arbiter {
         ;
 
         if (protectingUnits.length > 0) {
-            console.warn(protectingUnits);
             throw new Error('Cannot capture this hex, units protecting it');
         }
 
@@ -349,7 +340,6 @@ export default class Arbiter {
             // Delete kingdom if it remains only one hex
             if (hex.kingdom.hexs.length < 2) {
                 const lastKingdom = hex.kingdom;
-                const lastKingdomEntity = hex.kingdom.hexs[0].entity;
                 const lastKingdomHexs = hex.kingdom.hexs;
 
                 hex.kingdom.hexs[0].kingdom = null;
@@ -357,14 +347,6 @@ export default class Arbiter {
                 undoCallbacks.push(() => {
                     hex.kingdom.hexs[0].kingdom = lastKingdom;
                 });
-
-                if (lastKingdomEntity instanceof Capital) {
-                    hex.kingdom.hexs[0].setEntity(HexUtils.createTreeForHex(this.world, hex));
-
-                    undoCallbacks.push(() => {
-                        hex.kingdom.hexs[0].setEntity(lastKingdomEntity);
-                    });
-                }
 
                 hex.kingdom.hexs = [];
                 this.world.removeKingdom(hex.kingdom);
@@ -392,6 +374,7 @@ export default class Arbiter {
         undoCallbacks.push(HexUtils.splitKingdomsOnCapture(this.world, hex));
 
         undoCallbacks.push(HexUtils.rebuildKingdomsCapitals(this.world));
+        undoCallbacks.push(HexUtils.transformCapitalsOnSingleHexsToTrees(this.world));
 
         this.undoManager.add({
             undo: () => {
