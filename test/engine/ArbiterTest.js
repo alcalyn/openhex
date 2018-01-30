@@ -567,6 +567,7 @@ describe('Arbiter', () => {
 
             const arbiter = new Arbiter(world);
             const kingdom = world.getKingdomAt(new Hex(2, -1, -1));
+            kingdom.money = 25;
             arbiter.setCurrentPlayer(kingdom.player);
             arbiter.setCurrentKingdom(kingdom);
             world.setEntityAt(new Hex(2, -1, -1), new Unit(2));
@@ -580,7 +581,7 @@ describe('Arbiter', () => {
             expect(world.getEntityAt(new Hex(2, -1, -1))).to.be.an.instanceOf(Died);
             expect(world.getEntityAt(new Hex(1, 0, -1))).to.be.an.instanceOf(Died);
             expect(world.getEntityAt(new Hex(3, 0, -3))).to.be.an.instanceOf(Died);
-            kingdom.money.should.be.equal(-48);
+            kingdom.money.should.be.equal(0);
         });
 
         it('transforms dieds to trees', () => {
@@ -598,6 +599,53 @@ describe('Arbiter', () => {
             }
 
             expect(world.getEntityAt(new Hex(2, -1, -1))).to.be.an.instanceOf(Tree);
+        });
+
+        it('keeps a trace of kingdom economy', () => {
+            const worldGenerator = new WorldGenerator('constant-seed-5');
+            const world = worldGenerator.generate(createTestPlayers());
+
+            const arbiter = new Arbiter(world);
+            const kingdom = world.getKingdomAt(new Hex(2, -1, -1));
+            kingdom.money = 25;
+            arbiter.setCurrentPlayer(kingdom.player);
+            arbiter.setCurrentKingdom(kingdom);
+            world.setEntityAt(new Hex(3, 0, -3), new Unit(1));
+            world.setEntityAt(new Hex(2, -1, -1), new Unit(2));
+
+            for (let i = 0; i < 6; i++) {
+                arbiter.endTurn();
+            }
+
+            expect(kingdom.balance).to.not.be.null;
+            kingdom.balance.lastCapital.should.be.equal(25);
+            kingdom.balance.income.should.be.equal(5);
+            kingdom.balance.maintenance.should.be.equal(2 + 6);
+            kingdom.money.should.be.equal(25 + 5 - (2 + 6));
+        });
+
+        it('keeps a trace of kingdom economy when units die', () => {
+            const worldGenerator = new WorldGenerator('constant-seed-5');
+            const world = worldGenerator.generate(createTestPlayers());
+
+            const arbiter = new Arbiter(world);
+            const kingdom = world.getKingdomAt(new Hex(2, -1, -1));
+            kingdom.money = 25;
+            arbiter.setCurrentPlayer(kingdom.player);
+            arbiter.setCurrentKingdom(kingdom);
+            world.setEntityAt(new Hex(2, -1, -1), new Unit(2));
+            world.setEntityAt(new Hex(1, 0, -1), new Unit(3));
+            world.setEntityAt(new Hex(3, 0, -3), new Unit(4));
+
+            for (let i = 0; i < 6; i++) {
+                arbiter.endTurn();
+            }
+
+            expect(kingdom.balance).to.not.be.null;
+            kingdom.balance.lastCapital.should.be.equal(25);
+            kingdom.balance.income.should.be.equal(5);
+            kingdom.balance.maintenance.should.be.equal(54 + 18 + 6);
+            kingdom.money.should.be.equal(0);
         });
     });
 });

@@ -25,6 +25,24 @@ export default class Selection extends Component {
         }
     }
 
+    getBalanceDiff(balance) {
+        if (!balance) {
+            return;
+        }
+
+        const diff = balance.diff();
+
+        if (diff > 0) {
+            return <span className="balance">(<span className="balance-positive">+{ diff }</span>)</span>;
+        }
+
+        if (diff < 0) {
+            return <span className="balance">(<span className="balance-negative">{ diff }</span>)</span>;
+        }
+
+        return <span className="balance">(0)</span>;
+    }
+
     render() {
         const kingdom = this.props.arbiter.currentKingdom;
 
@@ -34,7 +52,18 @@ export default class Selection extends Component {
 
         return (
             <div>
-                <p>Money: <span>{ kingdom.money }</span></p>
+                { kingdom.balance ? (
+                    <p>
+                        <small>Last capital: { kingdom.balance.lastCapital }</small><br />
+                        <small>Income: +{ kingdom.balance.income }</small><br />
+                        <small>Units: -{ kingdom.balance.maintenance }</small>
+                    </p>
+                ) : '' }
+                <p>
+                    Money: <b>{ kingdom.money }</b>
+                    &nbsp;
+                    { this.getBalanceDiff(kingdom.balance) }
+                </p>
                 <p><button onClick={ () => { this.buyUnit(); } }>Buy Unit ($10)</button></p>
                 <p><button onClick={ () => { this.buyTower(); } }>Buy Tower ($15)</button></p>
             </div>

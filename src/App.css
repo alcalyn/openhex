@@ -49,6 +49,13 @@ svg g .hex.highlight {
     fill-opacity: 0.6;
 }
 
+.balance-positive {
+    color: #4FCC35;
+}
+.balance-negative {
+    color: #FF7588;
+}
+
 .unit.has-move {
     animation: bounce 1s infinite;
 }

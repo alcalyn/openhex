@@ -3,7 +3,7 @@ import Unit from './Unit';
 import Tower from './Tower';
 import HexUtils from './HexUtils';
 import Died from './Died';
-import Capital from './Capital';
+import KingdomBalance from './KingdomBalance';
 
 export default class Arbiter {
     static UNIT_PRICE = 10;
@@ -240,14 +240,15 @@ export default class Arbiter {
         this.world.kingdoms
             .filter(kingdom => kingdom.player === player)
             .forEach(kingdom => {
-                // Reset kingdom economy if bankrupt last turn
-                if (kingdom.money < 0) {
-                    kingdom.money = 0;
-                }
+                kingdom.balance = new KingdomBalance();
+
+                kingdom.balance.lastCapital = kingdom.money;
+                kingdom.balance.income = HexUtils.getKingdomIncome(kingdom);
+                kingdom.balance.maintenance = HexUtils.getKingdomMaintenanceCost(kingdom);
 
                 // Get income and pay units maintenance
-                kingdom.money += HexUtils.getKingdomIncome(kingdom);
-                kingdom.money -= HexUtils.getKingdomMaintenanceCost(kingdom);
+                kingdom.money += kingdom.balance.income;
+                kingdom.money -= kingdom.balance.maintenance;
 
                 // Replace dieds with trees
                 kingdom.hexs.filter(hex => hex.hasDied()).forEach(hex => {
@@ -259,6 +260,8 @@ export default class Arbiter {
                     kingdom.hexs.filter(hex => hex.hasUnit()).forEach(hex => {
                         hex.entity = new Died();
                     });
+
+                    kingdom.money = 0;
                 }
             })
         ;
