@@ -144,6 +144,29 @@ describe('Arbiter', () => {
                 world.getEntityAt(new Hex(-2, -1, 3)).should.be.an.instanceOf(Capital);
                 expect(world.getEntityAt(new Hex(1, -2, 1))).to.be.null;
             });
+
+            it('replaces capital even if all over hexs have an entity', () => {
+                const worldGenerator = new WorldGenerator('constant-seed-5');
+                const world = worldGenerator.generate(createTestPlayers());
+
+                const arbiter = new Arbiter(world);
+                const kingdom = world.getKingdomAt(new Hex(0, 1, -1));
+                arbiter.setCurrentPlayer(kingdom.player);
+                arbiter.setCurrentKingdom(kingdom);
+                arbiter.selection = new Unit(2);
+
+                const opponentKingdom = world.getKingdomAt(new Hex(1, 0, -1));
+                world.setEntityAt(new Hex(1, 0, -1), new Tree());
+                world.setEntityAt(new Hex(2, -1, -1), new Unit(1));
+                world.setEntityAt(new Hex(3, -1, -2), new Tree());
+                world.setEntityAt(new Hex(3, 0, -3), new Tree());
+
+                world.getEntityAt(new Hex(2, 0, -2)).should.be.an.instanceOf(Capital);
+
+                arbiter.placeAt(new Hex(2, 0, -2));
+
+                opponentKingdom.hexs.filter(hex => hex.hasCapital()).should.have.lengthOf(1);
+            });
         });
     });
 });

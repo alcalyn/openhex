@@ -440,8 +440,11 @@ export default class HexUtils extends HexUtilsBase {
      */
     static createKingdomCapital(world, kingdom) {
         let capitalHex = null;
+        let rebuilt = false;
 
-        this.getMostInteriorHexs(world, kingdom).some(hex => {
+        const mostInteriorHexs = this.getMostInteriorHexs(world, kingdom);
+
+        rebuilt = mostInteriorHexs.some(hex => {
             if (null === hex.entity) {
                 world.setEntityAt(hex, new Capital());
                 capitalHex = hex;
@@ -450,6 +453,20 @@ export default class HexUtils extends HexUtilsBase {
 
             return false;
         });
+
+        if (rebuilt) {
+            return capitalHex;
+        }
+
+        const treeInteriorsHexs = mostInteriorHexs.filter(hex => hex.hasTree());
+
+        if (treeInteriorsHexs.length > 0) {
+            capitalHex = treeInteriorsHexs[0];
+        } else {
+            capitalHex = mostInteriorHexs[0];
+        }
+
+        world.setEntityAt(capitalHex, new Capital());
 
         return capitalHex;
     }

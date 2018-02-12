@@ -7,6 +7,10 @@ export default class Tree extends Entity {
     constructor(type) {
         super();
 
-        this.type = type;
+        this.type = this.CONTINENTAL;
+
+        if (undefined !== type) {
+            this.type = type;
+        }
     }
 }
