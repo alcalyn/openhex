@@ -109,6 +109,15 @@ export default class HexUtils extends HexUtilsBase {
                     hex.kingdom = lastHexKingdom;
                     widestKingdom.removeHex(hex);
                 });
+
+                if (hex.hasCapital()) {
+                    const removedCapital = hex.entity;
+                    hex.entity = null;
+
+                    undoCallbacks.push(() => {
+                        hex.entity = removedCapital;
+                    });
+                }
             });
 
             widestKingdom.money += alliedKingdom.money;

@@ -125,6 +125,25 @@ describe('Arbiter', () => {
 
                 expect(() => { arbiter.placeAt(new Hex(2, 0, -2)); }).to.throw('Must place tower on empty hex');
             });
+
+            it('removes the capital of the weakest kingdom when merged to a stronger one', () => {
+                const worldGenerator = new WorldGenerator('constant-seed-5');
+                const world = worldGenerator.generate(createTestPlayers());
+
+                const arbiter = new Arbiter(world);
+                const kingdom = world.getKingdomAt(new Hex(-2, -2, 4));
+                arbiter.setCurrentPlayer(kingdom.player);
+                arbiter.setCurrentKingdom(kingdom);
+                arbiter.selection = new Unit();
+
+                world.getEntityAt(new Hex(-2, -1, 3)).should.be.an.instanceOf(Capital);
+                world.getEntityAt(new Hex(1, -2, 1)).should.be.an.instanceOf(Capital);
+
+                arbiter.placeAt(new Hex(-1, -2, 3));
+
+                world.getEntityAt(new Hex(-2, -1, 3)).should.be.an.instanceOf(Capital);
+                expect(world.getEntityAt(new Hex(1, -2, 1))).to.be.null;
+            });
         });
     });
 });
