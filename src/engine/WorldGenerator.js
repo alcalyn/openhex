@@ -1,18 +1,14 @@
-import seedrandom from 'seedrandom';
 import { GridGenerator } from 'react-hexgrid';
 import AIPlayer from './AIPlayer';
 import Hex from './Hex';
 import HexUtils from './HexUtils';
+import TreeUtils from './TreeUtils';
 import Kingdom from './Kingdom';
 import LocalPlayer from './LocalPlayer';
 import World from './World';
 
 export default class WorldGenerator {
-    constructor(seed) {
-        this._random = seed === undefined ? seedrandom() : seedrandom(seed);
-    }
-
-    generate(players) {
+    static generateHexagon4NoInitialTree(players, seed) {
         if (!players) {
             players = [
                 new LocalPlayer(),
@@ -25,7 +21,7 @@ export default class WorldGenerator {
         }
 
         const hexs = this.hexagon(4);
-        const world = new World(players, hexs);
+        const world = new World(players, hexs, { seed, treesInitialSpawn: false });
 
         this.setPlayerColors(players);
         this.setRandomHexColors(world);
@@ -35,7 +31,15 @@ export default class WorldGenerator {
         return world;
     }
 
-    setPlayerColors(players) {
+    static generateHexagon4(players, seed) {
+        const world = this.generateHexagon4NoInitialTree(players, seed);
+
+        this.spawnInitialTrees(world);
+
+        return world;
+    }
+
+    static setPlayerColors(players) {
         for (let i = 0; i < players.length; i++) {
             players[i].color = i;
         }
@@ -47,23 +51,23 @@ export default class WorldGenerator {
      *
      * @argument {World} world
      */
-    setRandomHexColors(world) {
+    static setRandomHexColors(world) {
         const hexs = world.hexs;
         const players = world.players;
-        const random = [];
+        const array = [];
 
         for (let i = 0; i < hexs.length; i++) {
-            random.push(i);
+            array.push(i);
         }
 
-        this._shuffle(random);
+        this._shuffle(array, world.random);
 
         for (let i = 0; i < hexs.length; i++) {
-            hexs[random[i]].player = players[i % players.length];
+            hexs[array[i]].player = players[i % players.length];
         }
     }
 
-    initKingdoms(world) {
+    static initKingdoms(world) {
         world.hexs.forEach(hex => {
             if (hex.kingdom) {
                 return;
@@ -82,13 +86,13 @@ export default class WorldGenerator {
         });
     }
 
-    createCapitals(world) {
+    static createCapitals(world) {
         world.kingdoms.forEach(kingdom => {
             HexUtils.createKingdomCapital(world, kingdom);
         });
     }
 
-    hexagon(size) {
+    static hexagon(size) {
         const origin = new Hex(0, 0, 0);
 
         return GridGenerator.hexagon(size)
@@ -97,11 +101,15 @@ export default class WorldGenerator {
         ;
     }
 
-    _shuffle(array) {
+    static spawnInitialTrees(world) {
+        TreeUtils.spawnInitialTrees(world);
+    }
+
+    static _shuffle(array, random) {
         let counter = array.length;
 
         while (counter > 0) {
-            let index = Math.floor(this._random() * counter);
+            let index = Math.floor(random() * counter);
 
             counter--;
 

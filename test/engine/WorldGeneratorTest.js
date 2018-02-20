@@ -5,10 +5,9 @@ import { createTestPlayers } from './TestUtils';
 chai.should();
 
 describe('WorldGenerator', function() {
-    describe('generate', function() {
+    describe('generateHexagon4NoInitialTree', function() {
         it('returns a well formed world', function() {
-            const worldGenerator = new WorldGenerator();
-            const world = worldGenerator.generate(createTestPlayers());
+            const world = WorldGenerator.generateHexagon4NoInitialTree(createTestPlayers());
 
             // Random assertions
             world.should.be.an.instanceOf(World);

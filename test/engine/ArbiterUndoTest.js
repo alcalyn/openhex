@@ -1,6 +1,6 @@
 import chai from 'chai';
 import { Arbiter, Player, Hex, Unit, Died, Tree, World, WorldGenerator } from '../../src/engine';
-import { createTestPlayers } from './TestUtils';
+import { generateTestWorld } from './TestUtils';
 
 chai.should();
 const expect = chai.expect;
@@ -8,8 +8,7 @@ const expect = chai.expect;
 describe('Arbiter', () => {
     describe('undo', () => {
         it('undo unit buy when selection is empty', () => {
-            const worldGenerator = new WorldGenerator('constant-seed-5');
-            const world = worldGenerator.generate(createTestPlayers());
+            const world = generateTestWorld('constant-seed-5');
 
             const arbiter = new Arbiter(world);
             const kingdom = world.getKingdomAt(new Hex(2, -1, -1));
@@ -27,8 +26,7 @@ describe('Arbiter', () => {
         });
 
         it('undo unit buy/upgrade', () => {
-            const worldGenerator = new WorldGenerator('constant-seed-5');
-            const world = worldGenerator.generate(createTestPlayers());
+            const world = generateTestWorld('constant-seed-5');
 
             const arbiter = new Arbiter(world);
             const kingdom = world.getKingdomAt(new Hex(2, -1, -1));
@@ -47,8 +45,7 @@ describe('Arbiter', () => {
         });
 
         it('undo takeUnit', () => {
-            const worldGenerator = new WorldGenerator('constant-seed-5');
-            const world = worldGenerator.generate(createTestPlayers());
+            const world = generateTestWorld('constant-seed-5');
 
             const arbiter = new Arbiter(world);
             const kingdom = world.getKingdomAt(new Hex(2, -1, -1));
@@ -64,8 +61,7 @@ describe('Arbiter', () => {
         });
 
         it('undo placeAt when placed in own kingdom', () => {
-            const worldGenerator = new WorldGenerator('constant-seed-5');
-            const world = worldGenerator.generate(createTestPlayers());
+            const world = generateTestWorld('constant-seed-5');
 
             const arbiter = new Arbiter(world);
             const kingdom = world.getKingdomAt(new Hex(2, -1, -1));
@@ -81,8 +77,7 @@ describe('Arbiter', () => {
         });
 
         it('undo placeAt and restore hex kingdom when I captured a hex of a 2-hex kingdom', () => {
-            const worldGenerator = new WorldGenerator('constant-seed-5');
-            const world = worldGenerator.generate(createTestPlayers());
+            const world = generateTestWorld('constant-seed-5');
 
             const arbiter = new Arbiter(world);
             const kingdom = world.getKingdomAt(new Hex(-3, 2, 1));
@@ -102,8 +97,7 @@ describe('Arbiter', () => {
 
     describe('undoAll', () => {
         it('undo double unit buy when selection is empty', () => {
-            const worldGenerator = new WorldGenerator('constant-seed-5');
-            const world = worldGenerator.generate(createTestPlayers());
+            const world = generateTestWorld('constant-seed-5');
 
             const arbiter = new Arbiter(world);
             const kingdom = world.getKingdomAt(new Hex(2, -1, -1));

@@ -38,6 +38,14 @@ export default class Hex extends HexBase {
         return this.entity instanceof Tree;
     }
 
+    hasContinentalTree() {
+        return this.hasTree() && this.entity.type === Tree.CONTINENTAL;
+    }
+
+    hasCoastalTree() {
+        return this.hasTree() && this.entity.type === Tree.COASTAL;
+    }
+
     hasDied() {
         return this.entity instanceof Died;
     }

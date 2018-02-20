@@ -1,6 +1,6 @@
 import chai from 'chai';
 import { Arbiter, Player, Hex, Unit, Tower, Died, Tree, World, WorldGenerator } from '../../src/engine';
-import { createTestPlayers } from './TestUtils';
+import { generateTestWorld } from './TestUtils';
 
 chai.should();
 const expect = chai.expect;
@@ -9,8 +9,7 @@ describe('Arbiter', () => {
     describe('Tower', () => {
         describe('paceAt', () => {
             it('cannot place an unit on a tower', () => {
-                const worldGenerator = new WorldGenerator('constant-seed-5');
-                const world = worldGenerator.generate(createTestPlayers());
+                const world = generateTestWorld('constant-seed-5');
 
                 const arbiter = new Arbiter(world);
                 const kingdom = world.getKingdomAt(new Hex(2, -1, -1));
@@ -23,8 +22,7 @@ describe('Arbiter', () => {
             });
 
             it('cannot capture a hex with a tower', () => {
-                const worldGenerator = new WorldGenerator('constant-seed-5');
-                const world = worldGenerator.generate(createTestPlayers());
+                const world = generateTestWorld('constant-seed-5');
 
                 const arbiter = new Arbiter(world);
                 const kingdom = world.getKingdomAt(new Hex(2, -1, -1));
@@ -38,8 +36,7 @@ describe('Arbiter', () => {
 
         describe('buyTower', () => {
             it('put a tower in selection', () => {
-                const worldGenerator = new WorldGenerator('constant-seed-5');
-                const world = worldGenerator.generate(createTestPlayers());
+                const world = generateTestWorld('constant-seed-5');
 
                 const arbiter = new Arbiter(world);
                 const kingdom = world.getKingdomAt(new Hex(2, -1, -1));

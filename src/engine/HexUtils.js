@@ -1,7 +1,7 @@
 import { HexUtils as HexUtilsBase } from 'react-hexgrid';
+import TreeUtils from './TreeUtils';
 import Unit from './Unit';
 import Kingdom from './Kingdom';
-import Tree from './Tree';
 import Capital from './Capital';
 
 export default class HexUtils extends HexUtilsBase {
@@ -275,7 +275,7 @@ export default class HexUtils extends HexUtilsBase {
             .forEach(hex => {
                 const lastEntity = hex.entity;
 
-                hex.setEntity(HexUtils.createTreeForHex(world, hex));
+                hex.setEntity(TreeUtils.createTreeForHex(world, hex));
 
                 undoCallbacks.push(() => {
                     hex.setEntity(lastEntity);
@@ -374,15 +374,6 @@ export default class HexUtils extends HexUtilsBase {
             .map(neighbourCoords => world.getHexAt(neighbourCoords))
             .some(hex => hex === undefined)
         ;
-    }
-
-    static createTreeForHex(world, hex) {
-        const treeType = this.isHexCoastal(world, hex) ? Tree.COASTAL : Tree.CONTINENTAL;
-        const tree = new Tree(treeType);
-
-        tree.hex = hex;
-
-        return tree;
     }
 
     /**

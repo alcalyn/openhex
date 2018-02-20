@@ -1,12 +1,22 @@
+import seedrandom from 'seedrandom';
 import HexUtils from './HexUtils';
 import Unit from './Unit';
+import WorldConfig from './WorldConfig';
 
 export default class World {
-    constructor(players, hexs) {
+    static defaultConfig = WorldConfig;
+
+    constructor(players, hexs, config = { ...World.defaultConfig }) {
         this.players = players;
         this.hexs = hexs;
+        this.config = {
+            ...World.defaultConfig,
+            ...config,
+        };
+
         this.kingdoms = [];
         this.turn = 0;
+        this.random = seedrandom(this.config.seed);
 
         this._initHexMap();
     }

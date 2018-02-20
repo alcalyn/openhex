@@ -10,6 +10,7 @@ import LocalPlayer from './LocalPlayer';
 import Player from './Player';
 import Tower from './Tower';
 import Tree from './Tree';
+import TreeUtils from './TreeUtils';
 import Unit from './Unit';
 import World from './World';
 import WorldGenerator from './WorldGenerator';
@@ -27,6 +28,7 @@ export {
     Player,
     Tower,
     Tree,
+    TreeUtils,
     Unit,
     World,
     WorldGenerator,

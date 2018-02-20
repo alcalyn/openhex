@@ -10,8 +10,7 @@ class App extends Component {
     constructor(props, context) {
         super(props, context);
 
-        const worldGenerator = new WorldGenerator('constant-seed-5');
-        const world = worldGenerator.generate();
+        const world = WorldGenerator.generateHexagon4(false, 'constant-seed-5');
 
         world.setEntityAt(new Hex(2, -1, -1), new Unit());
         world.setEntityAt(new Hex(-1, -3, 4), new Unit());

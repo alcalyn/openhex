@@ -2,6 +2,7 @@ import UndoManager from 'undo-manager';
 import Unit from './Unit';
 import Tower from './Tower';
 import HexUtils from './HexUtils';
+import TreeUtils from './TreeUtils';
 import Died from './Died';
 import KingdomBalance from './KingdomBalance';
 
@@ -206,6 +207,8 @@ export default class Arbiter {
             this._payKingdomsIncome(nextPlayer);
         }
 
+        TreeUtils.spawnTrees(this.world);
+
         this.setCurrentPlayer(nextPlayer);
     }
 
@@ -252,7 +255,7 @@ export default class Arbiter {
 
                 // Replace dieds with trees
                 kingdom.hexs.filter(hex => hex.hasDied()).forEach(hex => {
-                    hex.entity = HexUtils.createTreeForHex(this.world, hex);
+                    hex.entity = TreeUtils.createTreeForHex(this.world, hex);
                 });
 
                 // Kill unpaid units
@@ -275,7 +278,7 @@ export default class Arbiter {
         // Replace dieds with trees
         singleHexs
             .filter(hex => hex.hasDied())
-            .forEach(hex => hex.entity = HexUtils.createTreeForHex(this.world, hex))
+            .forEach(hex => hex.entity = TreeUtils.createTreeForHex(this.world, hex))
         ;
 
         // Kill units on a single hex kingdom
