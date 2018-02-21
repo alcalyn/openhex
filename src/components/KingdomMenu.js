@@ -33,11 +33,11 @@ export default class Selection extends Component {
         const diff = balance.diff();
 
         if (diff > 0) {
-            return <span className="balance">(<span className="balance-positive">+{ diff }</span>)</span>;
+            return <span className="balance">(<span className="text-success">+{ diff }</span>)</span>;
         }
 
         if (diff < 0) {
-            return <span className="balance">(<span className="balance-negative">{ diff }</span>)</span>;
+            return <span className="balance">(<span className="text-danger">{ diff }</span>)</span>;
         }
 
         return <span className="balance">(0)</span>;
@@ -51,21 +51,30 @@ export default class Selection extends Component {
         }
 
         return (
-            <div>
-                { kingdom.balance ? (
-                    <p>
-                        <small>Last capital: { kingdom.balance.lastCapital }</small><br />
-                        <small>Income: +{ kingdom.balance.income }</small><br />
-                        <small>Units: -{ kingdom.balance.maintenance }</small>
+            <div class="card">
+                <h3 class="card-header">Kingdom menu</h3>
+                <div class="card-body">
+                    <h4 class="card-title">Economy</h4>
+
+                    { kingdom.balance ? (
+                        <p>
+                            <small>Last capital: { kingdom.balance.lastCapital }</small><br />
+                            <small>Income: +{ kingdom.balance.income }</small><br />
+                            <small>Units: -{ kingdom.balance.maintenance }</small>
+                        </p>
+                    ) : '' }
+
+                    <p class="h2">
+                        Money: <b>{ kingdom.money }</b>
+                        &nbsp;
+                        { this.getBalanceDiff(kingdom.balance) }
                     </p>
-                ) : '' }
-                <p>
-                    Money: <b>{ kingdom.money }</b>
-                    &nbsp;
-                    { this.getBalanceDiff(kingdom.balance) }
-                </p>
-                <p><button onClick={ () => { this.buyUnit(); } }>Buy Unit ($10)</button></p>
-                <p><button onClick={ () => { this.buyTower(); } }>Buy Tower ($15)</button></p>
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title">Military</h4>
+                    <p><button class="btn btn-success" onClick={ () => { this.buyUnit(); } }>Buy Unit ($10)</button></p>
+                    <p><button class="btn btn-success" onClick={ () => { this.buyTower(); } }>Buy Tower ($15)</button></p>
+                </div>
             </div>
         );
     }

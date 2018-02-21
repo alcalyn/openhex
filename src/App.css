@@ -17,6 +17,7 @@ html, body, #root, .App {
 #kingdom-menu {
     top: 0;
     right: 0;
+    width: 24em;
 }
 #turn-menu {
     bottom: 0;
@@ -27,33 +28,26 @@ svg g .hex {
     fill: #3F51B5;
 }
 svg g .hex.color-0 {
-    fill: #352FB2;
+    fill: #117298; /* primary */
 }
 svg g .hex.color-1 {
-    fill: #FFA876;
+    fill: #219724; /* success */
 }
 svg g .hex.color-2 {
-    fill: #4FCC35;
+    fill: #f47100; /* warning */
 }
 svg g .hex.color-3 {
-    fill: #2CB2B2;
+    fill: #ff1d10; /* danger */
 }
 svg g .hex.color-4 {
-    fill: #FF72D8;
+    fill: #54bde6; /* info */
 }
 svg g .hex.color-5 {
-    fill: #CCB332;
+    fill: #dddddd; /* secondary */
 }
 
 svg g .hex.highlight {
     fill-opacity: 0.6;
-}
-
-.balance-positive {
-    color: #4FCC35;
-}
-.balance-negative {
-    color: #FF7588;
 }
 
 .unit.has-move {
