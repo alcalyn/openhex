@@ -9,6 +9,7 @@
     "react-hexgrid": "^1.0.1",
     "react-scripts": "1.0.17",
     "react-svg-pan-zoom": "^2.14.1",
+    "react-virtualized": "^9.18.5",
     "seedrandom": "^2.4.3",
     "undo-manager": "^1.0.5"
   },

@@ -194,14 +194,14 @@ export default class Arbiter {
 
         this._resetUnitsMove(this.currentPlayer);
 
-        let nextIndex = this.world.players.indexOf(this.currentPlayer) + 1;
+        let nextIndex = this.world.config.players.indexOf(this.currentPlayer) + 1;
 
-        if (nextIndex > this.world.players.length - 1) {
+        if (nextIndex > this.world.config.players.length - 1) {
             nextIndex = 0;
             this.world.turn++;
         }
 
-        const nextPlayer = this.world.players[nextIndex];
+        const nextPlayer = this.world.config.players[nextIndex];
 
         if (this.world.turn > 0) {
             this._payKingdomsIncome(nextPlayer);

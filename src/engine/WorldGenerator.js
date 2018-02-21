@@ -1,3 +1,4 @@
+import seedrandom from 'seedrandom';
 import { GridGenerator } from 'react-hexgrid';
 import AIPlayer from './AIPlayer';
 import Hex from './Hex';
@@ -6,8 +7,50 @@ import TreeUtils from './TreeUtils';
 import Kingdom from './Kingdom';
 import LocalPlayer from './LocalPlayer';
 import World from './World';
+import WorldConfig from './WorldConfig';
+import diamondSquare from './diamondSquare';
 
 export default class WorldGenerator {
+    static generate(seed = null, radius = 8, config = WorldConfig) {
+        config.random = seedrandom(seed);
+
+        const depth = 8;
+        const pixels = 2 ** depth + 1;
+        const weights = diamondSquare(depth, true, config.random);
+        const hexs = [];
+
+        for (let r = -radius; r < radius; r++) {
+            let offset = r >> 1;
+            let qIndex = 0;
+            for (let q = -offset - radius; q < radius - offset; q++) {
+
+                let { x, y } = { x: qIndex, y: r + radius };
+                let pixel = {
+                    x: Math.floor(pixels * x / (radius * 2)),
+                    y: Math.floor(pixels * y / (radius * 2)),
+                };
+
+                let weight = weights[pixel.x][pixel.y];
+
+                if (weight > 64.0) {
+                    hexs.push(new Hex(q, r, -q-r));
+                }
+
+                qIndex++;
+            }
+        }
+
+        const world = new World(hexs.map(Hex.fromBaseHex));
+
+        this.setPlayerColors(world.config.players);
+        this.setRandomHexColors(world);
+        this.initKingdoms(world);
+        this.createCapitals(world);
+        this.spawnInitialTrees(world);
+
+        return world;
+    }
+
     static generateHexagon4NoInitialTree(players, seed) {
         if (!players) {
             players = [
@@ -21,7 +64,7 @@ export default class WorldGenerator {
         }
 
         const hexs = this.hexagon(4);
-        const world = new World(players, hexs, { seed, treesInitialSpawn: false });
+        const world = new World(hexs, { players, random: seedrandom(seed), treesInitialSpawn: false });
 
         this.setPlayerColors(players);
         this.setRandomHexColors(world);
@@ -53,14 +96,14 @@ export default class WorldGenerator {
      */
     static setRandomHexColors(world) {
         const hexs = world.hexs;
-        const players = world.players;
+        const players = world.config.players;
         const array = [];
 
         for (let i = 0; i < hexs.length; i++) {
             array.push(i);
         }
 
-        this._shuffle(array, world.random);
+        this._shuffle(array, world.config.random);
 
         for (let i = 0; i < hexs.length; i++) {
             hexs[array[i]].player = players[i % players.length];

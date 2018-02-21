@@ -1,9 +1,26 @@
+import LocalPlayer from './LocalPlayer';
+import AIPlayer from './AIPlayer';
+
 export default {
     /**
-     * Seed used for map random utilities.
-     * null by default to don't use this feature.
+     * Random number generator to use. Must generate numbers in [0; 1[
+     * Used to provide a known seed random function.
+     * By default Math.random.
      */
-    seed: null,
+    random: Math.random,
+
+    /**
+     * Array of players.
+     * By default generates a singleplayer VS 5 AI
+     */
+    players: [
+        new LocalPlayer(),
+        new AIPlayer(),
+        new AIPlayer(),
+        new AIPlayer(),
+        new AIPlayer(),
+        new AIPlayer(),
+    ],
 
     /**
      * Whether trees has spawn before the game starts.
