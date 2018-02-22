@@ -28,10 +28,10 @@ export default class TurnMenu extends Component {
     render() {
         return (
             <div>
-                <button onClick={ () => { this.endTurn(); } }>End turn</button>
-                <button onClick={ () => { this.undo(); } }>Undo</button>
-                <button onClick={ () => { this.redo(); } }>Redo</button>
-                <button onClick={ () => { this.undoAll(); } }>Reset turn</button>
+                <button class="btn btn-success btn-lg" onClick={ () => { this.endTurn(); } }>End turn</button>
+                <button class="btn btn-outline-primary" onClick={ () => { this.undo(); } }>Undo</button>
+                <button class="btn btn-outline-primary" onClick={ () => { this.redo(); } }>Redo</button>
+                <button class="btn btn-outline-warning" onClick={ () => { this.undoAll(); } }>Reset turn</button>
             </div>
         );
     }
