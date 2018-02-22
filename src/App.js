@@ -5,7 +5,7 @@ import { HexGrid, Layout } from 'react-hexgrid';
 import { WorldGenerator, Hex, Unit, Arbiter } from './engine';
 import { KingdomMenu, Selection, HexCell, TurnMenu } from './components';
 import './App.css';
-import './bootstrap4-lumen.min.css';
+import './bootstrap4-sketchy.min.css';
 
 class App extends Component {
     constructor(props, context) {
