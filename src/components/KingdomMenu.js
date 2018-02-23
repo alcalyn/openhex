@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Themes from '../themes';
 
 export default class Selection extends Component {
     buyUnit() {
@@ -60,27 +61,43 @@ export default class Selection extends Component {
 
         return (
             <div class="card">
-                <h3 class="card-header">Kingdom menu</h3>
+                <h3 class="card-header d-none d-md-block">Kingdom menu</h3>
                 <div class="card-body">
-                    <p class="h2">
-                        Money: <b>{ kingdom.money }</b>
-                        &nbsp;
-                        { this.getBalanceDiff(kingdom.balance) }
-                    </p>
+                    <div class="row">
+                        <div class="col-4 col-md-12">
+                            <p class="h4">
+                                <span class="d-none d-md-inline">Money:</span>
+                                <b>{ kingdom.money }</b>
+                                &nbsp;
+                                { this.getBalanceDiff(kingdom.balance) }
+                            </p>
 
-                    { kingdom.balance ? (
-                        <p class>
-                            Last turn: { kingdom.balance.lastCapital }<br />
-                            Income: +{ kingdom.balance.income }<br />
-                            Units: -{ kingdom.balance.maintenance }
-                        </p>
-                    ) : '' }
+                            { kingdom.balance ? (
+                                <p class="d-none d-md-block">
+                                    Last turn: { kingdom.balance.lastCapital }<br />
+                                    Income: +{ kingdom.balance.income }<br />
+                                    Units: -{ kingdom.balance.maintenance }
+                                </p>
+                            ) : '' }
+                        </div>
+                        <div class="col-4 col-md-12">
+                            <h4 className="card-title d-none d-md-block">Selection</h4>
+                            <div class="selection-container d-block text-center">
+                                {!this.props.arbiter.selection ? '' :
+                                    <img
+                                        src={Themes.getImageFor(this.props.arbiter.selection)}
+                                        alt="selection"
+                                    />
+                                }
+                            </div>
+                        </div>
+                        <div class="col-4 col-md-12">
+                            <h4 className="card-title d-none d-md-block">Military</h4>
+                            <p><button className={"btn btn-success btn-block" + this.disabledBefore(10)} onClick={ () => { this.buyUnit(); } }>Buy Unit ($10)</button></p>
+                            <p><button className={"btn btn-success btn-block" + this.disabledBefore(15)} onClick={ () => { this.buyTower(); } }>Buy Tower ($15)</button></p>
+                        </div>
+                    </div>
 
-                </div>
-                <div className="card-body">
-                    <h4 className="card-title">Military</h4>
-                    <p><button className={"btn btn-success btn-lg btn-block" + this.disabledBefore(10)} onClick={ () => { this.buyUnit(); } }>Buy Unit ($10)</button></p>
-                    <p><button className={"btn btn-success btn-lg btn-block" + this.disabledBefore(15)} onClick={ () => { this.buyTower(); } }>Buy Tower ($15)</button></p>
                 </div>
             </div>
         );

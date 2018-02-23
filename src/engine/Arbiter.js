@@ -216,12 +216,20 @@ export default class Arbiter {
         this.undoManager.undo();
     }
 
+    hasUndo() {
+        return this.undoManager.hasUndo();
+    }
+
     redo() {
         this.undoManager.redo();
     }
 
+    hasRedo() {
+        return this.undoManager.hasRedo();
+    }
+
     undoAll() {
-        while (this.undoManager.hasUndo()) {
+        while (this.hasUndo()) {
             this.undoManager.undo();
         }
     }

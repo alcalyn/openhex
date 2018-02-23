@@ -1,11 +1,9 @@
 import KingdomMenu from './KingdomMenu';
-import Selection from './Selection';
 import HexCell from './HexCell';
-import TurnMenu from './TurnMenu';
+import GameMenu from './GameMenu';
 
 export {
     KingdomMenu,
-    Selection,
     HexCell,
-    TurnMenu,
+    GameMenu,
 };
