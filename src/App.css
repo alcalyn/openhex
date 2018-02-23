@@ -62,7 +62,7 @@ svg g .hex.color-4 {
     fill: #138496; /* info */
 }
 svg g .hex.color-5 {
-    fill: #202020; /* primary */
+    fill: #424242; /* secondary */
 }
 
 svg g .hex.highlight {
