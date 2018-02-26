@@ -29,43 +29,19 @@ export default class GameMenu extends Component {
         const arbiter = this.props.arbiter;
 
         return (
-            <div class="card">
-                <h3 class="card-header d-none d-md-block">Game menu</h3>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-6 col-md-12">
-                            <p class="lead d-none d-md-inline">Turn number: { arbiter.world.turn + 1 }</p>
-                            <p>
-                                <button
-                                    class={ "btn btn-block btn-success" }
-                                    onClick={ () => { this.endTurn(); } }
-                                >End turn</button>
-                            </p>
-                        </div>
-                        <div class="col-6 col-md-6">
-                            <p>
-                                <button
-                                    class={ "btn btn-block btn-outline-primary" + this.enabledIf(arbiter.hasUndo()) }
-                                    onClick={ () => { this.undo(); } }
-                                >Undo</button>
-                            </p>
-                        </div>
-                        <div class="col-md-6">
-                            <p class="d-none d-md-block">
-                                <button
-                                    class={ "btn btn-block btn-outline-primary" + this.enabledIf(arbiter.hasRedo()) }
-                                    onClick={ () => { this.redo(); } }
-                                >Redo</button>
-                            </p>
-                        </div>
-                        <div class="col-md-12">
-                            <p class="d-none d-md-block">
-                                <button
-                                    class={ "btn btn-block btn-outline-warning" + this.enabledIf(arbiter.hasUndo()) }
-                                    onClick={ () => { this.undoAll(); } }
-                                >Reset turn</button>
-                            </p>
-                        </div>
+            <div className="game-menu">
+                <h3 className="card-header d-none d-md-block">Game menu</h3>
+                <div className="card-body">
+                    <p className="d-none d-md-inline">Turn number: { arbiter.world.turn + 1 }</p>
+                    <div className="inline-buttons">
+                        <button
+                            className={ "btn btn-outline-primary" + this.enabledIf(arbiter.hasUndo()) }
+                            onClick={ () => { this.undo(); } }
+                        >Undo</button>
+                        <button
+                            className={ "btn btn-success" }
+                            onClick={ () => { this.endTurn(); } }
+                        >End turn</button>
                     </div>
                 </div>
             </div>

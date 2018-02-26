@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import Themes from '../themes';
+import { Unit, Tower } from '../engine';
 
-export default class Selection extends Component {
+export default class KingdomMenu extends Component {
     buyUnit() {
         try {
             this.props.arbiter.buyUnit();
@@ -60,29 +61,29 @@ export default class Selection extends Component {
         }
 
         return (
-            <div class="card">
-                <h3 class="card-header d-none d-md-block">Kingdom menu</h3>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-4 col-md-12">
-                            <p class="h4">
-                                <span class="d-none d-md-inline">Money:</span>
+            <div className="kingdom-menu">
+                <h3 className="card-header d-none d-md-block">Kingdom menu</h3>
+                <div className="card-body">
+                    <div className="row">
+                        <div className="col-4 col-md-12">
+                            <p className="h5">
+                                <span className="d-none d-md-inline">Money:</span>
                                 <b>{ kingdom.money }</b>
                                 &nbsp;
                                 { this.getBalanceDiff(kingdom.balance) }
                             </p>
 
                             { kingdom.balance ? (
-                                <p class="d-none d-md-block">
+                                <p className="d-none d-md-block">
                                     Last turn: { kingdom.balance.lastCapital }<br />
                                     Income: +{ kingdom.balance.income }<br />
                                     Units: -{ kingdom.balance.maintenance }
                                 </p>
                             ) : '' }
                         </div>
-                        <div class="col-4 col-md-12">
+                        <div className="col-2 col-md-12">
                             <h4 className="card-title d-none d-md-block">Selection</h4>
-                            <div class="selection-container d-block text-center">
+                            <div className="selection-container d-block text-center">
                                 {!this.props.arbiter.selection ? '' :
                                     <img
                                         src={Themes.getImageFor(this.props.arbiter.selection)}
@@ -91,10 +92,26 @@ export default class Selection extends Component {
                                 }
                             </div>
                         </div>
-                        <div class="col-4 col-md-12">
+                        <div className="col-6 col-md-12">
                             <h4 className="card-title d-none d-md-block">Military</h4>
-                            <p><button className={"btn btn-success btn-block" + this.disabledBefore(10)} onClick={ () => { this.buyUnit(); } }>Buy Unit ($10)</button></p>
-                            <p><button className={"btn btn-success btn-block" + this.disabledBefore(15)} onClick={ () => { this.buyTower(); } }>Buy Tower ($15)</button></p>
+                            <div className="inline-buttons">
+                                <button
+                                    className={"btn btn-success buy-unit" + this.disabledBefore(10)}
+                                    onClick={ () => { this.buyUnit(); } }>
+                                        <img
+                                            src={Themes.getImageFor(new Unit())}
+                                            alt="unit"
+                                        />
+                                </button>
+                                <button
+                                    className={"btn btn-success buy-tower" + this.disabledBefore(15)}
+                                    onClick={ () => { this.buyTower(); } }>
+                                        <img
+                                            src={Themes.getImageFor(new Tower())}
+                                            alt="tower"
+                                        />
+                                </button>
+                            </div>
                         </div>
                     </div>
 

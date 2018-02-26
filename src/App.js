@@ -74,11 +74,11 @@ class App extends Component {
         this.initView();
 
         return (
-            <div className="App">
-                <div id="kingdom-menu">
+            <div className={"App"}>
+                <div className={"card card-menu d-md-none card-menu-small card-menu-small-kingdom"}>
                     <KingdomMenu arbiter={this.arbiter} onUpdate={() => { this.update(); }} />
                 </div>
-                <div id="game-menu">
+                <div className={"card card-menu d-md-none card-menu-small card-menu-small-game"}>
                     <GameMenu
                         arbiter={this.arbiter}
                         updateCallback={() => this.update()}
@@ -88,6 +88,19 @@ class App extends Component {
                         onUndoAll={() => { this.arbiter.undoAll();this.update(); }}
                     />
                 </div>
+
+                <div className={"card card-menu card-menu-large d-none d-md-block"}>
+                    <KingdomMenu arbiter={this.arbiter} onUpdate={() => { this.update(); }} />
+                    <GameMenu
+                        arbiter={this.arbiter}
+                        updateCallback={() => this.update()}
+                        onEndTurn={() => { this.arbiter.endTurn();this.update(); }}
+                        onUndo={() => { this.arbiter.undo();this.update(); }}
+                        onRedo={() => { this.arbiter.redo();this.update(); }}
+                        onUndoAll={() => { this.arbiter.undoAll();this.update(); }}
+                    />
+                </div>
+
                 <div id="grid">
 
                     <AutoSizer>
