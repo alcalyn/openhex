@@ -1,7 +1,7 @@
 import LocalPlayer from './LocalPlayer';
 import AIPlayer from './AIPlayer';
 
-export default {
+const defaults = {
     /**
      * Random number generator to use. Must generate numbers in [0; 1[
      * Used to provide a known seed random function.
@@ -61,4 +61,11 @@ export default {
      * Max probability for a coastal tree to grow.
      */
     treesGrowMaxProbaCoastal: 1.0,
+};
+
+export default config => {
+    return {
+        ...defaults,
+        ...config,
+    };
 };

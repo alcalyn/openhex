@@ -9,13 +9,16 @@
  *
  * @param {int} N Number of step, will results a 2^N + 1 array size
  * @param {bool} GENERATE_ISLAND Set true to set 0 on edges and max value at center
+ * @param {float} ROUGHNESS Roughness coeficient. 1.0 is normal.
+ *                          Setting an higher increase "canyons" generation,
+ *                          but often results with output height outside of 0.0 and 256.0
  * @param {Function} random Random function to use. Defaults to javascript Math.random.
  *                          Can be used to provide a known seed random function.
  *                          Function must return a number in [0; 1[
  *
- * @returns float[][] float numbers between 0 and 256
+ * @returns float[][] float numbers between 0.0 and 256.0
  */
-export default function diamondSquare(N, GENERATE_ISLAND = false, random = Math.random) {
+export default function diamondSquare(N, GENERATE_ISLAND = false, ROUGHNESS = 1.0, random = Math.random) {
     const DATA_SIZE = 2 ** N + 1;
 
     //an initial seed value for the corners of the data
@@ -62,7 +65,7 @@ export default function diamondSquare(N, GENERATE_ISLAND = false, random = Math.
                 //We calculate random value in range of 2h
                 //and then subtract h so the end value is
                 //in the range (-h, +h)
-                avg + (random() * 2 * h) - h;
+                avg + ((random() * 2 * h) - h) * ROUGHNESS;
 
                 // hack to generate an island
                 if (GENERATE_ISLAND && (sideLength === DATA_SIZE - 1)) {
@@ -97,7 +100,7 @@ export default function diamondSquare(N, GENERATE_ISLAND = false, random = Math.
             //We calculate random value in range of 2h
             //and then subtract h so the end value is
             //in the range (-h, +h)
-            avg = avg + (random() * 2 * h) - h;
+            avg = avg + ((random() * 2 * h) - h) * ROUGHNESS;
 
             // hack to generate an island
             if (GENERATE_ISLAND && (sideLength === DATA_SIZE - 1)) {
