@@ -16,6 +16,20 @@ import treeCoastal5 from './default/trees/coastal/tree-5.png';
 import treeContinental0 from './default/trees/continental/tree-0.png';
 import treeContinental1 from './default/trees/continental/tree-1.png';
 import treeContinental2 from './default/trees/continental/tree-2.png';
+import gold1 from './default/gold/gold_pile_1.png';
+import gold2 from './default/gold/gold_pile_2.png';
+import gold3 from './default/gold/gold_pile_3.png';
+import gold4 from './default/gold/gold_pile_4.png';
+import gold5 from './default/gold/gold_pile_5.png';
+import gold6 from './default/gold/gold_pile_6.png';
+import gold7 from './default/gold/gold_pile_7.png';
+import gold8 from './default/gold/gold_pile_8.png';
+import gold9 from './default/gold/gold_pile_9.png';
+import gold10 from './default/gold/gold_pile_10.png';
+import gold16 from './default/gold/gold_pile_16.png';
+import gold19 from './default/gold/gold_pile_19.png';
+import gold23 from './default/gold/gold_pile_23.png';
+import gold25 from './default/gold/gold_pile_25.png';
 
 export default class Themes {
     static units = {
@@ -69,5 +83,31 @@ export default class Themes {
         }
 
         return wtf;
+    }
+
+    static getImageForMoney(amount) {
+        switch (true) {
+            case 0 === amount: return gold1;
+
+            case 1 === amount: return gold1;
+            case 2 === amount: return gold2;
+            case 3 === amount: return gold3;
+            case 4 === amount: return gold4;
+            case 5 === amount: return gold5;
+            case 6 === amount: return gold6;
+            case 7 === amount: return gold7;
+            case 8 === amount: return gold8;
+            case 9 === amount: return gold9;
+            case 10 === amount: return gold10;
+
+            case amount <= 16: return gold16;
+            case amount <= 19: return gold19;
+            case amount <= 23: return gold23;
+            case amount <= 25: return gold25;
+
+            case amount > 25: return gold25;
+
+            default: return gold1;
+        }
     }
 }

@@ -3,7 +3,8 @@ import {ReactSVGPanZoom} from 'react-svg-pan-zoom';
 import React, { Component } from 'react';
 import { HexGrid, Layout } from 'react-hexgrid';
 import { WorldGenerator, Hex, Unit, Arbiter } from './engine';
-import { KingdomMenu, Selection, HexCell, TurnMenu } from './components';
+import { KingdomMenu, HexCell, GameMenu } from './components';
+import './bootstrap4-sketchy.min.css';
 import './App.css';
 
 class App extends Component {
@@ -37,8 +38,6 @@ class App extends Component {
         }
 
         this.update();
-
-        console.log('selection', this.arbiter.selection);
     }
 
     hexUnitHasMove(hex) {
@@ -70,26 +69,38 @@ class App extends Component {
     }
 
     render() {
-        const { world, selection } = this.state;
+        const { world } = this.state;
 
         this.initView();
 
         return (
-            <div className="App">
-                <div id="selection">
-                    <Selection entity={selection} />
-                </div>
-                <div id="kingdom-menu">
+            <div className={"App"}>
+                <div className={"card card-menu d-md-none card-menu-small card-menu-small-kingdom"}>
                     <KingdomMenu arbiter={this.arbiter} onUpdate={() => { this.update(); }} />
                 </div>
-                <div id="turn-menu">
-                    <TurnMenu
+                <div className={"card card-menu d-md-none card-menu-small card-menu-small-game"}>
+                    <GameMenu
+                        arbiter={this.arbiter}
+                        updateCallback={() => this.update()}
                         onEndTurn={() => { this.arbiter.endTurn();this.update(); }}
                         onUndo={() => { this.arbiter.undo();this.update(); }}
                         onRedo={() => { this.arbiter.redo();this.update(); }}
                         onUndoAll={() => { this.arbiter.undoAll();this.update(); }}
                     />
                 </div>
+
+                <div className={"card card-menu card-menu-large d-none d-md-block"}>
+                    <KingdomMenu arbiter={this.arbiter} onUpdate={() => { this.update(); }} />
+                    <GameMenu
+                        arbiter={this.arbiter}
+                        updateCallback={() => this.update()}
+                        onEndTurn={() => { this.arbiter.endTurn();this.update(); }}
+                        onUndo={() => { this.arbiter.undo();this.update(); }}
+                        onRedo={() => { this.arbiter.redo();this.update(); }}
+                        onUndoAll={() => { this.arbiter.undoAll();this.update(); }}
+                    />
+                </div>
+
                 <div id="grid">
 
                     <AutoSizer>

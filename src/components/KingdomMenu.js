@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import Themes from '../themes';
+import { Unit, Tower } from '../engine';
 
-export default class Selection extends Component {
+export default class KingdomMenu extends Component {
     buyUnit() {
         try {
             this.props.arbiter.buyUnit();
@@ -33,14 +35,22 @@ export default class Selection extends Component {
         const diff = balance.diff();
 
         if (diff > 0) {
-            return <span className="balance">(<span className="balance-positive">+{ diff }</span>)</span>;
+            return <span className="balance">(<span className="text-success">+{ diff }</span>)</span>;
         }
 
         if (diff < 0) {
-            return <span className="balance">(<span className="balance-negative">{ diff }</span>)</span>;
+            return <span className="balance">(<span className="text-danger">{ diff }</span>)</span>;
         }
 
-        return <span className="balance">(0)</span>;
+        return <span className="balance">(±0)</span>;
+    }
+
+    disabledBefore(money) {
+        if (this.props.arbiter.currentKingdom.money < money) {
+            return ' disabled';
+        }
+
+        return '';
     }
 
     render() {
@@ -51,21 +61,80 @@ export default class Selection extends Component {
         }
 
         return (
-            <div>
-                { kingdom.balance ? (
-                    <p>
-                        <small>Last capital: { kingdom.balance.lastCapital }</small><br />
-                        <small>Income: +{ kingdom.balance.income }</small><br />
-                        <small>Units: -{ kingdom.balance.maintenance }</small>
-                    </p>
-                ) : '' }
-                <p>
-                    Money: <b>{ kingdom.money }</b>
-                    &nbsp;
-                    { this.getBalanceDiff(kingdom.balance) }
-                </p>
-                <p><button onClick={ () => { this.buyUnit(); } }>Buy Unit ($10)</button></p>
-                <p><button onClick={ () => { this.buyTower(); } }>Buy Tower ($15)</button></p>
+            <div className="kingdom-menu">
+                <h3 className="card-header d-none d-md-block">Kingdom menu</h3>
+                <div className="card-body">
+                    <div className="row">
+                        <div className="col-4 col-md-6">
+                            <p className="money-display h5">
+                                <img
+                                    src={Themes.getImageForMoney(kingdom.money)}
+                                    className="d-none d-sm-inline"
+                                    alt="gold"
+                                />
+                                &nbsp;
+                                <b>{ kingdom.money }</b>
+                                &nbsp;
+                                { this.getBalanceDiff(kingdom.balance) }
+                            </p>
+
+                            { kingdom.balance ? (
+                                <p className="d-none d-md-block">
+                                    Last turn: { kingdom.balance.lastCapital }<br />
+                                    Income: +{ kingdom.balance.income }<br />
+                                    Units: -{ kingdom.balance.maintenance }
+                                </p>
+                            ) : '' }
+                        </div>
+                        <div className="col-2 col-md-6">
+                            <h4 className="card-title d-none d-md-block text-center">Selection</h4>
+                            <div className="selection-container d-block text-center">
+                                {!this.props.arbiter.selection ? '' :
+                                    <img
+                                        src={Themes.getImageFor(this.props.arbiter.selection)}
+                                        alt="selection"
+                                    />
+                                }
+                            </div>
+                        </div>
+                        <div className="col-6 col-md-12">
+                            <h4 className="card-title d-none d-md-block">Military</h4>
+                            <div className="inline-buttons">
+                                <button
+                                    className={"btn btn-success buy-unit" + this.disabledBefore(10)}
+                                    onClick={ () => { this.buyUnit(); } }>
+                                        <img
+                                            src={Themes.getImageFor(new Unit())}
+                                            alt="unit"
+                                        />
+                                        <span class="d-none d-sm-inline">
+                                            <img
+                                                src={Themes.getImageForMoney()}
+                                                alt="unit"
+                                            />
+                                            10
+                                        </span>
+                                </button>
+                                <button
+                                    className={"btn btn-success buy-tower" + this.disabledBefore(15)}
+                                    onClick={ () => { this.buyTower(); } }>
+                                        <img
+                                            src={Themes.getImageFor(new Tower())}
+                                            alt="tower"
+                                        />
+                                        <span class="d-none d-sm-inline">
+                                            <img
+                                                src={Themes.getImageForMoney()}
+                                                alt="unit"
+                                            />
+                                            15
+                                        </span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         );
     }

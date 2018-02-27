@@ -3,57 +3,39 @@ html, body, #root, .App {
 }
 #grid {
     height: 100%;
-    position: relative;
-    z-index: 5;
 }
-#selection, #kingdom-menu, #turn-menu {
-    position: fixed;
-    z-index: 10;
+
+.App {
+    display: flex;
 }
-#selection {
-    right: 50%;
-    top: 20%;
-}
-#kingdom-menu {
-    top: 0;
-    right: 0;
-}
-#turn-menu {
-    bottom: 0;
-    left: 0;
+.card-menu, #grid {
+    flex: auto;
 }
 
 svg g .hex {
     fill: #3F51B5;
 }
 svg g .hex.color-0 {
-    fill: #352FB2;
+    fill: #c82333; /* danger */
 }
 svg g .hex.color-1 {
-    fill: #FFA876;
+    fill: #28a745; /* success */
 }
 svg g .hex.color-2 {
-    fill: #4FCC35;
+    fill: #e0a800; /* warning */
 }
 svg g .hex.color-3 {
-    fill: #2CB2B2;
+    fill: #868e96; /* text-muted */
 }
 svg g .hex.color-4 {
-    fill: #FF72D8;
+    fill: #138496; /* info */
 }
 svg g .hex.color-5 {
-    fill: #CCB332;
+    fill: #424242; /* secondary */
 }
 
 svg g .hex.highlight {
     fill-opacity: 0.6;
-}
-
-.balance-positive {
-    color: #4FCC35;
-}
-.balance-negative {
-    color: #FF7588;
 }
 
 .unit.has-move {
@@ -64,4 +46,79 @@ svg g .hex.highlight {
  0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
  40% {transform: translateY(-8px);}
  60% {transform: translateY(-4px);}
+}
+
+.inline-buttons {
+    display: flex;
+}
+.inline-buttons button {
+    flex: auto;
+    margin: 0 0.6125rem;
+}
+.inline-buttons button:first-child {
+    margin-left: 0;
+}
+.inline-buttons button:last-child {
+    margin-right: 0;
+}
+
+.card {
+    border: none;
+    border-radius: 0;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+.card-header {
+    border: 0;
+}
+.card-menu-small, .card-menu-large {
+    position: fixed;
+    z-index: 5000;
+}
+.card-menu-small-kingdom {
+    top: 0;
+    width: 100%;
+}
+.card-menu-small-game {
+    bottom: 0;
+    width: 100%;
+}
+@media (max-width: 767px) { /* md */
+    .card-body {
+        padding: 0.8em;
+    }
+    .inline-buttons button {
+        margin: 0 0.4rem;
+    }
+}
+.card-menu-large {
+    right: 0;
+    top: 0;
+    width: 20em;
+    height: 100%;
+}
+@media (min-width: 992px) { /* lg */
+    .card-menu-large {
+        width: 24em;
+    }
+}
+@media (min-width: 1200px) { /* xl */
+    .card-menu-large {
+        width: 28em;
+    }
+}
+.card-menu-large .game-menu {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+.kingdom-menu .selection-container {
+    height: 40px;
+}
+.money-display {
+    font-size: 1.125em;
+}
+@media (min-width: 576px) { /* sm */
+    .money-display {
+        font-size: 1.5em;
+    }
 }
