@@ -65,9 +65,14 @@ export default class KingdomMenu extends Component {
                 <h3 className="card-header d-none d-md-block">Kingdom menu</h3>
                 <div className="card-body">
                     <div className="row">
-                        <div className="col-4 col-md-12">
-                            <p className="h5">
-                                <span className="d-none d-md-inline">Money:</span>
+                        <div className="col-4 col-md-6">
+                            <p className="money-display h5">
+                                <img
+                                    src={Themes.getImageForMoney(kingdom.money)}
+                                    className="d-none d-sm-inline"
+                                    alt="gold"
+                                />
+                                &nbsp;
                                 <b>{ kingdom.money }</b>
                                 &nbsp;
                                 { this.getBalanceDiff(kingdom.balance) }
@@ -81,8 +86,8 @@ export default class KingdomMenu extends Component {
                                 </p>
                             ) : '' }
                         </div>
-                        <div className="col-2 col-md-12">
-                            <h4 className="card-title d-none d-md-block">Selection</h4>
+                        <div className="col-2 col-md-6">
+                            <h4 className="card-title d-none d-md-block text-center">Selection</h4>
                             <div className="selection-container d-block text-center">
                                 {!this.props.arbiter.selection ? '' :
                                     <img
@@ -102,6 +107,13 @@ export default class KingdomMenu extends Component {
                                             src={Themes.getImageFor(new Unit())}
                                             alt="unit"
                                         />
+                                        <span class="d-none d-sm-inline">
+                                            <img
+                                                src={Themes.getImageForMoney()}
+                                                alt="unit"
+                                            />
+                                            10
+                                        </span>
                                 </button>
                                 <button
                                     className={"btn btn-success buy-tower" + this.disabledBefore(15)}
@@ -110,6 +122,13 @@ export default class KingdomMenu extends Component {
                                             src={Themes.getImageFor(new Tower())}
                                             alt="tower"
                                         />
+                                        <span class="d-none d-sm-inline">
+                                            <img
+                                                src={Themes.getImageForMoney()}
+                                                alt="unit"
+                                            />
+                                            15
+                                        </span>
                                 </button>
                             </div>
                         </div>

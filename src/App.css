@@ -3,8 +3,13 @@ html, body, #root, .App {
 }
 #grid {
     height: 100%;
-    position: relative;
-    z-index: 5;
+}
+
+.App {
+    display: flex;
+}
+.card-menu, #grid {
+    flex: auto;
 }
 
 svg g .hex {
@@ -88,8 +93,18 @@ svg g .hex.highlight {
 .card-menu-large {
     right: 0;
     top: 0;
-    width: 24em;
+    width: 20em;
     height: 100%;
+}
+@media (min-width: 992px) { /* lg */
+    .card-menu-large {
+        width: 24em;
+    }
+}
+@media (min-width: 1200px) { /* xl */
+    .card-menu-large {
+        width: 28em;
+    }
 }
 .card-menu-large .game-menu {
     position: absolute;
@@ -98,4 +113,12 @@ svg g .hex.highlight {
 }
 .kingdom-menu .selection-container {
     height: 40px;
+}
+.money-display {
+    font-size: 1.125em;
+}
+@media (min-width: 576px) { /* sm */
+    .money-display {
+        font-size: 1.5em;
+    }
 }

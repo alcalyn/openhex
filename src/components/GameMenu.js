@@ -30,9 +30,8 @@ export default class GameMenu extends Component {
 
         return (
             <div className="game-menu">
-                <h3 className="card-header d-none d-md-block">Game menu</h3>
+                <h3 className="card-header d-none d-md-block">Turn { arbiter.world.turn + 1 }</h3>
                 <div className="card-body">
-                    <p className="d-none d-md-inline">Turn number: { arbiter.world.turn + 1 }</p>
                     <div className="inline-buttons">
                         <button
                             className={ "btn btn-outline-primary" + this.enabledIf(arbiter.hasUndo()) }
