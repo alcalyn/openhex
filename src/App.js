@@ -2,7 +2,7 @@ import { AutoSizer } from 'react-virtualized';
 import {ReactSVGPanZoom} from 'react-svg-pan-zoom';
 import React, { Component } from 'react';
 import { HexGrid, Layout } from 'react-hexgrid';
-import { WorldGenerator, Hex, Unit, Arbiter } from './engine';
+import { WorldGenerator, Arbiter } from './engine';
 import { KingdomMenu, HexCell, GameMenu } from './components';
 import './bootstrap4-sketchy.min.css';
 import './App.css';
