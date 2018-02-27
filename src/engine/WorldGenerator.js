@@ -19,7 +19,7 @@ export default class WorldGenerator {
      *
      * @returns {World}
      */
-    static generate(seed = null, size = 18, config = WorldConfig()) {
+    static generate(seed = null, size = 14, config = WorldConfig()) {
         config.random = seedrandom(seed);
 
         const worldHexsLength = Math.floor((size * 8) / config.players.length) * config.players.length;
