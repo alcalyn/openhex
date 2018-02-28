@@ -13,6 +13,7 @@ import Tree from './Tree';
 import TreeUtils from './TreeUtils';
 import Unit from './Unit';
 import World from './World';
+import WorldConfig from './WorldConfig';
 import WorldGenerator from './WorldGenerator';
 
 export {
@@ -31,5 +32,6 @@ export {
     TreeUtils,
     Unit,
     World,
+    WorldConfig,
     WorldGenerator,
 };

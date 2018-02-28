@@ -350,6 +350,47 @@ export default class HexUtils extends HexUtilsBase {
         ;
     }
 
+    /**
+     * Returns all coords that is neighbour to a region of hexs.
+     *
+     * @param {Hex[]} hexs
+     *
+     * @returns {Hex[]} Coords of neighbours.
+     */
+    static getHexsAdjacentToHexs(hexs) {
+        const adjacentHexsMap = new Map();
+        const baseHexsMap = new Map();
+
+        hexs.forEach(hex => {
+            baseHexsMap.set(HexUtils.getID(hex), hex);
+        });
+
+        hexs.forEach(hex => {
+            this
+                .neighbours(hex)
+                .forEach(neighboursHex => {
+                    const neighboursHexId = HexUtils.getID(neighboursHex);
+
+                    if (baseHexsMap.has(neighboursHexId)) {
+                        return;
+                    }
+
+                    if (adjacentHexsMap.has(neighboursHexId)) {
+                        return;
+                    }
+
+                    adjacentHexsMap.set(neighboursHexId, neighboursHex);
+                })
+            ;
+        });
+
+        const adjacentHexs = [];
+
+        adjacentHexsMap.forEach(hex => adjacentHexs.push(hex));
+
+        return adjacentHexs;
+    }
+
     static getHexsAdjacentToKingdom(world, kingdom) {
         const adjacentHexs = [];
 

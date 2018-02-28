@@ -19,7 +19,7 @@ export default class TreeUtils {
     static spawnInitialTrees(world) {
         world.hexs
             .filter(hex => null === hex.entity)
-            .filter(() => world.random() < world.config.treesInitialSpawnProba)
+            .filter(() => world.config.random() < world.config.treesInitialSpawnProba)
             .forEach(hex => {
                 hex.entity = this.createTreeForHex(world, hex);
             })
@@ -74,16 +74,16 @@ export default class TreeUtils {
     static getProbabilityCoastalTreeSpawns(world) {
         const proba = this.proba(world, world.config.treesGrowMaxProbaCoastal);
 
-        return world.random() < proba;
+        return world.config.random() < proba;
     }
 
     static getProbabilityContinentalTreeSpawns(world) {
         const proba = this.proba(world, world.config.treesGrowMaxProbaContinental);
 
-        return world.random() < proba;
+        return world.config.random() < proba;
     }
 
     static proba(world, maxProba) {
-        return (1 - Math.E ** (-world.turn * world.config.treesGrowOverTime)) * maxProba / world.players.length;
+        return (1 - Math.E ** (-world.turn * world.config.treesGrowOverTime)) * maxProba / world.config.players.length;
     }
 }

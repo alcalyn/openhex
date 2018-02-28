@@ -1,4 +1,3 @@
-import seedrandom from 'seedrandom';
 import HexUtils from './HexUtils';
 import Unit from './Unit';
 import WorldConfig from './WorldConfig';
@@ -6,8 +5,7 @@ import WorldConfig from './WorldConfig';
 export default class World {
     static defaultConfig = WorldConfig;
 
-    constructor(players, hexs, config = { ...World.defaultConfig }) {
-        this.players = players;
+    constructor(hexs, config = { ...World.defaultConfig }) {
         this.hexs = hexs;
         this.config = {
             ...World.defaultConfig,
@@ -16,7 +14,6 @@ export default class World {
 
         this.kingdoms = [];
         this.turn = 0;
-        this.random = seedrandom(this.config.seed);
 
         this._initHexMap();
     }
