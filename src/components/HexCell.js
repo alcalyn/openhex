@@ -32,6 +32,10 @@ export default class HexCell extends Component {
             }
         }
 
+        if (this.props.warningEntity) {
+            classes.push('warning-entity');
+        }
+
         return classes.join(' ');
     }
 

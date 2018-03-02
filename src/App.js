@@ -19,6 +19,7 @@ class App extends Component {
         this.state = {
             world,
             selection: arbiter.selection,
+            warningEntities: [],
         };
 
         this.arbiter = arbiter;
@@ -27,13 +28,22 @@ class App extends Component {
     clickHex(hex) {
         console.log('hex', hex);
 
+        let warningEntities = [];
+
         try {
             this.arbiter.smartAction(hex);
 
         } catch (e) {
-            console.warn(e.message);
+            if ('illegal_move' !== e.type) {
+                console.error(e.message);
+            } else {
+                console.warn(e.message, e.warningEntities);
+
+                warningEntities = e.warningEntities;
+            }
         }
 
+        this.setState({ warningEntities });
         this.update();
     }
 
@@ -66,7 +76,7 @@ class App extends Component {
     }
 
     render() {
-        const { world } = this.state;
+        const { world, warningEntities, currentKingdom } = this.state;
 
         this.initView();
 
@@ -118,7 +128,8 @@ class App extends Component {
                                         { world.hexs.map((hex, i) => <HexCell
                                             key={i}
                                             hex={hex}
-                                            highlight={null !== hex.kingdom && hex.kingdom === this.state.currentKingdom}
+                                            highlight={null !== hex.kingdom && hex.kingdom === currentKingdom}
+                                            warningEntity={hex.entity && (-1 !== warningEntities.indexOf(hex.entity))}
                                             unitHasMove={this.hexUnitHasMove(hex)}
                                             onClick={() => { this.clickHex(hex); }}
                                         />) }

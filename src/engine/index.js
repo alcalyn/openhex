@@ -5,6 +5,7 @@ import Died from './Died';
 import Entity from './Entity';
 import Hex from './Hex';
 import HexUtils from './HexUtils';
+import IllegalMoveError from './IllegalMoveError';
 import Kingdom from './Kingdom';
 import LocalPlayer from './LocalPlayer';
 import Player from './Player';
@@ -24,6 +25,7 @@ export {
     Entity,
     Hex,
     HexUtils,
+    IllegalMoveError,
     Kingdom,
     LocalPlayer,
     Player,

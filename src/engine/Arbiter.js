@@ -5,6 +5,7 @@ import HexUtils from './HexUtils';
 import TreeUtils from './TreeUtils';
 import Died from './Died';
 import KingdomBalance from './KingdomBalance';
+import IllegalMoveError from './IllegalMoveError';
 
 export default class Arbiter {
     static UNIT_PRICE = 10;
@@ -97,7 +98,7 @@ export default class Arbiter {
 
     buyUnit() {
         if (this.currentKingdom.money < Arbiter.UNIT_PRICE) {
-            throw new Error('Not enough money');
+            throw new IllegalMoveError('Not enough money');
         }
 
         if (this.selection instanceof Unit && this.selection.level >= Arbiter.UNIT_MAX_LEVEL) {
@@ -151,6 +152,13 @@ export default class Arbiter {
         });
     }
 
+    /**
+     * Guess which action to do by giving a hex coords
+     *
+     * @param {Hex} coords
+     *
+     * @throws {Error}
+     */
     smartAction(coords) {
         const hex = this.world.getHexAt(coords);
 
@@ -316,7 +324,7 @@ export default class Arbiter {
         ;
 
         if (protectingUnits.length > 0) {
-            throw new Error('Cannot capture this hex, units protecting it');
+            throw new IllegalMoveError('Cannot capture this hex, units protecting it', protectingUnits);
         }
 
         const lastHexEntity = hex.entity;

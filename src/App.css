@@ -122,3 +122,7 @@ svg g .hex.highlight {
         font-size: 1.5em;
     }
 }
+
+.warning-entity {
+    filter: drop-shadow(0 0 2px red) contrast(200%);
+}
