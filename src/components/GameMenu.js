@@ -16,16 +16,6 @@ export default class GameMenu extends Component {
         this.props.updateCallback();
     }
 
-    redo() {
-        this.props.arbiter.redo();
-        this.props.updateCallback();
-    }
-
-    undoAll() {
-        this.props.arbiter.undoAll();
-        this.props.updateCallback();
-    }
-
     enabledIf(bool) {
         return !bool ? ' disabled' : '';
     }
