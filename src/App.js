@@ -3,7 +3,7 @@ import {ReactSVGPanZoom} from 'react-svg-pan-zoom';
 import React, { Component } from 'react';
 import { HexGrid, Layout } from 'react-hexgrid';
 import { WorldGenerator, Arbiter } from './engine';
-import { KingdomMenu, HexCell, GameMenu } from './components';
+import { Alerts, KingdomMenu, HexCell, GameMenu } from './components';
 import './bootstrap4-sketchy.min.css';
 import './App.css';
 
@@ -20,6 +20,7 @@ class App extends Component {
             world,
             selection: arbiter.selection,
             warningEntities: [],
+            alert: null,
         };
 
         this.arbiter = arbiter;
@@ -28,23 +29,53 @@ class App extends Component {
     clickHex(hex) {
         console.log('hex', hex);
 
-        let warningEntities = [];
-
         try {
             this.arbiter.smartAction(hex);
-
+            this.clearAlert();
+            this.update();
         } catch (e) {
-            if ('illegal_move' !== e.type) {
-                console.error(e.message);
-            } else {
-                console.warn(e.message, e.warningEntities);
+            this.handleArbiterError(e);
+        }
+    }
 
-                warningEntities = e.warningEntities;
-            }
+    displayAlert(alert, warningEntities = []) {
+        this.clearAlert();
+
+        this.alertThread = setTimeout(() => this.clearAlert(), 3000);
+
+        this.setState({
+            warningEntities,
+            alert,
+        });
+    }
+
+    clearAlert() {
+        if (this.alertThread) {
+            clearTimeout(this.alertThread);
         }
 
-        this.setState({ warningEntities });
-        this.update();
+        this.setState({
+            warningEntities: [],
+            alert: null,
+        });
+    }
+
+    /**
+     * Display an alert if arbiter returns a player error.
+     *
+     * @param {Error} e
+     */
+    handleArbiterError(e) {
+        if ('illegal_move' !== e.type) {
+            throw e;
+        }
+
+        const alert = {
+            level: 'danger',
+            message: e.message,
+        };
+
+        this.displayAlert(alert, e.warningEntities);
     }
 
     hexUnitHasMove(hex) {
@@ -76,22 +107,25 @@ class App extends Component {
     }
 
     render() {
-        const { world, warningEntities, currentKingdom } = this.state;
+        const { world, warningEntities, currentKingdom, alert } = this.state;
 
         this.initView();
 
         return (
             <div className={"App"}>
+                { alert ? <Alerts alerts={[alert]} /> : null }
                 <div className={"card card-menu d-md-none card-menu-small card-menu-small-kingdom"}>
                     <KingdomMenu
                         arbiter={this.arbiter}
                         onUpdate={() => { this.update(); }}
+                        handleArbiterError={ e => this.handleArbiterError(e) }
                     />
                 </div>
                 <div className={"card card-menu d-md-none card-menu-small card-menu-small-game"}>
                     <GameMenu
                         arbiter={this.arbiter}
                         updateCallback={() => this.update()}
+                        handleArbiterError={ e => this.handleArbiterError(e) }
                     />
                 </div>
 
@@ -99,10 +133,12 @@ class App extends Component {
                     <KingdomMenu
                         arbiter={this.arbiter}
                         onUpdate={() => { this.update(); }}
+                        handleArbiterError={ e => this.handleArbiterError(e) }
                     />
                     <GameMenu
                         arbiter={this.arbiter}
                         updateCallback={() => this.update()}
+                        handleArbiterError={ e => this.handleArbiterError(e) }
                     />
                 </div>
 

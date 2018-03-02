@@ -93,13 +93,8 @@ svg g .hex.highlight {
 .card-menu-large {
     right: 0;
     top: 0;
-    width: 20em;
+    width: 40%;
     height: 100%;
-}
-@media (min-width: 992px) { /* lg */
-    .card-menu-large {
-        width: 24em;
-    }
 }
 @media (min-width: 1200px) { /* xl */
     .card-menu-large {
@@ -125,4 +120,32 @@ svg g .hex.highlight {
 
 .warning-entity {
     filter: drop-shadow(0 0 2px red) contrast(200%);
+}
+
+.alerts-wrapper {
+    width: 100%;
+    position: fixed;
+    z-index: 10000;
+    margin-top: 6em;
+}
+@media (min-width: 768px) { /* md */
+    .alerts-wrapper {
+        width: 60%;
+        margin-top: 1em;
+    }
+}
+@media (min-width: 1200px) { /* xl */
+    .alerts-wrapper {
+        width: calc(100% - 28em);
+    }
+}
+.alerts {
+    width: 100%;
+    max-width: 42em;
+}
+.alerts .alert {
+    border: none;
+}
+.alerts .alert p {
+    margin: 0;
 }

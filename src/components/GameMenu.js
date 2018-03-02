@@ -2,7 +2,12 @@ import React, { Component } from 'react';
 
 export default class GameMenu extends Component {
     endTurn() {
-        this.props.arbiter.endTurn();
+        try {
+            this.props.arbiter.endTurn();
+        } catch (e) {
+            this.props.handleArbiterError(e);
+        }
+
         this.props.updateCallback();
     }
 

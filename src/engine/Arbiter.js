@@ -34,7 +34,7 @@ export default class Arbiter {
         this._checkPlayerSelected();
 
         if (kingdom && kingdom.player !== this.currentPlayer) {
-            throw new Error('Cannot select opponent kingdom');
+            throw new IllegalMoveError('Cannot select opponent kingdom');
         }
 
         const lastKingdom = this.currentKingdom;
@@ -57,19 +57,19 @@ export default class Arbiter {
         const hex = this.world.getHexAt(hexCoords);
 
         if (hex.kingdom !== this.currentKingdom) {
-            throw new Error('Cannot take unit from another kingdom');
+            throw new IllegalMoveError('Cannot take unit from another kingdom');
         }
 
         if (!hex.hasUnit()) {
-            throw new Error('There is no unit at theses coords');
+            throw new IllegalMoveError('There is no unit at theses coords');
         }
 
         if (hex.getUnit().played) {
-            throw new Error('This unit can no longer move this turn');
+            throw new IllegalMoveError('This unit can no longer move this turn');
         }
 
         if (null !== this.selection) {
-            throw new Error('There is already something selected');
+            throw new IllegalMoveError('There is already something selected');
         }
 
         this.selection = this.world.removeUnitAt(hexCoords);
@@ -102,7 +102,7 @@ export default class Arbiter {
         }
 
         if (this.selection instanceof Unit && this.selection.level >= Arbiter.UNIT_MAX_LEVEL) {
-            throw new Error('Cannot upgrade selectionned unit, already max level');
+            throw new IllegalMoveError('Cannot upgrade selectionned unit, already max level');
         }
 
         if (this.selection instanceof Unit) {
@@ -131,11 +131,11 @@ export default class Arbiter {
 
     buyTower() {
         if (this.currentKingdom.money < Arbiter.TOWER_PRICE) {
-            throw new Error('Not enough money');
+            throw new IllegalMoveError('Not enough money');
         }
 
         if (null !== this.selection) {
-            throw new Error('Cannot buy tower, place selected entity first');
+            throw new IllegalMoveError('Cannot buy tower, place selected entity first');
         }
 
         this.currentKingdom.money -= Arbiter.TOWER_PRICE;
@@ -157,7 +157,7 @@ export default class Arbiter {
      *
      * @param {Hex} coords
      *
-     * @throws {Error}
+     * @throws {IllegalMoveError}
      */
     smartAction(coords) {
         const hex = this.world.getHexAt(coords);
@@ -184,7 +184,7 @@ export default class Arbiter {
                     this.placeAt(hex);
                 } else {
                     if (hex.kingdom.player === this.currentPlayer) {
-                        throw new Error('Cannot change kingdom while having a selected entity');
+                        throw new IllegalMoveError('Cannot change kingdom while having a selected entity');
                     } else {
                         this.placeAt(hex);
                     }
@@ -197,7 +197,7 @@ export default class Arbiter {
 
     endTurn() {
         if (this.selection) {
-            throw new Error('Cannot end turn while having selected an entity');
+            throw new IllegalMoveError('Cannot end turn while having selected an entity');
         }
 
         this._resetUnitsMove(this.currentPlayer);
@@ -316,7 +316,7 @@ export default class Arbiter {
         const undoCallbacks = [];
 
         if (!HexUtils.isHexAdjacentKingdom(this.world, hex, this.currentKingdom)) {
-            throw new Error('Cannot capture this hex, too far of kingdom');
+            throw new IllegalMoveError('Cannot capture this hex, too far of kingdom');
         }
 
         const protectingUnits = HexUtils
@@ -413,16 +413,16 @@ export default class Arbiter {
 
     _placeUnitInsideKingdom(hex) {
         if (hex.hasTower()) {
-            throw new Error('Cannot place unit, there is a tower here');
+            throw new IllegalMoveError('Cannot place unit, there is a tower here');
         }
 
         if (hex.hasCapital()) {
-            throw new Error('Cannot place unit, there is the kingdom capital here');
+            throw new IllegalMoveError('Cannot place unit, there is the kingdom capital here', [hex.entity]);
         }
 
         if (hex.hasUnit()) {
             if ((hex.entity.level + this.selection.level) > Arbiter.UNIT_MAX_LEVEL) {
-                throw new Error('Cannot merge units as the sum of levels is too high');
+                throw new IllegalMoveError('Cannot merge units as the sum of levels is too high', [hex.entity]);
             }
 
             const lastSelection = this.selection;
@@ -461,11 +461,11 @@ export default class Arbiter {
 
     _placeTowerAt(hex) {
         if (hex.kingdom !== this.currentKingdom) {
-            throw new Error('Must place tower inside current kingdom');
+            throw new IllegalMoveError('Must place tower inside current kingdom');
         }
 
         if (hex.entity !== null) {
-            throw new Error('Must place tower on empty hex');
+            throw new IllegalMoveError('Must place tower on empty hex', [hex.entity]);
         }
 
         hex.entity = this.selection;
@@ -492,7 +492,7 @@ export default class Arbiter {
         this._checkPlayerSelected();
 
         if (null === this.currentKingdom) {
-            throw new Error('A kingdom must be selected');
+            throw new IllegalMoveError('A kingdom must be selected');
         }
     }
 }

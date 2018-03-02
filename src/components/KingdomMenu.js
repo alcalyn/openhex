@@ -11,7 +11,7 @@ export default class KingdomMenu extends Component {
                 this.props.onUpdate();
             }
         } catch (e) {
-            console.warn(e.message);
+            this.props.handleArbiterError(e);
         }
     }
 
@@ -23,7 +23,7 @@ export default class KingdomMenu extends Component {
                 this.props.onUpdate();
             }
         } catch (e) {
-            console.warn(e.message);
+            this.props.handleArbiterError(e);
         }
     }
 
@@ -47,7 +47,7 @@ export default class KingdomMenu extends Component {
 
     disabledBefore(money) {
         if (this.props.arbiter.currentKingdom.money < money) {
-            return ' disabled';
+            return ' disabled text-danger';
         }
 
         return '';
