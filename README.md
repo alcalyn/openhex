@@ -1,5 +1,7 @@
 # OpenHex
 
+[![Build Status](https://travis-ci.org/alcalyn/openhex.svg?branch=master)](https://travis-ci.org/alcalyn/openhex)
+
 HTML5 game inspired by Slay.
 
 Demo here: https://alcalyn.github.io/openhex/
