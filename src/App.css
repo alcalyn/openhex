@@ -34,12 +34,24 @@ svg g .hex.color-5 {
     fill: #424242; /* secondary */
 }
 
-svg g .hex.highlight {
-    fill-opacity: 0.6;
+svg .all-hexs {
+    filter: drop-shadow(0 0 4px #000);
+}
+svg .selected-kingdom {
+    filter: drop-shadow(0 0 4px #000);
 }
 
+svg .hex-clickable {
+    cursor: pointer;
+}
 .unit.has-move {
     animation: bounce 1s infinite;
+    cursor: grab;
+}
+.has-selection,
+.has-selection .unit.has-move,
+.has-selection .hex-clickable {
+    cursor: grabbing;
 }
 
 @keyframes bounce {

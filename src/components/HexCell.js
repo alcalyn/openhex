@@ -18,6 +18,10 @@ export default class HexCell extends Component {
             classes.push('highlight');
         }
 
+        if (this.props.clickable) {
+            classes.push('hex-clickable');
+        }
+
         return classes.join(' ');
     }
 

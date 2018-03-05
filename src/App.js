@@ -106,6 +106,10 @@ class App extends Component {
         }
     }
 
+    isHexSelected(hex) {
+        return null !== hex.kingdom && hex.kingdom === this.state.currentKingdom;
+    }
+
     render() {
         const { world, warningEntities, currentKingdom, alert } = this.state;
 
@@ -142,7 +146,7 @@ class App extends Component {
                     />
                 </div>
 
-                <div id="grid">
+                <div id="grid" className={this.state.selection ? 'has-selection' : ''}>
 
                     <AutoSizer>
                         {(({width, height}) => width === 0 || height === 0 ? null : (
@@ -160,15 +164,30 @@ class App extends Component {
                                 disableDoubleClickZoomWithToolAuto={true}
                             >
                                 <HexGrid id="grid" width={400} height={400}>
-                                    <Layout size={{ x: 20, y: 20 }} spacing={1.06}>
-                                        { world.hexs.map((hex, i) => <HexCell
-                                            key={i}
-                                            hex={hex}
-                                            highlight={null !== hex.kingdom && hex.kingdom === currentKingdom}
-                                            warningEntity={hex.entity && (-1 !== warningEntities.indexOf(hex.entity))}
-                                            unitHasMove={this.hexUnitHasMove(hex)}
-                                            onClick={() => { this.clickHex(hex); }}
-                                        />) }
+                                    <Layout size={{ x: 20, y: 20 }} spacing={1.0}>
+                                        <g className={'all-hexs'}>
+                                            { world.hexs.map((hex, i) => <HexCell
+                                                key={i}
+                                                hex={hex}
+                                                highlight={this.isHexSelected(hex)}
+                                                clickable={hex.kingdom && hex.player === this.arbiter.currentPlayer}
+                                                warningEntity={hex.entity && (-1 !== warningEntities.indexOf(hex.entity))}
+                                                unitHasMove={this.hexUnitHasMove(hex)}
+                                                onClick={() => { this.clickHex(hex); }}
+                                            />) }
+                                            <g class="selected-kingdom">
+                                                { currentKingdom ? (
+                                                    currentKingdom.hexs.map((hex, i) => <HexCell
+                                                        key={i}
+                                                        hex={hex}
+                                                        highlight={this.isHexSelected(hex)}
+                                                        warningEntity={hex.entity && (-1 !== warningEntities.indexOf(hex.entity))}
+                                                        unitHasMove={this.hexUnitHasMove(hex)}
+                                                        onClick={() => { this.clickHex(hex); }}
+                                                    />)
+                                                ) : ''}
+                                            </g>
+                                        </g>
                                     </Layout>
                                 </HexGrid>
                             </ReactSVGPanZoom>
