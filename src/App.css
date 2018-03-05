@@ -34,9 +34,6 @@ svg g .hex.color-5 {
     fill: #424242; /* secondary */
 }
 
-svg .all-hexs {
-    filter: drop-shadow(0 0 4px #000);
-}
 svg .selected-kingdom {
     filter: drop-shadow(0 0 4px #000);
 }
