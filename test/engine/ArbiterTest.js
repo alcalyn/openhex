@@ -281,6 +281,19 @@ describe('Arbiter', () => {
             expect(world.getKingdomAt(new Hex(-2, 3, -1))).to.be.null;
             expect(world.getKingdomAt(new Hex(-1, 2, -1))).to.be.equal(kingdom);
         });
+
+        it('always keep the current kingdom selected after having merge two of my kingdoms', () => {
+            const world = generateTestWorld('constant-seed-9');
+
+            const arbiter = new Arbiter(world);
+            const kingdom = world.getKingdomAt(new Hex(-1, 0, 1));
+            arbiter.setCurrentPlayer(kingdom.player);
+            arbiter.setCurrentKingdom(kingdom);
+            arbiter.selection = new Unit();
+
+            // TODO
+            expect(false).to.be.true;
+        });
     });
 
     describe('takeUnitAt and placeAt', () => {
@@ -511,6 +524,23 @@ describe('Arbiter', () => {
 
             expect(world.getKingdomAt(new Hex(2, -2, 0))).to.be.equal(kingdom);
             kingdom.hexs.should.have.lengthOf(6);
+        });
+
+        it('selects kingdom even if I click on a hex with an unit that has already moved this turn', () => {
+            const world = generateTestWorld('constant-seed-2');
+
+            const arbiter = new Arbiter(world);
+            const kingdom = world.getKingdomAt(new Hex(2, -2, 0));
+            arbiter.setCurrentPlayer(kingdom.player);
+            arbiter.setCurrentKingdom(kingdom);
+
+            const movedUnit = new Unit();
+            movedUnit.played = true;
+            world.setEntityAt(new Hex(3, -1, -2), movedUnit);
+
+            arbiter.smartAction(new Hex(3, -1, -2));
+
+            arbiter.currentKingdom.should.be.equal(world.getKingdomAt(new Hex(3, -1, -2)));
         });
     });
 

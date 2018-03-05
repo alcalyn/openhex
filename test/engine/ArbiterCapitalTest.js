@@ -119,6 +119,18 @@ describe('Arbiter', () => {
                 expect(() => { arbiter.placeAt(new Hex(2, 0, -2)); }).to.throw('Must place tower on empty hex');
             });
 
+            it('cannot buy unit if a tower is in selection', () => {
+                const world = generateTestWorld('constant-seed-5');
+
+                const arbiter = new Arbiter(world);
+                const kingdom = world.getKingdomAt(new Hex(2, -1, -1));
+                arbiter.setCurrentPlayer(kingdom.player);
+                arbiter.setCurrentKingdom(kingdom);
+                arbiter.selection = new Tower();
+
+                expect(() => { arbiter.buyUnit(); }).to.throw('Cannot buy unit, place selected entity first');
+            });
+
             it('removes the capital of the weakest kingdom when merged to a stronger one', () => {
                 const world = generateTestWorld('constant-seed-5');
 
