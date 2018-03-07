@@ -1,0 +1,32 @@
+{
+    "cannot_select": {
+        "not_your_kingdom": "Cannot select enemy kingdom.",
+        "not_in_current_kingdom": "You tried to take an unit which is not in the currently selected kingdom. Select the unit kingdom first.",
+        "no_unit_here": "You tried to take an unit on a hex, but there is no unit on this hex.",
+        "already_played": "You tried to take an unit that has already played this turn. You will be able to select this unit on next turn.",
+        "selection_not_empty": "You tried to take an unit from map, but you have already an unit in your selection. Place your selected unit first."
+    },
+    "cannot_buy_unit": {
+        "not_enough_money": "You tried to buy or upgrade an unit, but you have only {{playerMoney}} gold, and an unit costs {{unitPrice}}.",
+        "already_max_level": "You tried to upgrade the unit you have in selection, but this unit has already reached the max level. You may upgrade another unit, or buy a new one."
+    },
+    "cannot_buy_tower": {
+        "not_enough_money": "You tried to buy a tower, but you have only {{playerMoney}} gold, and an unit costs {{towerPrice}}.",
+        "selection_not_empty": "You tried to buy a tower, but your selection is not empty. Place your selected entity first."
+    },
+    "cannot_change_kingdom_selection_not_empty": "You tried to select another kingdom, but you have an entity from the current kingdom in selection. Place it first before changing kingdom.",
+    "cannot_end_turn_selection_not_empty": "You tried to terminate your turn, but you still have a selected entity. Place it first.",
+    "cannot_capture": {
+        "hex_not_adjacent": "You tried to capture a hex, but this hex is too far from your kingdom. You can only capture hex adjacent to your kingdom.",
+        "hex_protected": "You tried to capture an enemy hex, but this one is protected by enemy. Use a stronger unit or capture another hex."
+    },
+    "cannot_place_unit": {
+        "blocked_by_tower": "You tried to place your selected unit on a tower.",
+        "blocked_by_capital": "You tried to place your selected unit on the kingdom capital.",
+        "sum_of_merged_unit_level_overflow": "You tried to merge your selected unit with another unit, but the sum of both units level is more than the max level."
+    },
+    "cannot_place_tower": {
+        "hex_outside_of_current_kingdom": "You tried to place your selected tower outside of your kingdom, but you can only place tower inside.",
+        "hex_not_empty": "You tried to pace your selected tower on a non-empty hex. You must place it on an empty hex."
+    }
+}

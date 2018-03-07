@@ -1,9 +1,11 @@
+import i18next from 'i18next';
 import { AutoSizer } from 'react-virtualized';
 import {ReactSVGPanZoom} from 'react-svg-pan-zoom';
 import React, { Component } from 'react';
 import { HexGrid, Layout } from 'react-hexgrid';
 import { WorldGenerator, Arbiter } from './engine';
 import { Alerts, KingdomMenu, HexCell, GameMenu } from './components';
+import './locales';
 import './bootstrap4-sketchy.min.css';
 import './App.css';
 
@@ -41,7 +43,7 @@ class App extends Component {
     displayAlert(alert, warningEntities = []) {
         this.clearAlert();
 
-        this.alertThread = setTimeout(() => this.clearAlert(), 3000);
+        this.alertThread = setTimeout(() => this.clearAlert(), 10000);
 
         this.setState({
             warningEntities,
@@ -72,7 +74,7 @@ class App extends Component {
 
         const alert = {
             level: 'danger',
-            message: e.message,
+            message: i18next.t(e.message, e.context),
         };
 
         this.displayAlert(alert, e.warningEntities);

@@ -34,7 +34,7 @@ export default class Arbiter {
         this._checkPlayerSelected();
 
         if (kingdom && kingdom.player !== this.currentPlayer) {
-            throw new IllegalMoveError('Cannot select opponent kingdom');
+            throw new IllegalMoveError('cannot_select.not_your_kingdom');
         }
 
         const lastKingdom = this.currentKingdom;
@@ -57,19 +57,19 @@ export default class Arbiter {
         const hex = this.world.getHexAt(hexCoords);
 
         if (hex.kingdom !== this.currentKingdom) {
-            throw new IllegalMoveError('Cannot take unit from another kingdom');
+            throw new IllegalMoveError('cannot_select.not_in_current_kingdom');
         }
 
         if (!hex.hasUnit()) {
-            throw new IllegalMoveError('There is no unit at theses coords');
+            throw new IllegalMoveError('cannot_select.no_unit_here');
         }
 
         if (hex.getUnit().played) {
-            throw new IllegalMoveError('This unit can no longer move this turn');
+            throw new IllegalMoveError('cannot_select.already_played');
         }
 
         if (null !== this.selection) {
-            throw new IllegalMoveError('There is already something selected');
+            throw new IllegalMoveError('cannot_select.selection_not_empty');
         }
 
         this.selection = this.world.removeUnitAt(hexCoords);
@@ -98,11 +98,14 @@ export default class Arbiter {
 
     buyUnit() {
         if (this.currentKingdom.money < Arbiter.UNIT_PRICE) {
-            throw new IllegalMoveError('Not enough money');
+            throw new IllegalMoveError('cannot_buy_unit.not_enough_money', [], {
+                playerMoney: this.currentKingdom.money,
+                unitPrice: Arbiter.UNIT_PRICE,
+            });
         }
 
         if (this.selection instanceof Unit && this.selection.level >= Arbiter.UNIT_MAX_LEVEL) {
-            throw new IllegalMoveError('Cannot upgrade selectionned unit, already max level');
+            throw new IllegalMoveError('cannot_buy_unit.already_max_level');
         }
 
         if (this.selection instanceof Unit) {
@@ -131,11 +134,14 @@ export default class Arbiter {
 
     buyTower() {
         if (this.currentKingdom.money < Arbiter.TOWER_PRICE) {
-            throw new IllegalMoveError('Not enough money');
+            throw new IllegalMoveError('cannot_buy_tower.not_enough_money', [], {
+                playerMoney: this.currentKingdom.money,
+                towerPrice: Arbiter.TOWER_PRICE,
+            });
         }
 
         if (null !== this.selection) {
-            throw new IllegalMoveError('Cannot buy tower, place selected entity first');
+            throw new IllegalMoveError('cannot_buy_tower.selection_not_empty');
         }
 
         this.currentKingdom.money -= Arbiter.TOWER_PRICE;
@@ -184,7 +190,7 @@ export default class Arbiter {
                     this.placeAt(hex);
                 } else {
                     if (hex.kingdom.player === this.currentPlayer) {
-                        throw new IllegalMoveError('Cannot change kingdom while having a selected entity');
+                        throw new IllegalMoveError('cannot_change_kingdom_selection_not_empty');
                     } else {
                         this.placeAt(hex);
                     }
@@ -197,7 +203,7 @@ export default class Arbiter {
 
     endTurn() {
         if (this.selection) {
-            throw new IllegalMoveError('Cannot end turn while having selected an entity');
+            throw new IllegalMoveError('cannot_end_turn_selection_not_empty');
         }
 
         this._resetUnitsMove(this.currentPlayer);
@@ -316,7 +322,7 @@ export default class Arbiter {
         const undoCallbacks = [];
 
         if (!HexUtils.isHexAdjacentKingdom(this.world, hex, this.currentKingdom)) {
-            throw new IllegalMoveError('Cannot capture this hex, too far of kingdom');
+            throw new IllegalMoveError('cannot_capture.hex_not_adjacent');
         }
 
         const protectingUnits = HexUtils
@@ -324,7 +330,7 @@ export default class Arbiter {
         ;
 
         if (protectingUnits.length > 0) {
-            throw new IllegalMoveError('Cannot capture this hex, units protecting it', protectingUnits);
+            throw new IllegalMoveError('cannot_capture.hex_protected', protectingUnits);
         }
 
         const lastHexEntity = hex.entity;
@@ -413,16 +419,16 @@ export default class Arbiter {
 
     _placeUnitInsideKingdom(hex) {
         if (hex.hasTower()) {
-            throw new IllegalMoveError('Cannot place unit, there is a tower here');
+            throw new IllegalMoveError('cannot_place_unit.blocked_by_tower');
         }
 
         if (hex.hasCapital()) {
-            throw new IllegalMoveError('Cannot place unit, there is the kingdom capital here', [hex.entity]);
+            throw new IllegalMoveError('cannot_place_unit.blocked_by_capital', [hex.entity]);
         }
 
         if (hex.hasUnit()) {
             if ((hex.entity.level + this.selection.level) > Arbiter.UNIT_MAX_LEVEL) {
-                throw new IllegalMoveError('Cannot merge units as the sum of levels is too high', [hex.entity]);
+                throw new IllegalMoveError('cannot_place_unit.sum_of_merged_unit_level_overflow', [hex.entity]);
             }
 
             const lastSelection = this.selection;
@@ -461,11 +467,11 @@ export default class Arbiter {
 
     _placeTowerAt(hex) {
         if (hex.kingdom !== this.currentKingdom) {
-            throw new IllegalMoveError('Must place tower inside current kingdom');
+            throw new IllegalMoveError('cannot_place_tower.hex_outside_of_current_kingdom');
         }
 
         if (hex.entity !== null) {
-            throw new IllegalMoveError('Must place tower on empty hex', [hex.entity]);
+            throw new IllegalMoveError('cannot_place_tower.hex_not_empty', [hex.entity]);
         }
 
         hex.entity = this.selection;
@@ -492,7 +498,7 @@ export default class Arbiter {
         this._checkPlayerSelected();
 
         if (null === this.currentKingdom) {
-            throw new IllegalMoveError('A kingdom must be selected');
+            throw new Error('A kingdom must be selected');
         }
     }
 }
