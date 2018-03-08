@@ -1,7 +1,7 @@
 {
     "cannot_select": {
         "not_your_kingdom": "Vous ne pouvez pas selectionner le royaume de l'ennemi.",
-        "not_in_current_kingdom": "",
+        "not_in_current_kingdom": "Vous avez essayé de prendre une unité qui n'est pas dans le royaume actuel. Sélectionnez l'autre royaume d'abord.",
         "no_unit_here": "",
         "already_played": "",
         "selection_not_empty": ""
