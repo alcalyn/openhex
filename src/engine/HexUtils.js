@@ -85,7 +85,7 @@ export default class HexUtils extends HexUtilsBase {
                 if (null === hex.kingdom) {
                     singleHexs.push(hex);
                 } else {
-                    if (hex.kingdom !== capturingKingdom) {
+                    if (!alliedKingdoms.includes(hex.kingdom)) {
                         alliedKingdoms.push(hex.kingdom);
                     }
                 }
