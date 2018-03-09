@@ -128,7 +128,7 @@ describe('Arbiter', () => {
                 arbiter.setCurrentKingdom(kingdom);
                 arbiter.selection = new Tower();
 
-                expect(() => { arbiter.buyUnit(); }).to.throw('Cannot buy unit, place selected entity first');
+                expect(() => { arbiter.buyUnit(); }).to.throw('cannot_buy_unit.selection_not_empty');
             });
 
             it('removes the capital of the weakest kingdom when merged to a stronger one', () => {

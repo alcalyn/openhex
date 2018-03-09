@@ -8,7 +8,8 @@
     },
     "cannot_buy_unit": {
         "not_enough_money": "",
-        "already_max_level": ""
+        "already_max_level": "",
+        "selection_not_empty": ""
     },
     "cannot_buy_tower": {
         "not_enough_money": "",

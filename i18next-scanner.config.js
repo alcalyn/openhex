@@ -17,7 +17,7 @@ module.exports = {
         ],
         defaultLng: 'en',
         defaultNs: 'translation',
-        defaultValue: (lng, ns, key) => key,
+        defaultValue: (lng, ns, key) => '',
         resource: {
             loadPath: 'src/engine/locales/{{lng}}.json',
             savePath: 'src/engine/locales/{{lng}}.json',

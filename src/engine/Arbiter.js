@@ -104,6 +104,10 @@ export default class Arbiter {
             });
         }
 
+        if (this.selection instanceof Tower) {
+            throw new IllegalMoveError('cannot_buy_unit.selection_not_empty');
+        }
+
         if (this.selection instanceof Unit && this.selection.level >= Arbiter.UNIT_MAX_LEVEL) {
             throw new IllegalMoveError('cannot_buy_unit.already_max_level');
         }
@@ -178,7 +182,7 @@ export default class Arbiter {
                     if (hex.kingdom.player === this.currentPlayer) {
                         this.setCurrentKingdom(hex.kingdom);
 
-                        if (hex.hasUnit()) {
+                        if (hex.hasUnit() && !hex.entity.played) {
                             this.takeUnitAt(hex);
                         }
                     }

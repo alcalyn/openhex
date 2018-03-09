@@ -8,7 +8,8 @@
     },
     "cannot_buy_unit": {
         "not_enough_money": "Vous n'avez pas assez d'argent pour acheter une unité. Ca coûte {{unitPrice}} pièces d'or et vous n'en n'avez que {{playerMoney}}.",
-        "already_max_level": ""
+        "already_max_level": "",
+        "selection_not_empty": ""
     },
     "cannot_buy_tower": {
         "not_enough_money": "",

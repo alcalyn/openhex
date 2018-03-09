@@ -282,17 +282,27 @@ describe('Arbiter', () => {
             expect(world.getKingdomAt(new Hex(-1, 2, -1))).to.be.equal(kingdom);
         });
 
-        it('always keep the current kingdom selected after having merge two of my kingdoms', () => {
+        it('always keep the current kingdom selected when merging current kingdom to a bigger one', () => {
             const world = generateTestWorld('constant-seed-9');
 
             const arbiter = new Arbiter(world);
             const kingdom = world.getKingdomAt(new Hex(-1, 0, 1));
+            const biggerKingdom = world.getKingdomAt(new Hex(-1, -3, 4));
             arbiter.setCurrentPlayer(kingdom.player);
             arbiter.setCurrentKingdom(kingdom);
             arbiter.selection = new Unit();
 
-            // TODO
-            expect(false).to.be.true;
+            kingdom.money.should.equal(10);
+            biggerKingdom.money.should.equal(20);
+            expect(world.getKingdomAt(new Hex(-1, -1, 2))).to.be.null;
+
+            arbiter.placeAt(new Hex(-1, -1, 2));
+
+            biggerKingdom.money.should.equal(30);
+            biggerKingdom.hexs.should.have.lengthOf(7);
+            expect(world.getKingdomAt(new Hex(-1, -3, 4))).to.be.equal(biggerKingdom);
+            expect(world.getKingdomAt(new Hex(-1, -1, 2))).to.be.equal(biggerKingdom);
+            expect(world.getKingdomAt(new Hex(-1, 0, 1))).to.be.equal(biggerKingdom);
         });
     });
 
