@@ -17,7 +17,7 @@ describe('Arbiter', () => {
                 arbiter.setCurrentKingdom(kingdom);
                 arbiter.selection = new Unit();
 
-                expect(() => { arbiter.placeAt(new Hex(2, 0, -2)); }).to.throw(/not place unit/);
+                expect(() => { arbiter.placeAt(new Hex(2, 0, -2)); }).to.throw('cannot_place_unit.blocked_by_capital');
             });
 
             it('cannot capture an ennemy capital with a level 1 unit', () => {
@@ -29,7 +29,7 @@ describe('Arbiter', () => {
                 arbiter.setCurrentKingdom(kingdom);
                 arbiter.selection = new Unit();
 
-                expect(() => { arbiter.placeAt(new Hex(1, 1, -2)); }).to.throw(/not capture/);
+                expect(() => { arbiter.placeAt(new Hex(1, 1, -2)); }).to.throw('cannot_capture.hex_protected');
             });
 
             it('can capture an ennemy capital with a level 2 unit and rebuilt capital with 0 money', () => {
@@ -116,7 +116,7 @@ describe('Arbiter', () => {
                 arbiter.setCurrentKingdom(kingdom);
                 arbiter.selection = new Tower();
 
-                expect(() => { arbiter.placeAt(new Hex(2, 0, -2)); }).to.throw('Must place tower on empty hex');
+                expect(() => { arbiter.placeAt(new Hex(2, 0, -2)); }).to.throw('cannot_place_tower.hex_not_empty');
             });
 
             it('cannot buy unit if a tower is in selection', () => {

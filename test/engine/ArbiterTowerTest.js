@@ -18,7 +18,7 @@ describe('Arbiter', () => {
                 world.setEntityAt(new Hex(2, -1, -1), new Tower());
                 arbiter.selection = new Unit();
 
-                expect(() => { arbiter.placeAt(new Hex(2, -1, -1)); }).to.throw(/not place unit/);
+                expect(() => { arbiter.placeAt(new Hex(2, -1, -1)); }).to.throw('cannot_place_unit.blocked_by_tower');
             });
 
             it('cannot capture a hex with a tower', () => {
@@ -30,7 +30,7 @@ describe('Arbiter', () => {
                 arbiter.setCurrentKingdom(kingdom);
                 arbiter.selection = new Tower();
 
-                expect(() => { arbiter.placeAt(new Hex(2, 1, -3)); }).to.throw(/place tower inside current kingdom/);
+                expect(() => { arbiter.placeAt(new Hex(2, 1, -3)); }).to.throw('cannot_place_tower.hex_outside_of_current_kingdom');
             });
         });
 

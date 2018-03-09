@@ -109,7 +109,7 @@ describe('Arbiter', () => {
             expect(world.getKingdomAt(new Hex(4, -1, -3))).to.be.null;
             kingdom.hexs.should.have.lengthOf(5);
 
-            expect(() => { arbiter.placeAt(new Hex(4, -1, -3)); }).to.throw(/not capture/);
+            expect(() => { arbiter.placeAt(new Hex(4, -1, -3)); }).to.throw('cannot_capture.hex_not_adjacent');
 
             expect(world.getKingdomAt(new Hex(4, -1, -3))).to.be.null;
             kingdom.hexs.should.have.lengthOf(5);
@@ -363,7 +363,7 @@ describe('Arbiter', () => {
             arbiter.setCurrentPlayer(kingdom.player);
             arbiter.setCurrentKingdom(kingdom);
 
-            expect(() => arbiter.buyUnit()).to.throw('Not enough money');
+            expect(() => arbiter.buyUnit()).to.throw('cannot_buy_unit.not_enough_money');
         });
 
         it('throw error when selection already have a max level unit', () => {
@@ -376,7 +376,7 @@ describe('Arbiter', () => {
 
             arbiter.selection = new Unit(Arbiter.UNIT_MAX_LEVEL);
 
-            expect(() => arbiter.buyUnit()).to.throw(/already max level/);
+            expect(() => arbiter.buyUnit()).to.throw(/cannot_buy_unit.already_max_level/);
         });
     });
 
@@ -415,7 +415,7 @@ describe('Arbiter', () => {
 
             arbiter.selection.should.be.an.instanceOf(Unit);
 
-            expect(() => arbiter.placeAt(new Hex(2, -3, 1))).to.throw('Cannot capture this hex, too far of kingdom');
+            expect(() => arbiter.placeAt(new Hex(2, -3, 1))).to.throw('cannot_capture.hex_not_adjacent');
 
             arbiter.selection.should.be.an.instanceOf(Unit);
         });
