@@ -2,7 +2,7 @@ import i18next from 'i18next';
 import { en, fr, es } from './engine/locales';
 
 i18next.init({
-  debug: true,
+  //debug: true,
   lng: 'en',
   fallbackLng: 'en',
   defaultNs: 'translation',
