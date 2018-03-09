@@ -9,7 +9,7 @@
     "cannot_buy_unit": {
         "not_enough_money": "You tried to buy or upgrade an unit, but you have only {{playerMoney}} gold, and an unit costs {{unitPrice}}.",
         "already_max_level": "You tried to upgrade the unit you have in selection, but this unit has already reached the max level. You may upgrade another unit, or buy a new one.",
-        "selection_not_empty": ""
+        "selection_not_empty": "You tried to buy a new unit, but you have a tower in your selection. Place your tower first."
     },
     "cannot_buy_tower": {
         "not_enough_money": "You tried to buy a tower, but you have only {{playerMoney}} gold, and an unit costs {{towerPrice}}.",
