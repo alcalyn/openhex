@@ -408,6 +408,17 @@ export default class Arbiter {
         undoCallbacks.push(HexUtils.rebuildKingdomsCapitals(this.world));
         undoCallbacks.push(HexUtils.transformCapitalsOnSingleHexsToTrees(this.world));
 
+        // Reselect kingdom if current kingdom has been deleted during merge
+        if (hex.kingdom !== this.currentKingdom) {
+            const deletedKingdom = hex.kingdom;
+
+            this.setCurrentKingdom(hex.kingdom);
+
+            undoCallbacks.push(() => {
+                this.setCurrentKingdom(deletedKingdom);
+            });
+        }
+
         this.undoManager.add({
             undo: () => {
                 undoCallbacks
