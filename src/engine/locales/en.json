@@ -12,7 +12,7 @@
         "selection_not_empty": "You tried to buy a new unit, but you have a tower in your selection. Place your tower first."
     },
     "cannot_buy_tower": {
-        "not_enough_money": "You tried to buy a tower, but you have only {{playerMoney}} gold, and an unit costs {{towerPrice}}.",
+        "not_enough_money": "You tried to buy a tower, but you have only {{playerMoney}} gold, and an tower costs {{towerPrice}}. End your turn to earn income.",
         "selection_not_empty": "You tried to buy a tower, but your selection is not empty. Place your selected entity first."
     },
     "cannot_change_kingdom_selection_not_empty": "You tried to select another kingdom, but you have an entity from the current kingdom in selection. Place it first before changing kingdom.",
