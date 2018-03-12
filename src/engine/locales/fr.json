@@ -2,32 +2,32 @@
     "cannot_select": {
         "not_your_kingdom": "Vous ne pouvez pas selectionner le royaume de l'ennemi.",
         "not_in_current_kingdom": "Vous avez essayé de prendre une unité qui n'est pas dans le royaume actuel. Sélectionnez l'autre royaume d'abord.",
-        "no_unit_here": "",
-        "already_played": "",
-        "selection_not_empty": ""
+        "no_unit_here": "Vous avez essayé de sélectionner une unité, mais il n'y a pas d'unité sur cette hex.",
+        "already_played": "Vous avez essayé de sélectionner une unité, mais elle a déjà fait une action pendant ce tour. Vous pourrez lui refaire faire une action au prochain tour.",
+        "selection_not_empty": "Vous avez voulu sélectionner une unité, mais vous avez déjà une entité dans votre sélection. Placez votre sélection d'abord."
     },
     "cannot_buy_unit": {
         "not_enough_money": "Vous n'avez pas assez d'argent pour acheter une unité. Ca coûte {{unitPrice}} pièces d'or et vous n'en n'avez que {{playerMoney}}.",
-        "already_max_level": "",
-        "selection_not_empty": ""
+        "already_max_level": "Vous avez essayé d'améliorer votre unité sélectionnée, mais celle-ci a déjà atteind le niveau maximal. Vous devriez améliorer une autre unité ou en acheter une nouvelle.",
+        "selection_not_empty": "Vous avez essayé d'acheter une unité, mais vous avez déjà une tour dans votre sélection. Placez d'abord votre tour."
     },
     "cannot_buy_tower": {
-        "not_enough_money": "",
-        "selection_not_empty": ""
+        "not_enough_money": "Vous avez essayé d'acheter une tour, mais vous n'avez que {{playerMoney}}, alors qu'une tour coûte {{towerPrice}}. Passez votre tour pour avoir un revenu.",
+        "selection_not_empty": "Vous avez essayé d'acheter une tour, mais votre sélection n'est pas vide. Placez ce que vous avez en sélection."
     },
-    "cannot_change_kingdom_selection_not_empty": "",
-    "cannot_end_turn_selection_not_empty": "",
+    "cannot_change_kingdom_selection_not_empty": "Vous avez essayé de sélectionner un autre royaume, mais votre sélection n'est pas vide. Placez votre sélection avant de changer de royaume.",
+    "cannot_end_turn_selection_not_empty": "Vous avez essayé de terminer votre tour, mais votre sélection n'est pas vide. Placez votre sélection d'abord.",
     "cannot_capture": {
-        "hex_not_adjacent": "",
-        "hex_protected": ""
+        "hex_not_adjacent": "Vous avez essayé de capturer une hex, mais celle-ci est trop loin de votre royaume actuellement sélectionné. Vous pouvez capturer seulement les cases adjacentes à votre royaume sélectionné.",
+        "hex_protected": "Vous avez essayé de capturer une case, mais celle-ci est protégée par l'ennemie. Utilisez une unité améliorée, ou capturez une autre case."
     },
     "cannot_place_unit": {
-        "blocked_by_tower": "",
-        "blocked_by_capital": "",
-        "sum_of_merged_unit_level_overflow": ""
+        "blocked_by_tower": "Vous avez essayé de placer votre unité sur une case qui contient déjà une tour. Vous pouvez placer votre unité sur une case vide, ou la fusionner avec une autre pour faire une unité plus puissante.",
+        "blocked_by_capital": "Vous ne pouvez pas placez votre unité sélectionnée ici. Cette case contient déjà la capitale.",
+        "sum_of_merged_unit_level_overflow": "Vous avez essayé de fusionner votre unité sélectionnée avec une unité placée, mais cela ferait une unité supérieur au niveau maximal possible. Vous pouvez la fusionner avec une unité mois forte, ou la placer sur une case vide."
     },
     "cannot_place_tower": {
-        "hex_outside_of_current_kingdom": "",
-        "hex_not_empty": ""
+        "hex_outside_of_current_kingdom": "Vous avez essayé de placer votre tour sélectionnée en dehors de votre royaume actuel. Vous pouvez placer votre tour seulement sur une case vide de votre royaume actuel.",
+        "hex_not_empty": "Vous avez essayé de placer votre tour sélectionnée sur une case occupée. Vous ne pouvez placer votre tour que sur une case vide de votre royaume."
     }
 }
