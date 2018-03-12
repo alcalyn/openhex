@@ -161,6 +161,46 @@ describe('Arbiter', () => {
             hexInKingdom.kingdom.money.should.be.equal(kingdomMoney + otherKingdomMoney);
         });
 
+        it('merge two kingdoms together without duplicating the kingdom that has two adjacents hexs to the captured hex', () => {
+            const world = generateTestWorld('constant-seed-9');
+
+            const arbiter = new Arbiter(world);
+            const kingdom = world.getKingdomAt(new Hex(-1, 0, 1));
+            const biggerKingdom = world.getKingdomAt(new Hex(-1, -3, 4));
+            arbiter.setCurrentPlayer(kingdom.player);
+            arbiter.setCurrentKingdom(kingdom);
+            arbiter.selection = new Unit();
+
+            kingdom.money.should.equal(10);
+            biggerKingdom.money.should.equal(20);
+            expect(world.getKingdomAt(new Hex(-1, -1, 2))).to.be.null;
+
+            arbiter.placeAt(new Hex(-1, -1, 2));
+
+            biggerKingdom.money.should.equal(30);
+            biggerKingdom.hexs.should.have.lengthOf(7);
+            expect(world.getKingdomAt(new Hex(-1, -3, 4))).to.be.equal(biggerKingdom);
+            expect(world.getKingdomAt(new Hex(-1, -1, 2))).to.be.equal(biggerKingdom);
+            expect(world.getKingdomAt(new Hex(-1, 0, 1))).to.be.equal(biggerKingdom);
+        });
+
+        it('always keep the current kingdom selected when merging current kingdom to a bigger one', () => {
+            const world = generateTestWorld('constant-seed-9');
+
+            const arbiter = new Arbiter(world);
+            const kingdom = world.getKingdomAt(new Hex(-1, 0, 1));
+            const biggerKingdom = world.getKingdomAt(new Hex(-1, -3, 4));
+            arbiter.setCurrentPlayer(kingdom.player);
+            arbiter.setCurrentKingdom(kingdom);
+            arbiter.selection = new Unit();
+
+            arbiter.currentKingdom.should.be.equal(kingdom);
+
+            arbiter.placeAt(new Hex(-1, -1, 2));
+
+            arbiter.currentKingdom.should.be.equal(biggerKingdom);
+        });
+
         it('can capture a hex from an opponent kingdom', () => {
             const world = generateTestWorld('constant-seed-5');
 
@@ -280,29 +320,6 @@ describe('Arbiter', () => {
 
             expect(world.getKingdomAt(new Hex(-2, 3, -1))).to.be.null;
             expect(world.getKingdomAt(new Hex(-1, 2, -1))).to.be.equal(kingdom);
-        });
-
-        it('always keep the current kingdom selected when merging current kingdom to a bigger one', () => {
-            const world = generateTestWorld('constant-seed-9');
-
-            const arbiter = new Arbiter(world);
-            const kingdom = world.getKingdomAt(new Hex(-1, 0, 1));
-            const biggerKingdom = world.getKingdomAt(new Hex(-1, -3, 4));
-            arbiter.setCurrentPlayer(kingdom.player);
-            arbiter.setCurrentKingdom(kingdom);
-            arbiter.selection = new Unit();
-
-            kingdom.money.should.equal(10);
-            biggerKingdom.money.should.equal(20);
-            expect(world.getKingdomAt(new Hex(-1, -1, 2))).to.be.null;
-
-            arbiter.placeAt(new Hex(-1, -1, 2));
-
-            biggerKingdom.money.should.equal(30);
-            biggerKingdom.hexs.should.have.lengthOf(7);
-            expect(world.getKingdomAt(new Hex(-1, -3, 4))).to.be.equal(biggerKingdom);
-            expect(world.getKingdomAt(new Hex(-1, -1, 2))).to.be.equal(biggerKingdom);
-            expect(world.getKingdomAt(new Hex(-1, 0, 1))).to.be.equal(biggerKingdom);
         });
     });
 
