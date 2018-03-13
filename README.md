@@ -7,6 +7,8 @@ HTML5 game inspired by Slay.
 
 Demo here: https://alcalyn.github.io/openhex/
 
+[![Screenshot](screenshot.png)](https://alcalyn.github.io/openhex/)
+
 
 ## Install
 
