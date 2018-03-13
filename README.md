@@ -19,15 +19,6 @@ npm start
 ```
 
 
-## Deploy
-
-Deploy to `gh-pages`:
-
-``` bash
-npm run deploy
-```
-
-
 ## License
 
 This library is under [AGPL-v3 License](LICENSE).

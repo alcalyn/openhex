@@ -93,6 +93,44 @@ describe('Arbiter', () => {
 
             expect(world.getKingdomAt(new Hex(-1, 2, -1))).to.be.equal(opponentKingdom);
         });
+
+        it('undo placeAt and restore the tree the unit has cut on its own kingdom', () => {
+            const world = generateTestWorld('constant-seed-5');
+
+            const arbiter = new Arbiter(world);
+            const kingdom = world.getKingdomAt(new Hex(-3, 2, 1));
+            arbiter.setCurrentPlayer(kingdom.player);
+            arbiter.setCurrentKingdom(kingdom);
+
+            world.setEntityAt(new Hex(-1, 0, 1), new Tree(Tree.COASTAL));
+
+            const lumberjack = new Unit();
+            arbiter.selection = lumberjack;
+
+            arbiter.placeAt(new Hex(-1, 0, 1))
+            arbiter.undo();
+
+            expect(world.getEntityAt(new Hex(-1, 0, 1))).to.be.an.instanceOf(Tree);
+        });
+
+        it('undo placeAt and restore the died the unit has replaced', () => {
+            const world = generateTestWorld('constant-seed-5');
+
+            const arbiter = new Arbiter(world);
+            const kingdom = world.getKingdomAt(new Hex(-3, 2, 1));
+            arbiter.setCurrentPlayer(kingdom.player);
+            arbiter.setCurrentKingdom(kingdom);
+
+            world.setEntityAt(new Hex(-1, 0, 1), new Died());
+
+            const necromancer = new Unit();
+            arbiter.selection = necromancer;
+
+            arbiter.placeAt(new Hex(-1, 0, 1))
+            arbiter.undo();
+
+            expect(world.getEntityAt(new Hex(-1, 0, 1))).to.be.an.instanceOf(Died);
+        });
     });
 
     describe('undoAll', () => {

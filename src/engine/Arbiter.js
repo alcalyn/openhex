@@ -465,13 +465,14 @@ export default class Arbiter {
                 this.selection.played = true;
             }
 
+            const lastEntity = hex.entity;
             this.world.setEntityAt(hex, this.selection);
             this.selection = null;
 
             this.undoManager.add({
                 undo: () => {
                     this.selection = this.world.getEntityAt(hex);
-                    this.world.setEntityAt(hex, null);
+                    this.world.setEntityAt(hex, lastEntity);
                 },
                 redo: () => {
                     this._placeUnitAt(hex);
