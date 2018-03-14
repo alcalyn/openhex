@@ -1,7 +1,7 @@
 # OpenHex
 
 [![Build Status](https://travis-ci.org/alcalyn/openhex.svg?branch=master)](https://travis-ci.org/alcalyn/openhex)
-[![Translation status](https://weblate.tru.io/widgets/openhex/-/engine/svg-badge.svg)](https://weblate.tru.io/projects/openhex/engine/)
+[![Translation status](https://weblate.tru.io/widgets/openhex/-/svg-badge.svg)](https://weblate.tru.io/projects/openhex/)
 
 HTML5 game inspired by Slay.
 
