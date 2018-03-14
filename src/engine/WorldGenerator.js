@@ -81,6 +81,7 @@ export default class WorldGenerator {
         this.initKingdoms(world);
         this.createCapitals(world);
         this.spawnInitialTrees(world);
+        this.initKingdomsMoney(world);
 
         return world;
     }
@@ -104,6 +105,7 @@ export default class WorldGenerator {
         this.setRandomHexColors(world);
         this.initKingdoms(world);
         this.createCapitals(world);
+        this.initKingdomsMoney(world);
 
         return world;
     }
@@ -112,6 +114,7 @@ export default class WorldGenerator {
         const world = this.generateHexagon4NoInitialTree(players, seed);
 
         this.spawnInitialTrees(world);
+        this.initKingdomsMoney(world);
 
         return world;
     }
@@ -160,6 +163,12 @@ export default class WorldGenerator {
 
             world.kingdoms.push(kingdom);
             hexs.forEach(hex => hex.kingdom = kingdom);
+        });
+    }
+
+    static initKingdomsMoney(world) {
+        world.kingdoms.forEach(kingdom => {
+            kingdom.money = 5 * HexUtils.getKingdomIncome(kingdom);
         });
     }
 

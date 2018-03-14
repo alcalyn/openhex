@@ -111,6 +111,8 @@ describe('Arbiter', () => {
             arbiter.undo();
 
             expect(world.getEntityAt(new Hex(-1, 0, 1))).to.be.an.instanceOf(Tree);
+            expect(arbiter.selection).to.be.equal(lumberjack);
+            lumberjack.played.should.be.false;
         });
 
         it('undo placeAt and restore the died the unit has replaced', () => {
@@ -130,6 +132,8 @@ describe('Arbiter', () => {
             arbiter.undo();
 
             expect(world.getEntityAt(new Hex(-1, 0, 1))).to.be.an.instanceOf(Died);
+            expect(arbiter.selection).to.be.equal(necromancer);
+            necromancer.played.should.be.false;
         });
     });
 

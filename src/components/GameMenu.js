@@ -24,7 +24,6 @@ export default class GameMenu extends Component {
 
     render() {
         const arbiter = this.props.arbiter;
-        console.log(i18next);
 
         return (
             <I18n i18n={ i18next }>

@@ -472,6 +472,7 @@ export default class Arbiter {
             this.undoManager.add({
                 undo: () => {
                     this.selection = this.world.getEntityAt(hex);
+                    this.selection.played = false;
                     this.world.setEntityAt(hex, lastEntity);
                 },
                 redo: () => {

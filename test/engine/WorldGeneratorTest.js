@@ -18,4 +18,13 @@ describe('WorldGenerator', function() {
             world.hexs[0].should.have.property('player');
         });
     });
+
+    describe('generateHexagon4', function() {
+        it('set an initial money of 5 times kingdom length, not counting trees', function() {
+            const world = WorldGenerator.generateHexagon4(createTestPlayers(), 'constant-seed-5');
+            const kingdom = world.getKingdomAt(new Hex(2, -1, -1));
+
+            kingdom.money.should.equal(20);
+        });
+    });
 });

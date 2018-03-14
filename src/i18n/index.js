@@ -6,7 +6,7 @@ import loadLocalesUi from './loadLocalesUi';
 i18next
     .use(LngDetector)
     .init({
-        debug: true,
+        //debug: true,
         fallbackLng: 'en',
         returnEmptyString: false,
         defaultNS: 'translation',

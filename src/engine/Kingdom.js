@@ -5,12 +5,6 @@ export default class Kingdom {
         this.player = hexs[0].player;
 
         this.hexs.forEach(hex => hex.kingdom = this);
-
-        this._initMoney();
-    }
-
-    _initMoney() {
-        this.money = this.getSize() * 5;
     }
 
     getSize() {
