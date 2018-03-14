@@ -113,4 +113,18 @@ npm run translations-scan
 
 That will scan for new translations keys and add it to translations files.
 
-Then translate your key *only* in English in `src/engine/locales/en.json`.
+Then translate your key *at least* in English in `src/engine/locales/en.json` or `src/locales/en.json`.
+
+There is two separate translations folders, because there is two differents components:
+
+- Engine
+
+For files relative to OpenHex engine, in `src/engine/`.
+
+Translations files are in `src/engine/locales/`
+
+- UI
+
+For files relative to OpenHex user interface, in `src/App.js` and `src/components/`.
+
+Translations files are in `src/locales/`

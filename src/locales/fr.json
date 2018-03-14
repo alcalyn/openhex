@@ -1,0 +1,15 @@
+{
+    "game_menu": {
+        "turn_number": "Tour n°{{turn}}",
+        "undo": "Annuler",
+        "end_turn": "Fin de tour"
+    },
+    "kingdom_menu": "Royaume",
+    "economy": {
+        "last_turn": "Tour précédent : {{money}}",
+        "income": "Revenus : +{{money}}",
+        "maintenance": "Maintenance : -{{money}}"
+    },
+    "selection": "Selection",
+    "military": "Militaire"
+}

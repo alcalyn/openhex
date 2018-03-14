@@ -2,7 +2,7 @@ module.exports = {
     options: {
         debug: true,
         func: {
-            list: ['IllegalMoveError'],
+            list: ['IllegalMoveError', 't'],
             extensions: ['.js'],
         },
         trans: {
@@ -19,16 +19,11 @@ module.exports = {
         defaultNs: 'translation',
         defaultValue: (lng, ns, key) => '',
         resource: {
-            loadPath: 'src/engine/locales/{{lng}}.json',
-            savePath: 'src/engine/locales/{{lng}}.json',
+            loadPath: 'src/locales/{{lng}}.json',
+            savePath: 'src/locales/{{lng}}.json',
             jsonIndent: 4,
-            lineEnding: '\n',
         },
         nsSeparator: ':',
         keySeparator: '.',
-        interpolation: {
-            prefix: '{{',
-            suffix: '}}',
-        },
     },
 };

@@ -1,0 +1,15 @@
+{
+    "game_menu": {
+        "turn_number": "Turn {{turn}}",
+        "undo": "Undo",
+        "end_turn": "End turn"
+    },
+    "kingdom_menu": "Kingdom",
+    "economy": {
+        "last_turn": "Last turn: {{money}}",
+        "income": "Income: +{{money}}",
+        "maintenance": "Units maintenance: -{{money}}"
+    },
+    "selection": "Selection",
+    "military": "Military"
+}

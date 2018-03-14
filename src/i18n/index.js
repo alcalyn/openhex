@@ -1,13 +1,15 @@
 import i18next from 'i18next';
 import LngDetector from 'i18next-browser-languagedetector';
-import { en, fr, es } from './engine/locales';
+import loadLocalesEngine from './loadLocalesEngine';
+import loadLocalesUi from './loadLocalesUi';
 
 i18next
     .use(LngDetector)
     .init({
         debug: true,
         fallbackLng: 'en',
-        defaultNs: 'translation',
+        returnEmptyString: false,
+        defaultNS: 'translation',
         detection: {
             order: ['querystring', 'navigator'],
             lookupQuerystring: 'lng'
@@ -15,6 +17,5 @@ i18next
     })
 ;
 
-i18next.addResourceBundle('en', 'translation', en);
-i18next.addResourceBundle('fr', 'translation', fr);
-i18next.addResourceBundle('es', 'translation', es);
+loadLocalesEngine(i18next);
+loadLocalesUi(i18next);

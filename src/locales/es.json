@@ -1,0 +1,15 @@
+{
+    "game_menu": {
+        "turn_number": "",
+        "undo": "",
+        "end_turn": ""
+    },
+    "kingdom_menu": "",
+    "economy": {
+        "last_turn": "",
+        "income": "",
+        "maintenance": ""
+    },
+    "selection": "",
+    "military": ""
+}

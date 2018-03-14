@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import { HexGrid, Layout } from 'react-hexgrid';
 import { WorldGenerator, Arbiter } from './engine';
 import { Alerts, KingdomMenu, HexCell, GameMenu } from './components';
-import './locales';
+import './i18n';
 import './bootstrap4-sketchy.min.css';
 import './App.css';
 
