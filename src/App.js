@@ -177,7 +177,7 @@ class App extends Component {
                                                 unitHasMove={this.hexUnitHasMove(hex)}
                                                 onClick={() => { this.clickHex(hex); }}
                                             />) }
-                                            <g class="selected-kingdom">
+                                            <g className={'selected-kingdom'} style={{filter: 'url(#dropshadow)'}}>
                                                 { currentKingdom ? (
                                                     currentKingdom.hexs.map((hex, i) => <HexCell
                                                         key={i}
@@ -190,6 +190,17 @@ class App extends Component {
                                                 ) : ''}
                                             </g>
                                         </g>
+                                        <filter id="dropshadow" x="-200%" y="-200%" width="400%" height="400%">
+                                            <feGaussianBlur in="SourceAlpha" stdDeviation="4"/>
+                                            <feOffset dx="0" dy="0" result="offsetblur"/>
+                                            <feComponentTransfer>
+                                                <feFuncA type="linear" slope="1"/>
+                                            </feComponentTransfer>
+                                            <feMerge>
+                                                <feMergeNode/>
+                                                <feMergeNode in="SourceGraphic"/>
+                                            </feMerge>
+                                        </filter>
                                     </Layout>
                                 </HexGrid>
                             </ReactSVGPanZoom>
