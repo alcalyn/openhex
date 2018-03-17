@@ -13,36 +13,35 @@ import diamondSquare from './diamondSquare';
 export default class WorldGenerator {
     /**
      * @param {mixed} seed Seed used to generate the map and for game random events (trees...)
-     * @param {int} size Size of the map, should be at least 4.
-     *                   Examples: Small: 10   Medium: 14  Big: 18
      * @param {Object} An object generated with WorldConfig({defaults...}) function.
      *
      * @returns {World}
      */
-    static generate(seed = null, size = 14, config = WorldConfig()) {
+    static generate(seed = null, config = WorldConfig()) {
         config.random = seedrandom(seed);
 
-        const worldHexsLength = Math.floor((size * 8) / config.players.length) * config.players.length;
+        const worldHexsLength = Math.floor((config.size * 8) / config.players.length) * config.players.length;
         const depth = 8;
         const pixels = 2 ** depth + 1;
-        const roughness = Math.log(size);
+        const roughness = Math.log(config.size);
         const heights = diamondSquare(depth, true, roughness, config.random);
-        const worldHexs = [];
+        let worldHexs = [];
         const hexs = [];
         const hexsMap = new Map();
         const byHeight = (hexA, hexB) => {
             return hexA._height < hexB._height ? 1 : -1;
         };
 
-        for (let r = -size; r < size; r++) {
+
+        for (let r = -config.size; r < config.size; r++) {
             let offset = r >> 1;
             let qIndex = 0;
-            for (let q = -offset - size; q < size - offset; q++) {
+            for (let q = -offset - config.size; q < config.size - offset; q++) {
 
-                let { x, y } = { x: qIndex, y: r + size };
+                let { x, y } = { x: qIndex, y: r + config.size };
                 let pixel = {
-                    x: Math.floor(pixels * x / (size * 2)),
-                    y: Math.floor(pixels * y / (size * 2)),
+                    x: Math.floor(pixels * x / (config.size * 2)),
+                    y: Math.floor(pixels * y / (config.size * 2)),
                 };
 
                 const hex = new Hex(q, r, -q-r);
@@ -54,9 +53,10 @@ export default class WorldGenerator {
             }
         }
 
-        hexs.forEach(hex => {
+        for (let i = 0, len = hexs.length; i < len; i++) {
+            let hex = hexs[i];
             hexsMap.set(HexUtils.getID(hex), hex);
-        });
+        }
 
         hexs.sort(byHeight);
 
@@ -71,7 +71,7 @@ export default class WorldGenerator {
 
             adjacentHexs.sort(byHeight);
 
-            worldHexs.push(adjacentHexs[0]);
+            worldHexs = worldHexs.concat(adjacentHexs.slice(0, config.players.length));
         } while (worldHexs.length < worldHexsLength);
 
         const world = new World(worldHexs, config);

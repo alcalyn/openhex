@@ -67,14 +67,6 @@ svg .hex-clickable {
     margin-right: 0;
 }
 
-.card {
-    border: none;
-    border-radius: 0;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
-}
-.card-header {
-    border: 0;
-}
 .card-menu-small, .card-menu-large {
     position: fixed;
     z-index: 5000;
@@ -159,4 +151,45 @@ svg .hex-clickable {
 }
 .alerts .alert p {
     margin: 0;
+}
+
+
+.create-custom-game .btn-block,
+.create-custom-game input {
+    margin-bottom: 1em;
+}
+.create-custom-game .play-button {
+    width: 100%;
+    max-width: 20em;
+    margin: auto;
+    margin-top: 3em;
+}
+
+.home main {
+    position: relative;
+    z-index: 5;
+}
+.home .splashscreen-background-wrapper > div {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.home .splashscreen-background-wrapper .splashscreen-background-overlay {
+    z-index: 3;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+.home .splashscreen-background-wrapper .splashscreen-background {
+    z-index: 2;
+}
+@media (min-width: 768px) { /* md */
+    .home .splashscreen-background-wrapper .splashscreen-background {
+        top: 2em;
+        padding: 0 1em;
+    }
+}
+.home .main-menu .btn {
+    margin-bottom: 1em;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
 }
