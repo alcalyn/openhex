@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Hexagon } from 'react-hexgrid';
 import Themes from '../themes';
+import { Arbiter } from '../engine';
 
 export default class HexCell extends Component {
     onClick(e) {
@@ -38,6 +39,10 @@ export default class HexCell extends Component {
 
         if (this.props.warningEntity) {
             classes.push('warning-entity');
+        }
+
+        if (hex.hasCapital() && this.props.currentPlayer && hex.kingdom.money >= Math.min(Arbiter.UNIT_PRICE, Arbiter.TOWER_PRICE)) {
+            classes.push('capital-can-buy');
         }
 
         return classes.join(' ');

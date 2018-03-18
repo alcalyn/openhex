@@ -127,7 +127,10 @@ svg .hex-clickable {
     filter: url(#hexshadow);
 }
 .warning-entity {
-    filter: url(#highlight);
+    filter: url(#warn-highlight);
+}
+.capital-can-buy {
+    filter: url(#gold-highlight);
 }
 
 .alerts-wrapper {

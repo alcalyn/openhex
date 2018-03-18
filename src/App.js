@@ -172,6 +172,7 @@ class App extends Component {
                                                 key={i}
                                                 hex={hex}
                                                 highlight={this.isHexSelected(hex)}
+                                                currentPlayer={hex.player === this.arbiter.currentPlayer}
                                                 clickable={hex.kingdom && hex.player === this.arbiter.currentPlayer}
                                                 warningEntity={hex.entity && (-1 !== warningEntities.indexOf(hex.entity))}
                                                 unitHasMove={this.hexUnitHasMove(hex)}
@@ -183,6 +184,7 @@ class App extends Component {
                                                         key={i}
                                                         hex={hex}
                                                         highlight={this.isHexSelected(hex)}
+                                                        currentPlayer={hex.player === this.arbiter.currentPlayer}
                                                         warningEntity={hex.entity && (-1 !== warningEntities.indexOf(hex.entity))}
                                                         unitHasMove={this.hexUnitHasMove(hex)}
                                                         onClick={() => { this.clickHex(hex); }}
@@ -197,7 +199,16 @@ class App extends Component {
                                                 <feMergeNode in="SourceGraphic"/>
                                             </feMerge>
                                         </filter>
-                                        <filter id="highlight">
+                                        <filter id="gold-highlight" x="-200%" y="-200%" width="400%" height="400%">
+                                            <feGaussianBlur id="gold-shadow" in="SourceAlpha" stdDeviation="1.7" result="blur"/>
+                                            <feFlood flood-color="#FFFF00" result="offsetColor"/>
+                                            <feComposite in="offsetColor" in2="blur" operator="in" result="offsetBlur"/>
+                                            <feMerge>
+                                                <feMergeNode in="offsetBlur"/>
+                                                <feMergeNode in="SourceGraphic"/>
+                                            </feMerge>
+                                        </filter>
+                                        <filter id="warn-highlight">
                                             <feGaussianBlur in="SourceAlpha" stdDeviation="1.7" result="blur"/>
                                             <feFlood flood-color="#FF0000" result="offsetColor"/>
                                             <feComposite in="offsetColor" in2="blur" operator="in" result="offsetBlur"/>
@@ -207,6 +218,15 @@ class App extends Component {
                                                 <feMergeNode in="saturated"/>
                                             </feMerge>
                                         </filter>
+                                        <animate
+                                            xlinkHref="#gold-shadow"
+                                            attributeName="stdDeviation"
+                                            from="0.1"
+                                            to="3.0"
+                                            begin="0s"
+                                            dur="0.8s"
+                                            repeatCount="indefinite"
+                                        />
                                     </Layout>
                                 </HexGrid>
                             </ReactSVGPanZoom>
