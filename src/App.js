@@ -201,7 +201,7 @@ class App extends Component {
                                         </filter>
                                         <filter id="gold-highlight" x="-200%" y="-200%" width="400%" height="400%">
                                             <feGaussianBlur id="gold-shadow" in="SourceAlpha" stdDeviation="1.7" result="blur"/>
-                                            <feFlood flood-color="#FFFF00" result="offsetColor"/>
+                                            <feFlood floodColor="#FFFF00" result="offsetColor"/>
                                             <feComposite in="offsetColor" in2="blur" operator="in" result="offsetBlur"/>
                                             <feMerge>
                                                 <feMergeNode in="offsetBlur"/>
@@ -210,7 +210,7 @@ class App extends Component {
                                         </filter>
                                         <filter id="warn-highlight">
                                             <feGaussianBlur in="SourceAlpha" stdDeviation="1.7" result="blur"/>
-                                            <feFlood flood-color="#FF0000" result="offsetColor"/>
+                                            <feFlood floodColor="#FF0000" result="offsetColor"/>
                                             <feComposite in="offsetColor" in2="blur" operator="in" result="offsetBlur"/>
                                             <feColorMatrix type="saturate" values="8" in="SourceGraphic" result="saturated"/>
                                             <feMerge>

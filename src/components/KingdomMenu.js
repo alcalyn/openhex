@@ -111,7 +111,7 @@ export default class KingdomMenu extends Component {
                                                     src={Themes.getImageFor(new Unit())}
                                                     alt="unit"
                                                 />
-                                                <span class="d-none d-sm-inline">
+                                                <span className={'d-none d-sm-inline'}>
                                                     <img
                                                         src={Themes.getImageForMoney()}
                                                         alt="unit"
@@ -126,7 +126,7 @@ export default class KingdomMenu extends Component {
                                                     src={Themes.getImageFor(new Tower())}
                                                     alt="tower"
                                                 />
-                                                <span class="d-none d-sm-inline">
+                                                <span className={'d-none d-sm-inline'}>
                                                     <img
                                                         src={Themes.getImageForMoney()}
                                                         alt="unit"
