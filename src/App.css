@@ -123,8 +123,11 @@ svg .hex-clickable {
     }
 }
 
+.selected-kingdom {
+    filter: url(#hexshadow);
+}
 .warning-entity {
-    filter: drop-shadow(0 0 2px red) contrast(200%);
+    filter: url(#highlight);
 }
 
 .alerts-wrapper {

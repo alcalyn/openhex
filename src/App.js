@@ -177,7 +177,7 @@ class App extends Component {
                                                 unitHasMove={this.hexUnitHasMove(hex)}
                                                 onClick={() => { this.clickHex(hex); }}
                                             />) }
-                                            <g className={'selected-kingdom'} style={{filter: 'url(#dropshadow)'}}>
+                                            <g className={'selected-kingdom'}>
                                                 { currentKingdom ? (
                                                     currentKingdom.hexs.map((hex, i) => <HexCell
                                                         key={i}
@@ -190,15 +190,21 @@ class App extends Component {
                                                 ) : ''}
                                             </g>
                                         </g>
-                                        <filter id="dropshadow" x="-200%" y="-200%" width="400%" height="400%">
+                                        <filter id="hexshadow" x="-200%" y="-200%" width="400%" height="400%">
                                             <feGaussianBlur in="SourceAlpha" stdDeviation="4"/>
-                                            <feOffset dx="0" dy="0" result="offsetblur"/>
-                                            <feComponentTransfer>
-                                                <feFuncA type="linear" slope="1"/>
-                                            </feComponentTransfer>
                                             <feMerge>
                                                 <feMergeNode/>
                                                 <feMergeNode in="SourceGraphic"/>
+                                            </feMerge>
+                                        </filter>
+                                        <filter id="highlight">
+                                            <feGaussianBlur in="SourceAlpha" stdDeviation="1.7" result="blur"/>
+                                            <feFlood flood-color="#FF0000" result="offsetColor"/>
+                                            <feComposite in="offsetColor" in2="blur" operator="in" result="offsetBlur"/>
+                                            <feColorMatrix type="saturate" values="8" in="SourceGraphic" result="saturated"/>
+                                            <feMerge>
+                                                <feMergeNode in="offsetBlur"/>
+                                                <feMergeNode in="saturated"/>
                                             </feMerge>
                                         </filter>
                                     </Layout>
