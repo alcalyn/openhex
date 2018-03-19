@@ -7,6 +7,7 @@ import { WorldGenerator, Arbiter } from './engine';
 import { Alerts, KingdomMenu, HexCell, GameMenu } from './components';
 import './i18n';
 import './bootstrap4-sketchy.min.css';
+import './fonts/fonts.css';
 import './App.css';
 
 class App extends Component {
