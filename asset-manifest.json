@@ -1,6 +1,10 @@
 {
-  "main.css": "static/css/main.2552bfd7.css",
-  "main.css.map": "static/css/main.2552bfd7.css.map",
-  "main.js": "static/js/main.56e939e1.js",
-  "main.js.map": "static/js/main.56e939e1.js.map"
+  "main.css": "static/css/main.8c9e6207.css",
+  "main.css.map": "static/css/main.8c9e6207.css.map",
+  "main.js": "static/js/main.88b7e07e.js",
+  "main.js.map": "static/js/main.88b7e07e.js.map",
+  "static/media/cabin-sketch-v11-latin-regular.woff": "static/media/cabin-sketch-v11-latin-regular.40eb57a7.woff",
+  "static/media/cabin-sketch-v11-latin-regular.woff2": "static/media/cabin-sketch-v11-latin-regular.518e5a78.woff2",
+  "static/media/neucha-v9-latin-regular.woff": "static/media/neucha-v9-latin-regular.d7c6d0e6.woff",
+  "static/media/neucha-v9-latin-regular.woff2": "static/media/neucha-v9-latin-regular.0df438fe.woff2"
 }
