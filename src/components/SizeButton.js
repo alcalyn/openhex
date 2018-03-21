@@ -8,7 +8,7 @@ export default class SizeButton extends Component {
     constructor(props, context) {
         super(props, context);
 
-        this.world = WorldGenerator.generate(this.props.seed, WorldConfig({
+        this.world = WorldGenerator.generate(null, WorldConfig({
             size: this.props.size,
         }));
     }

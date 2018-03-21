@@ -10,7 +10,7 @@ export default class CreateCustomGame extends Component {
 
         this.state = {
             size: 16,
-            seed: null,
+            seed: '',
         };
     }
 
@@ -41,9 +41,9 @@ export default class CreateCustomGame extends Component {
 
                         <h3>{ t('seed.title') }</h3>
 
-                        <div class="form-group">
+                        <div className={'form-group'}>
                             <input
-                                value={this.state.seed}
+                                value={ this.state.seed }
                                 onChange={e => this.onSeedInputChange(e)}
                                 placeholder={ t('seed.placeholder') }
                                 className={'form-control form-control-lg'}
