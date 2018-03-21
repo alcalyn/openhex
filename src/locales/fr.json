@@ -12,20 +12,20 @@
     },
     "selection": "Selection",
     "military": "Militaire",
-    "custom_game": "",
-    "world_size": "",
+    "custom_game": "Partie personnalisée",
+    "world_size": "Taille du monde",
     "size": {
-        "small": "",
-        "medium": "",
-        "large": ""
+        "small": "Petit",
+        "medium": "Moyen",
+        "large": "Grand"
     },
     "project": {
-        "description": ""
+        "description": "Jeu de stratégie simple inspiré par Slay."
     },
-    "lets_play": "",
+    "lets_play": "Jouer !",
     "seed": {
-        "title": "",
-        "placeholder": "",
+        "title": "Graine",
+        "placeholder": "Graine du monde. Laisser vide pour un monde aléatoire.",
         "help": ""
     }
 }
