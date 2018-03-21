@@ -10,6 +10,12 @@ const defaults = {
     random: Math.random,
 
     /**
+     * Size of the map, should be at least 4.
+     * Examples: Small=10 Medium=14 Big=18
+     */
+    size: 14,
+
+    /**
      * Array of players.
      * By default generates a singleplayer VS 5 AI
      */

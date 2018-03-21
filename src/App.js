@@ -2,11 +2,11 @@ import i18next from 'i18next';
 import { AutoSizer } from 'react-virtualized';
 import {ReactSVGPanZoom} from 'react-svg-pan-zoom';
 import React, { Component } from 'react';
-import { HexGrid, Layout } from 'react-hexgrid';
-import { WorldGenerator, Arbiter } from './engine';
-import { Alerts, KingdomMenu, HexCell, GameMenu } from './components';
+import { WorldGenerator, Arbiter, WorldConfig } from './engine';
+import { Alerts, KingdomMenu, GameMenu, OpenHexGrid } from './components';
 import './i18n';
 import './bootstrap4-sketchy.min.css';
+import './bootstrap4-sketchy-override.css';
 import './fonts/fonts.css';
 import './App.css';
 
@@ -14,7 +14,19 @@ class App extends Component {
     constructor(props, context) {
         super(props, context);
 
-        const world = WorldGenerator.generate();
+        let config = {
+            size: 14,
+            seed: null,
+        };
+
+        if (props.location && props.location.state && props.location.state.config) {
+            config = props.location.state.config;
+        }
+
+        const worldConfig = WorldConfig({
+            size: config.size,
+        });
+        const world = WorldGenerator.generate(config.seed, worldConfig);
         const arbiter = new Arbiter(world);
 
         arbiter.setCurrentPlayer(world.config.players[0]);
@@ -81,18 +93,6 @@ class App extends Component {
         this.displayAlert(alert, e.warningEntities);
     }
 
-    hexUnitHasMove(hex) {
-        if (this.arbiter.currentPlayer !== hex.player) {
-            return false;
-        }
-
-        if (!hex.hasUnit()) {
-            return false;
-        }
-
-        return !hex.entity.played;
-    }
-
     update() {
         this.setState({
             world: this.state.world,
@@ -101,22 +101,8 @@ class App extends Component {
         });
     }
 
-    initView(viewer) {
-        if (!this.viewInitialized && viewer) {
-            this.viewInitialized = true;
-
-            viewer.setPointOnViewerCenter(0, 0, 1);
-        }
-    }
-
-    isHexSelected(hex) {
-        return null !== hex.kingdom && hex.kingdom === this.state.currentKingdom;
-    }
-
     render() {
         const { world, warningEntities, currentKingdom, alert } = this.state;
-
-        this.initView();
 
         return (
             <div className={"App"}>
@@ -157,7 +143,6 @@ class App extends Component {
                             <ReactSVGPanZoom
                                 width={width} height={height}
                                 tool={'auto'}
-                                ref={viewer => this.initView(viewer)}
                                 SVGBackground={'rgba(0, 0, 0, 0)'}
                                 background={'rgba(0, 0, 0, 0)'}
                                 toolbarPosition={'none'}
@@ -166,70 +151,15 @@ class App extends Component {
                                 scaleFactorOnWheel={1.15}
                                 disableDoubleClickZoomWithToolAuto={true}
                             >
-                                <HexGrid id="grid" width={400} height={400}>
-                                    <Layout size={{ x: 20, y: 20 }} spacing={1.0}>
-                                        <g className={'all-hexs'}>
-                                            { world.hexs.map((hex, i) => <HexCell
-                                                key={i}
-                                                hex={hex}
-                                                highlight={this.isHexSelected(hex)}
-                                                currentPlayer={hex.player === this.arbiter.currentPlayer}
-                                                clickable={hex.kingdom && hex.player === this.arbiter.currentPlayer}
-                                                warningEntity={hex.entity && (-1 !== warningEntities.indexOf(hex.entity))}
-                                                unitHasMove={this.hexUnitHasMove(hex)}
-                                                onClick={() => { this.clickHex(hex); }}
-                                            />) }
-                                            <g className={'selected-kingdom'}>
-                                                { currentKingdom ? (
-                                                    currentKingdom.hexs.map((hex, i) => <HexCell
-                                                        key={i}
-                                                        hex={hex}
-                                                        highlight={this.isHexSelected(hex)}
-                                                        currentPlayer={hex.player === this.arbiter.currentPlayer}
-                                                        warningEntity={hex.entity && (-1 !== warningEntities.indexOf(hex.entity))}
-                                                        unitHasMove={this.hexUnitHasMove(hex)}
-                                                        onClick={() => { this.clickHex(hex); }}
-                                                    />)
-                                                ) : ''}
-                                            </g>
-                                        </g>
-                                        <filter id="hexshadow" x="-200%" y="-200%" width="400%" height="400%">
-                                            <feGaussianBlur in="SourceAlpha" stdDeviation="4"/>
-                                            <feMerge>
-                                                <feMergeNode/>
-                                                <feMergeNode in="SourceGraphic"/>
-                                            </feMerge>
-                                        </filter>
-                                        <filter id="gold-highlight" x="-200%" y="-200%" width="400%" height="400%">
-                                            <feGaussianBlur id="gold-shadow" in="SourceAlpha" stdDeviation="1.7" result="blur"/>
-                                            <feFlood floodColor="#FFFF00" result="offsetColor"/>
-                                            <feComposite in="offsetColor" in2="blur" operator="in" result="offsetBlur"/>
-                                            <feMerge>
-                                                <feMergeNode in="offsetBlur"/>
-                                                <feMergeNode in="SourceGraphic"/>
-                                            </feMerge>
-                                        </filter>
-                                        <filter id="warn-highlight">
-                                            <feGaussianBlur in="SourceAlpha" stdDeviation="1.7" result="blur"/>
-                                            <feFlood floodColor="#FF0000" result="offsetColor"/>
-                                            <feComposite in="offsetColor" in2="blur" operator="in" result="offsetBlur"/>
-                                            <feColorMatrix type="saturate" values="8" in="SourceGraphic" result="saturated"/>
-                                            <feMerge>
-                                                <feMergeNode in="offsetBlur"/>
-                                                <feMergeNode in="saturated"/>
-                                            </feMerge>
-                                        </filter>
-                                        <animate
-                                            xlinkHref="#gold-shadow"
-                                            attributeName="stdDeviation"
-                                            from="0.1"
-                                            to="3.0"
-                                            begin="0s"
-                                            dur="0.8s"
-                                            repeatCount="indefinite"
-                                        />
-                                    </Layout>
-                                </HexGrid>
+                                <svg width={width} height={height}>
+                                    <OpenHexGrid
+                                        world={ world }
+                                        warningEntities={ warningEntities }
+                                        currentKingdom={ currentKingdom }
+                                        currentPlayer={ this.arbiter.currentPlayer }
+                                        clickHex={ hex => this.clickHex(hex) }
+                                    />
+                                </svg>
                             </ReactSVGPanZoom>
 
                         ))}
