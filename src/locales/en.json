@@ -23,7 +23,6 @@
         "description": "Simple strategy game inspired by Slay."
     },
     "lets_play": "Play !",
-    "seed_help": "",
     "seed": {
         "title": "Seed",
         "placeholder": "World seed. Let empty for random.",
