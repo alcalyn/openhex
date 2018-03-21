@@ -11,5 +11,22 @@
         "maintenance": ""
     },
     "selection": "",
-    "military": ""
+    "military": "",
+    "custom_game": "",
+    "world_size": "",
+    "size": {
+        "small": "",
+        "medium": "",
+        "large": ""
+    },
+    "project": {
+        "description": ""
+    },
+    "lets_play": "",
+    "seed_help": "",
+    "seed": {
+        "title": "",
+        "placeholder": "",
+        "help": ""
+    }
 }
