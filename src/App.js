@@ -1,10 +1,9 @@
-import i18next from 'i18next';
 import { AutoSizer } from 'react-virtualized';
 import {ReactSVGPanZoom} from 'react-svg-pan-zoom';
 import React, { Component } from 'react';
+import i18n from './i18n';
 import { WorldGenerator, Arbiter, WorldConfig } from './engine';
 import { Alerts, KingdomMenu, GameMenu, OpenHexGrid } from './components';
-import './i18n';
 import './bootstrap4-sketchy.min.css';
 import './bootstrap4-sketchy-override.css';
 import './fonts/fonts.css';
@@ -33,33 +32,18 @@ class App extends Component {
 
         this.state = {
             world,
-            selection: arbiter.selection,
-            warningEntities: [],
             alert: null,
         };
 
         this.arbiter = arbiter;
     }
 
-    clickHex(hex) {
-        console.log('hex', hex);
-
-        try {
-            this.arbiter.smartAction(hex);
-            this.clearAlert();
-            this.update();
-        } catch (e) {
-            this.handleArbiterError(e);
-        }
-    }
-
-    displayAlert(alert, warningEntities = []) {
+    displayAlert(alert) {
         this.clearAlert();
 
         this.alertThread = setTimeout(() => this.clearAlert(), 10000);
 
         this.setState({
-            warningEntities,
             alert,
         });
     }
@@ -70,7 +54,6 @@ class App extends Component {
         }
 
         this.setState({
-            warningEntities: [],
             alert: null,
         });
     }
@@ -87,22 +70,20 @@ class App extends Component {
 
         const alert = {
             level: 'danger',
-            message: i18next.t(e.message, e.context),
+            message: i18n.t(e.message, e.context),
         };
 
-        this.displayAlert(alert, e.warningEntities);
+        this.displayAlert(alert);
     }
 
     update() {
         this.setState({
             world: this.state.world,
-            selection: this.arbiter.selection,
-            currentKingdom: this.arbiter.currentKingdom,
         });
     }
 
     render() {
-        const { world, warningEntities, currentKingdom, alert } = this.state;
+        const { world, alert } = this.state;
 
         return (
             <div className={"App"}>
@@ -135,7 +116,7 @@ class App extends Component {
                     />
                 </div>
 
-                <div id="grid" className={this.state.selection ? 'has-selection' : ''}>
+                <div id="grid">
 
                     <AutoSizer>
                         {(({width, height}) => width === 0 || height === 0 ? null : (
@@ -154,10 +135,11 @@ class App extends Component {
                                 <svg width={width} height={height}>
                                     <OpenHexGrid
                                         world={ world }
-                                        warningEntities={ warningEntities }
-                                        currentKingdom={ currentKingdom }
-                                        currentPlayer={ this.arbiter.currentPlayer }
-                                        clickHex={ hex => this.clickHex(hex) }
+                                        arbiter={ this.arbiter }
+                                        onArbiterUpdate={ () => this.update() }
+                                        onClickHex={ hex => console.log('hex clicked', hex) }
+                                        onArbiterError={ e => this.handleArbiterError(e) }
+                                        onClearError={ () => this.clearAlert() }
                                     />
                                 </svg>
                             </ReactSVGPanZoom>

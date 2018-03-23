@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { I18n } from 'react-i18next';
-import i18next from 'i18next';
+import i18n from '../i18n';
 import { WorldGenerator } from '../engine';
 import { OpenHexGrid } from '.';
 
@@ -10,7 +10,7 @@ export default class Home extends Component {
         const world = WorldGenerator.generate();
 
         return (
-            <I18n i18n={ i18next }>
+            <I18n i18n={ i18n }>
                 {t => (
                     <div className={'home'}>
                         <main>
@@ -27,6 +27,7 @@ export default class Home extends Component {
                                     <div className={'col-sm-6 offset-sm-3 col-lg-4 offset-lg-4 main-menu'}>
                                         <Link to="/game" className={'btn btn-lg btn-block btn-success play-button'}>{ t('lets_play') }</Link>
                                         <Link to="/create-custom-game" className={'btn btn-lg btn-block btn-success'}>{ t('custom_game') }</Link>
+                                        <Link to="/game-rules" className={'btn btn-lg btn-block btn-success'}>{ t('game_rules') }</Link>
                                     </div>
                                 </div>
                             </div>

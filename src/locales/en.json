@@ -27,5 +27,6 @@
         "title": "Seed",
         "placeholder": "World seed. Let empty for random.",
         "help": "The seed is a string used for world generation. A same seed always generates the same world (assuming size is the same)."
-    }
+    },
+    "game_rules": "Game rules"
 }

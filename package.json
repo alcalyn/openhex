@@ -28,6 +28,7 @@
     "translations-scan": "npm-run-all translations-scan-*",
     "translations-scan-engine": "i18next-scanner --config i18next-scanner.config.engine.js src/engine/*.js",
     "translations-scan-ui": "i18next-scanner --config i18next-scanner.config.ui.js src/components/*.js",
+    "translations-scan-game-rules": "i18next-scanner --config i18next-scanner.config.game-rules.js src/components/GameRules/GameRules.js",
     "eject": "react-scripts eject"
   },
   "devDependencies": {

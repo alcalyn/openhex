@@ -19,6 +19,10 @@ export default class Arbiter {
         this.currentPlayer = null;
         this.currentKingdom = null;
         this.undoManager = new UndoManager();
+
+        if (this.world.config.players.length > 0) {
+            this.setCurrentPlayer(world.config.players[0]);
+        }
     }
 
     setCurrentPlayer(player) {
@@ -97,6 +101,8 @@ export default class Arbiter {
     }
 
     buyUnit() {
+        this._checkKingdomSelected();
+
         if (this.currentKingdom.money < Arbiter.UNIT_PRICE) {
             throw new IllegalMoveError('cannot_buy_unit.not_enough_money', [], {
                 playerMoney: this.currentKingdom.money,
@@ -137,6 +143,8 @@ export default class Arbiter {
     }
 
     buyTower() {
+        this._checkKingdomSelected();
+        
         if (this.currentKingdom.money < Arbiter.TOWER_PRICE) {
             throw new IllegalMoveError('cannot_buy_tower.not_enough_money', [], {
                 playerMoney: this.currentKingdom.money,

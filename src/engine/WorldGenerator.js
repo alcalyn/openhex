@@ -74,6 +74,8 @@ export default class WorldGenerator {
             worldHexs = worldHexs.concat(adjacentHexs.slice(0, config.players.length));
         } while (worldHexs.length < worldHexsLength);
 
+        worldHexs.forEach(hex => delete hex._height);
+
         const world = new World(worldHexs, config);
 
         this.setPlayerColors(config.players);
