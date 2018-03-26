@@ -2,10 +2,13 @@ module.exports = {
     options: {
         debug: true,
         func: {
-            list: ['IllegalMoveError', 't'],
+            list: ['t'],
             extensions: ['.js'],
         },
-        trans: false,
+        trans: {
+            component: 'Trans',
+            fallbackKey: (ns, value) => value,
+        },
         lngs: ['en', 'fr', 'es'],
         ns: [
             'translation',
@@ -14,11 +17,11 @@ module.exports = {
         defaultNs: 'translation',
         defaultValue: (lng, ns, key) => '',
         resource: {
-            loadPath: 'src/locales/{{lng}}.json',
-            savePath: 'src/locales/{{lng}}.json',
+            loadPath: 'src/components/GameRules/locales/{{lng}}.json',
+            savePath: 'src/components/GameRules/locales/{{lng}}.json',
             jsonIndent: 4,
         },
-        nsSeparator: ':',
-        keySeparator: '.',
+        nsSeparator: false,
+        keySeparator: false,
     },
 };

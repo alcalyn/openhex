@@ -6,10 +6,10 @@ import Tree from './Tree';
 import Capital from './Capital';
 
 export default class Hex extends HexBase {
-    constructor(q, r, s) {
+    constructor(q, r, s, player = null) {
         super(q, r, s);
 
-        this.player = null;
+        this.player = player;
         this.kingdom = null;
         this.entity = null;
     }

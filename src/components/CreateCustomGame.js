@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { I18n } from 'react-i18next';
-import i18next from 'i18next';
+import i18n from '../i18n';
 import SizeButton from './SizeButton';
 
 export default class CreateCustomGame extends Component {
@@ -26,7 +26,7 @@ export default class CreateCustomGame extends Component {
 
     render() {
         return (
-            <I18n i18n={ i18next }>
+            <I18n i18n={ i18n }>
                 {t => (
                     <main className={'container create-custom-game'}>
                         <h2>{ t('custom_game') }</h2>

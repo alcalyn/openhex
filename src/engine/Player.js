@@ -1,6 +1,6 @@
 export default class Player {
-    constructor() {
-        this.color = null;
+    constructor(color = null) {
+        this.color = color;
     }
 
     notifyTurn(arbiter) {

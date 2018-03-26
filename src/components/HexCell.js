@@ -23,6 +23,10 @@ export default class HexCell extends Component {
             classes.push('hex-clickable');
         }
 
+        if (this.props.unitHasMove) {
+            classes.push('has-move');
+        }
+
         return classes.join(' ');
     }
 
@@ -31,10 +35,6 @@ export default class HexCell extends Component {
 
         if (hex.hasUnit()) {
             classes.push('unit');
-
-            if (this.props.unitHasMove) {
-                classes.push('has-move');
-            }
         }
 
         if (this.props.warningEntity) {
