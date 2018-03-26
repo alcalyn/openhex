@@ -221,6 +221,9 @@ svg .hex-clickable {
 .learn-to-play.tldr .hidden-on-tldr {
     display: none;
 }
+.learn-to-play.tldr .d-block.hidden-on-tldr {
+    display: none !important;
+}
 
 .learn-to-play .card,
 .learn-to-play .card-header {

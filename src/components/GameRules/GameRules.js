@@ -509,17 +509,27 @@ export default class GameRules extends Component {
                             <Trans i18nKey="5a336d39" parent={ 'li' }>cut a tree.</Trans>
                         </ul>
 
-                        <Trans i18nKey="15da6edb" parent={ 'p' }>
+                        <Trans i18nKey="15da6edb" parent={ 'p' } className={'hidden-on-tldr'}>
                             Once an unit made his action, it cannot be moved anymore,
                             stops bouncing, and stays on the hex until the next turn.
                         </Trans>
 
-                        <Trans i18nKey="23776b93" parent={ 'p' }>
+                        <Trans i18nKey="23776b93" parent={ 'p' } className={'hidden-on-tldr'}>
                             Moving only inside kingdom is not considered as an action,
                             so you can move it until the unit make an action.
                         </Trans>
 
                         <Trans i18nKey="587fad8a" parent={ 'h3' }>Capturing hexs</Trans>
+
+                        <Trans i18nKey="254a332e" parent={ 'p' } className={'hidden-on-tldr'}>
+                            You have to capture all hexs of the world to win,
+                            however your opponents should surrender before.
+                        </Trans>
+
+                        <Trans i18nKey="c78e9e92" parent={ 'p' }>
+                            To capture a hex, you have to capture hexs adjacents to your kingdom.
+                            Then, the captured hex now belongs to your kingdom.
+                        </Trans>
 
                         <figure className={'figure d-block'}>
                             <OpenHexGrid
@@ -533,16 +543,6 @@ export default class GameRules extends Component {
                                 Bonus: try to link your kingdoms together.
                             </Trans>
                         </figure>
-
-                        <Trans i18nKey="254a332e" parent={ 'p' }>
-                            You have to capture all hexs of the world to win,
-                            however your opponents should surrender before.
-                        </Trans>
-
-                        <Trans i18nKey="c78e9e92" parent={ 'p' }>
-                            So to capture a hex, you have to capture hexs adjacents
-                            to your kingdom. Then, the captured hex now belongs to your kingdom.
-                        </Trans>
 
                         <Trans i18nKey="0b4e72b6" parent={ 'p' }>
                             Each hex generates 1 gold to your kingdom each turn.
@@ -593,12 +593,12 @@ export default class GameRules extends Component {
                             </Trans>
                         </figure>
 
-                        <Trans i18nKey="140c3f85" parent={ 'p' }>
+                        <Trans i18nKey="140c3f85" parent={ 'p' } className={'hidden-on-tldr'}>
                             At the end of the turn, keep an eye on the hexs you are defending
                             with your units placement. You may want to defend your frontiers.
                         </Trans>
 
-                        <figure className={'figure d-block text-center'}>
+                        <figure className={'hidden-on-tldr figure d-block text-center'}>
                             <img
                                 src={ imgProtect }
                                 alt={ 'units protecting'}
@@ -613,19 +613,19 @@ export default class GameRules extends Component {
 
                         <Trans i18nKey="415f2d67" parent={ 'h3' }>Upgrading units</Trans>
 
-                        <Trans i18nKey="3cc5f2f8" parent={ 'p' }>
+                        <Trans i18nKey="3cc5f2f8" parent={ 'p' } className={'hidden-on-tldr'}>
                             Level 1 units are good to provide a low cost,
                             wide and basic kingdom protection.
                         </Trans>
 
-                        <Trans i18nKey="bd88b087" parent={ 'p' }>
+                        <Trans i18nKey="bd88b087" parent={ 'p' } className={'hidden-on-tldr'}>
                             But as the enemy build units, you have to upgrade your units
                             in order to kill them, and defend your kingdom from stronger enemy.
                         </Trans>
 
                         <Trans i18nKey="7dac20a0" parent={ 'p' }>
                             To upgrade an unit, just merge two units together by placing an unit on another.
-                            It adds up the unit levels and creates a single stronger unit.
+                            It creates a single stronger unit, and can beat stronger enemy units and structures.
                         </Trans>
 
                         <figure className={'figure d-block'}>
@@ -719,7 +719,7 @@ export default class GameRules extends Component {
 
                         <Trans i18nKey="c1a70bc6" parent={ 'p' }>
                             If a tree is on a hex of your kingdom,
-                            it prevent the hex to generate gold,
+                            it prevents the hex to generate gold,
                             so you should cut them.
                         </Trans>
 
