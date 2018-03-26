@@ -9,7 +9,7 @@ module.exports = {
             component: 'Trans',
             fallbackKey: (ns, value) => value,
         },
-        lngs: ['en', 'fr', 'es'],
+        lngs: ['en'],
         ns: [
             'translation',
         ],
