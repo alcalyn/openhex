@@ -28,5 +28,5 @@
         "placeholder": "Graine du monde. Laisser vide pour un monde aléatoire.",
         "help": "La graine est un texte utilisé pour la génération du monde. Une même graine regénère toujours le même monde (pour une même taille choisie)."
     },
-    "game_rules": ""
+    "game_rules": "Règles du jeu"
 }
