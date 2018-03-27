@@ -20,6 +20,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "build-local": "PUBLIC_URL=. react-scripts build",
     "test": "mocha --recursive --require babel-core/register && CI=false react-scripts test --env=jsdom",
     "test-unit": "mocha --recursive --require babel-core/register",
     "coverage": "nyc --reporter=text --reporter=html mocha --recursive --require babel-core/register && echo '\n > Check HTML result at ./coverage/index.html\n'",
