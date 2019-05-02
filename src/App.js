@@ -20,6 +20,10 @@ class App extends Component {
 
         if (props.location && props.location.state && props.location.state.config) {
             config = props.location.state.config;
+
+            if (!config.seed || /^\s*$/.test(config.seed)) {
+                config.seed = null;
+            }
         }
 
         const worldConfig = WorldConfig({
