@@ -20,6 +20,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "build-local": "PUBLIC_URL=. react-scripts build",
     "test": "mocha --recursive --require babel-core/register && CI=false react-scripts test --env=jsdom",
     "test-unit": "mocha --recursive --require babel-core/register",
     "coverage": "nyc --reporter=text --reporter=html mocha --recursive --require babel-core/register && echo '\n > Check HTML result at ./coverage/index.html\n'",
@@ -28,6 +29,7 @@
     "translations-scan": "npm-run-all translations-scan-*",
     "translations-scan-engine": "i18next-scanner --config i18next-scanner.config.engine.js src/engine/*.js",
     "translations-scan-ui": "i18next-scanner --config i18next-scanner.config.ui.js src/components/*.js",
+    "translations-scan-game-rules": "i18next-scanner --config i18next-scanner.config.game-rules.js src/components/GameRules/GameRules.js",
     "eject": "react-scripts eject"
   },
   "devDependencies": {

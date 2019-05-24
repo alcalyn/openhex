@@ -37,12 +37,12 @@ svg g .hex.color-5 {
 svg .hex-clickable {
     cursor: pointer;
 }
-.unit.has-move {
+.has-move .unit {
     animation: bounce 1s infinite;
     cursor: grab;
 }
 .has-selection,
-.has-selection .unit.has-move,
+.has-selection .has-move .unit,
 .has-selection .hex-clickable {
     cursor: grabbing;
 }
@@ -199,4 +199,35 @@ svg .hex-clickable {
 .home .main-menu .btn {
     margin-bottom: 0.5em;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.learn-to-play.container {
+    max-width: 32em;
+    font-size: 1.25em;
+    margin-bottom: 8em;
+}
+.learn-to-play h1,
+.learn-to-play h2,
+.learn-to-play h3
+ {
+    margin: 2em 0 0.75em 0;
+}
+.learn-to-play .space-after {
+    margin-bottom: 0.5em;
+}
+.learn-to-play ul.maintenance-list li {
+    margin-bottom: 0.5em;
+}
+.learn-to-play.tldr .hidden-on-tldr {
+    display: none;
+}
+.learn-to-play.tldr .d-block.hidden-on-tldr {
+    display: none !important;
+}
+
+.learn-to-play .card,
+.learn-to-play .card-header {
+    border: 2px solid #333;
+    border-radius: 5px 5px 5px 5px/25px 25px 25px 5px;
+    box-shadow: none;
 }

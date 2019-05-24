@@ -5,12 +5,7 @@ module.exports = {
             list: ['IllegalMoveError', 't'],
             extensions: ['.js'],
         },
-        trans: {
-            component: 'Trans',
-            i18nKey: 'i18nKey',
-            extensions: ['.js', '.jsx'],
-            fallbackKey: (ns, value) => ns,
-        },
+        trans: false,
         lngs: ['en', 'fr', 'es'],
         ns: [
             'translation',

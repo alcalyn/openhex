@@ -6,6 +6,7 @@ import HexCell from './HexCell';
 import Home from './Home';
 import OpenHexGrid from './OpenHexGrid';
 import GameMenu from './GameMenu';
+import GameRules from './GameRules/GameRules';
 
 export {
     Alert,
@@ -16,4 +17,5 @@ export {
     Home,
     OpenHexGrid,
     GameMenu,
+    GameRules,
 };
