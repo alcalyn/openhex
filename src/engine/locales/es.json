@@ -1,6 +1,6 @@
 {
     "cannot_select": {
-        "not_your_kingdom": "",
+        "not_your_kingdom": "test",
         "not_in_current_kingdom": "",
         "no_unit_here": "",
         "already_played": "",
