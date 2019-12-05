@@ -12,14 +12,22 @@ html, body, #root, .App {
     flex: auto;
 }
 
+#grid {
+    background: rgb(0, 64, 192);
+}
+
+svg g .all-hexs {
+    filter: url(#world-shadow);
+}
+
 svg g .hex {
     fill: #3F51B5;
 }
 svg g .hex.color-0 {
-    fill: #c82333; /* danger */
+    fill: #28a745; /* success */
 }
 svg g .hex.color-1 {
-    fill: #28a745; /* success */
+    fill: #c82333; /* danger */
 }
 svg g .hex.color-2 {
     fill: #e0a800; /* warning */

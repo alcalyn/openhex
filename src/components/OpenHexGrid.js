@@ -18,7 +18,7 @@ export default class OpenHexGrid extends Component {
         if (!this.props.arbiter) {
             return false;
         }
-        
+
         if (this.props.arbiter.currentPlayer !== hex.player) {
             return false;
         }
@@ -64,8 +64,8 @@ export default class OpenHexGrid extends Component {
         const viewBox = [
             worldBorders[0],
             worldBorders[1],
-            worldBorders[2] - worldBorders[0],
-            worldBorders[3] - worldBorders[1],
+            worldBorders[2] - worldBorders[0] + 10,
+            worldBorders[3] - worldBorders[1] + 10,
         ];
 
         return viewBox;
@@ -146,14 +146,30 @@ export default class OpenHexGrid extends Component {
                     </g>
                     <defs>
                         <filter id="hexshadow" x="-200%" y="-200%" width="400%" height="400%">
-                            <feGaussianBlur in="SourceAlpha" stdDeviation="4"/>
+                            <feFlood floodColor="#FFFFFF" result="outsideColor"/>
+                            <feMorphology in="SourceAlpha" operator="dilate" radius="1.5"/>
+                            <feGaussianBlur in="outsideBlur" stdDeviation="0.5"/>
+                            <feComposite in="outsideColor" in2="outsideBlur" operator="in" result="outsideStroke"/>
+                            <feMerge>
+                                <feMergeNode in="outsideStroke"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                        <filter id="world-shadow" x="0" y="0" width="200%" height="200%">
+                            <feOffset result="offOut" in="SourceAlpha" dx="3" dy="6" />
+                            <feGaussianBlur in="offOut" stdDeviation="2"/>
                             <feMerge>
                                 <feMergeNode/>
                                 <feMergeNode in="SourceGraphic"/>
                             </feMerge>
                         </filter>
+                        <filter id="world-background" x="0" y="0" width="100%" height="100%">
+                            <feTile in="SourceGraphic" x="50" y="50"
+                                    width="100" height="100" />
+                            <feTile/>
+                        </filter>
                         <filter id="gold-highlight" x="-200%" y="-200%" width="400%" height="400%">
-                            <feGaussianBlur id="gold-shadow" in="SourceAlpha" stdDeviation="1.7" result="blur"/>
+                            <feGaussianBlur id="gold-shadow" in="SourceAlpha" stdDeviation="2" result="blur"/>
                             <feFlood floodColor="#FFFF00" result="offsetColor"/>
                             <feComposite in="offsetColor" in2="blur" operator="in" result="offsetBlur"/>
                             <feMerge>
@@ -174,10 +190,12 @@ export default class OpenHexGrid extends Component {
                         <animate
                             xlinkHref="#gold-shadow"
                             attributeName="stdDeviation"
-                            from="0.1"
-                            to="3.0"
+                            from="0.5"
+                            to="0.5"
+                            values="0.5; 5; 0.5"
+                            keyTimes="0; 0.5; 1"
                             begin="0s"
-                            dur="0.8s"
+                            dur="1s"
                             repeatCount="indefinite"
                         />
                     </defs>
