@@ -124,7 +124,7 @@ svg .hex-clickable {
 }
 
 .selected-kingdom {
-    filter: url(#hexshadow);
+    filter: url(#hex-shadow);
 }
 .warning-entity {
     filter: url(#warn-highlight);

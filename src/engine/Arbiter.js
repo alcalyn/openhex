@@ -18,6 +18,7 @@ export default class Arbiter {
         this.selection = null;
         this.currentPlayer = null;
         this.currentKingdom = null;
+        this.winner = null;
         this.undoManager = new UndoManager();
 
         if (this.world.config.players.length > 0) {
@@ -233,7 +234,8 @@ export default class Arbiter {
         }
 
         this._resetUnitsMove(this.currentPlayer);
-        this._checkWon();
+
+        if (this.checkWon() !== null) return this.currentKingdom = null;
 
         let nextIndex = this.world.config.players.indexOf(this.currentPlayer) + 1;
 
@@ -253,10 +255,13 @@ export default class Arbiter {
         this.setCurrentPlayer(nextPlayer);
     }
 
-    _checkWon() {
+    checkWon() {
         if (this.world.kingdoms.length === 1) {
-            console.log(this.world.kingdoms[0].player, "has won");
+            this.winner = this.world.kingdoms[0].player;
+            this.world.hexs.filter(hex => hex.player !== this.winner).forEach(hex => hex.player = this.winner);
+            return this.winner;
         }
+        return null;
     }
 
     undo() {

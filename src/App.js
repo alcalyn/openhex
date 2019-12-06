@@ -8,6 +8,7 @@ import './bootstrap4-sketchy.min.css';
 import './bootstrap4-sketchy-override.css';
 import './fonts/fonts.css';
 import './App.css';
+import Themes from "./themes";
 
 class App extends Component {
     constructor(props, context) {
@@ -43,6 +44,9 @@ class App extends Component {
         this.arbiter.onUpdate = () => {
             this.update();
         };
+
+        this._handleMouseMove = this._handleMouseMove.bind(this);
+        this.mousePosition = [0, 0];
     }
 
     displayAlert(alert) {
@@ -87,6 +91,26 @@ class App extends Component {
         this.setState({
             world: this.state.world,
         });
+    }
+
+    _handleMouseMove(e) {
+        if (this.selectionImage && this.reactSvg) {
+            const layoutRect = document.getElementById('grid').querySelector('svg g').getBoundingClientRect();
+            this.mousePosition = [
+                (e.clientX - layoutRect.left) / this.reactSvg.state.value.a,
+                (e.clientY - layoutRect.top) / this.reactSvg.state.value.d
+            ];
+            this.selectionImage.setAttribute('x', this.mousePosition[0]);
+            this.selectionImage.setAttribute('y', this.mousePosition[1]);
+        }
+    }
+
+    componentDidMount() {
+        document.addEventListener('mousemove', this._handleMouseMove);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('mousemove', this._handleMouseMove);
     }
 
     render() {
@@ -138,6 +162,7 @@ class App extends Component {
                                 detectAutoPan={false}
                                 scaleFactorOnWheel={1.15}
                                 disableDoubleClickZoomWithToolAuto={true}
+                                ref={node => { this.reactSvg = node; }}
                             >
                                 <svg width={width} height={height}>
                                     <OpenHexGrid
@@ -147,6 +172,17 @@ class App extends Component {
                                         onArbiterError={ e => this.handleArbiterError(e) }
                                         onClearError={ () => this.clearAlert() }
                                     />
+                                    { this.arbiter && this.arbiter.selection ? (
+                                        <image
+                                            x={this.mousePosition[0]}
+                                            y={this.mousePosition[1]}
+                                            width={20}
+                                            height={20}
+                                            style={{ pointerEvents: 'none' }}
+                                            xlinkHref={Themes.getImageFor(this.arbiter.selection)}
+                                            ref={node => { this.selectionImage = node; }}
+                                        />
+                                    ) : ''}
                                 </svg>
                             </ReactSVGPanZoom>
 

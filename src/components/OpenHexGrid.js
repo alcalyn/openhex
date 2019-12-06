@@ -40,7 +40,7 @@ export default class OpenHexGrid extends Component {
         return null !== hex.kingdom && hex.kingdom === this.props.arbiter.currentKingdom;
     }
 
-    createViewBox(hexs, layout) {
+    createViewBox(hexs, layout, padding) {
         const pixel0 = HexUtils.hexToPixel(hexs[0], layout);
         const worldBorders = [
             pixel0.x,
@@ -66,8 +66,8 @@ export default class OpenHexGrid extends Component {
         const viewBox = [
             worldBorders[0],
             worldBorders[1],
-            worldBorders[2] - worldBorders[0],
-            worldBorders[3] - worldBorders[1],
+            worldBorders[2] - worldBorders[0] + (padding * 2),
+            worldBorders[3] - worldBorders[1] + (padding * 2),
         ];
 
         return viewBox;
@@ -116,6 +116,7 @@ export default class OpenHexGrid extends Component {
 
     render() {
         const HEX_SIZE = 20;
+        const PADDING = 10;
         const { world, arbiter, width, height } = this.props;
 
         const layout = new Layout();
@@ -124,7 +125,7 @@ export default class OpenHexGrid extends Component {
         layout.spacing = 1.0;
         layout.origin = { x: 0, y: 0 };
 
-        const viewBox = this.createViewBox(world.hexs, layout);
+        const viewBox = this.createViewBox(world.hexs, layout, PADDING);
 
         return (
             <HexGrid width={ width } height={ height } viewBox={ viewBox.join(' ') }>
@@ -136,17 +137,21 @@ export default class OpenHexGrid extends Component {
                     className={ arbiter && arbiter.selection ? 'has-selection' : '' }
                 >
                     <g className={'all-hexs'}>
-                        { world.hexs.map((hex, i) => <HexCell
-                            key={i}
-                            hex={hex}
-                            highlight={this.isHexSelected(hex)}
-                            currentPlayer={arbiter && hex.player === arbiter.currentPlayer}
-                            clickable={arbiter && hex.kingdom && hex.player === arbiter.currentPlayer}
-                            warningEntity={hex.entity && (-1 !== this.state.warningEntities.indexOf(hex.entity))}
-                            unitHasMove={this.hexUnitHasMove(hex)}
-                            onClick={() => { this.clickHex(hex); }}
-                        />) }
-                        <g className={'selected-kingdom'}>
+                        { world.hexs.map((hex, i) =>
+                            <g transform={`translate(${PADDING} ${PADDING})`}>
+                                <HexCell
+                                    key={i}
+                                    hex={hex}
+                                    highlight={this.isHexSelected(hex)}
+                                    currentPlayer={arbiter && hex.player === arbiter.currentPlayer}
+                                    clickable={arbiter && hex.kingdom && hex.player === arbiter.currentPlayer}
+                                    warningEntity={hex.entity && (-1 !== this.state.warningEntities.indexOf(hex.entity))}
+                                    unitHasMove={this.hexUnitHasMove(hex)}
+                                    onClick={() => { this.clickHex(hex); }}
+                                />
+                            </g>
+                        ) }
+                        <g className={'selected-kingdom'} transform={`translate(${PADDING} ${PADDING})`}>
                             { arbiter && arbiter.currentKingdom ? (
                                 arbiter.currentKingdom.hexs.map((hex, i) => <HexCell
                                     key={i}
@@ -159,9 +164,17 @@ export default class OpenHexGrid extends Component {
                                 />)
                             ) : ''}
                         </g>
+                        <rect
+                            fill={`rgba(0, 0, 0, 0`}
+                            x={viewBox[0]}
+                            y={viewBox[1]}
+                            width={width}
+                            height={height}
+                            style={{ pointerEvents: arbiter && arbiter.winner ? 'auto' : 'none' }}
+                        />
                     </g>
                     <defs>
-                        <filter id="hexshadow" x="-200%" y="-200%" width="400%" height="400%">
+                        <filter id="hex-shadow" x="-200%" y="-200%" width="400%" height="400%">
                             <feFlood floodColor="#FFFFFF" result="outsideColor"/>
                             <feMorphology in="SourceAlpha" operator="dilate" radius="1.5"/>
                             <feGaussianBlur in="outsideBlur" stdDeviation="0.5"/>
