@@ -8,6 +8,8 @@ export default class CreateCustomGame extends Component {
     constructor(props, context) {
         super(props, context);
 
+        this.defaultSize = 16;
+
         this.state = {
             size: 16,
             seed: '',
@@ -34,9 +36,10 @@ export default class CreateCustomGame extends Component {
                         <h3>{ t('world_size') }</h3>
 
                         <div className={'row'}>
-                            <SizeButton size={ 10 } selectedSize={ this.state.size } onSelectSize={ size => this.selectSize(size) } label={ t('size.small') } />
-                            <SizeButton size={ 16 } selectedSize={ this.state.size } onSelectSize={ size => this.selectSize(size) } label={ t('size.medium') } />
-                            <SizeButton size={ 28 } selectedSize={ this.state.size } onSelectSize={ size => this.selectSize(size) } label={ t('size.large') } />
+                            <SizeButton size={ this.defaultSize / 2 } selectedSize={ this.state.size } onSelectSize={ size => this.selectSize(size) } label={ t('size.small') } />
+                            <SizeButton size={ this.defaultSize } selectedSize={ this.state.size } onSelectSize={ size => this.selectSize(size) } label={ t('size.medium') } />
+                            <SizeButton size={ this.defaultSize * 2 } selectedSize={ this.state.size } onSelectSize={ size => this.selectSize(size) } label={ t('size.large') } />
+                            <SizeButton size={ this.defaultSize * 4 } selectedSize={ this.state.size } onSelectSize={ size => this.selectSize(size) } label={ t('size.insane') } />
                         </div>
 
                         <h3>{ t('seed.title') }</h3>

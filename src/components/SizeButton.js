@@ -36,7 +36,7 @@ export default class SizeButton extends Component {
 
     render() {
         return (
-            <div className={'col-sm-6 col-md-4 '+this.visibleClasses()}>
+            <div className={'col-sm-6 col-md-3 '+this.visibleClasses()}>
                 <button
                     className={'btn btn-lg btn-block btn-success '+this.buttonClasses()}
                     onClick={ () => this.props.onSelectSize(this.props.size) }
