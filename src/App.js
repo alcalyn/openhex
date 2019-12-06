@@ -144,7 +144,6 @@ class App extends Component {
                                         world={ world }
                                         arbiter={ this.arbiter }
                                         onArbiterUpdate={ () => this.update() }
-                                        onClickHex={ hex => console.log('hex clicked', hex) }
                                         onArbiterError={ e => this.handleArbiterError(e) }
                                         onClearError={ () => this.clearAlert() }
                                     />

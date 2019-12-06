@@ -233,6 +233,7 @@ export default class Arbiter {
         }
 
         this._resetUnitsMove(this.currentPlayer);
+        this._checkWon();
 
         let nextIndex = this.world.config.players.indexOf(this.currentPlayer) + 1;
 
@@ -250,6 +251,12 @@ export default class Arbiter {
         TreeUtils.spawnTrees(this.world);
 
         this.setCurrentPlayer(nextPlayer);
+    }
+
+    _checkWon() {
+        if (this.world.kingdoms.length === 1) {
+            console.log(this.world.kingdoms[0].player, "has won");
+        }
     }
 
     undo() {

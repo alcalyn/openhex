@@ -66,8 +66,8 @@ export default class OpenHexGrid extends Component {
         const viewBox = [
             worldBorders[0],
             worldBorders[1],
-            worldBorders[2] - worldBorders[0] + 10,
-            worldBorders[3] - worldBorders[1] + 10,
+            worldBorders[2] - worldBorders[0],
+            worldBorders[3] - worldBorders[1],
         ];
 
         return viewBox;
