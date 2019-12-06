@@ -12,6 +12,8 @@ export default class OpenHexGrid extends Component {
         this.state = {
             warningEntities: [],
         };
+
+        this._handleOnContextMenu = this._handleOnContextMenu.bind(this);
     }
 
     hexUnitHasMove(hex) {
@@ -88,6 +90,20 @@ export default class OpenHexGrid extends Component {
             this.setState({ warningEntities: e.warningEntities });
             this.props.onArbiterError(e);
         }
+    }
+
+    _handleOnContextMenu(e) {
+        e.preventDefault();
+        if (!this.props.arbiter) return;
+        this.props.arbiter.smartSecondaryAction();
+    }
+
+    componentDidMount() {
+        document.addEventListener('contextmenu', this._handleOnContextMenu);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('contextmenu', this._handleOnContextMenu);
     }
 
     update() {

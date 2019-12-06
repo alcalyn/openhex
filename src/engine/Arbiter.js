@@ -144,7 +144,7 @@ export default class Arbiter {
 
     buyTower() {
         this._checkKingdomSelected();
-        
+
         if (this.currentKingdom.money < Arbiter.TOWER_PRICE) {
             throw new IllegalMoveError('cannot_buy_tower.not_enough_money', [], {
                 playerMoney: this.currentKingdom.money,
@@ -209,6 +209,20 @@ export default class Arbiter {
                 }
             } else {
                 this.placeAt(hex);
+            }
+        }
+    }
+
+    /**
+     * Guess which action to do when the user right clicks
+     */
+    smartSecondaryAction() {
+        if (this.currentKingdom) {
+            // Attempt to buy/upgrade, fail silently
+            try {
+                this.buyUnit();
+                if (this.onUpdate) this.onUpdate();
+            } catch (_) {
             }
         }
     }

@@ -40,6 +40,9 @@ class App extends Component {
         };
 
         this.arbiter = arbiter;
+        this.arbiter.onUpdate = () => {
+            this.update();
+        };
     }
 
     displayAlert(alert) {
