@@ -91,7 +91,7 @@ Then it will be available at https://alcalyn.github.io/openhex/
 
 ## Contribute to translations
 
-OpenHex uses a self-hosted instance of [Weblate](https://weblate.tru.io/projects/openhex/) for translations.
+OpenHex uses a self-hosted instance of [Weblate](https://weblate.alcalyn.app/projects/openhex/) for translations.
 
 So translating strings should not be done in the repo, *except* for English.
 

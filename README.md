@@ -1,7 +1,7 @@
 # OpenHex
 
 [![Build Status](https://travis-ci.org/alcalyn/openhex.svg?branch=master)](https://travis-ci.org/alcalyn/openhex)
-[![Translation status](https://weblate.tru.io/widgets/openhex/-/svg-badge.svg)](https://weblate.tru.io/projects/openhex/)
+[![Translation status](https://weblate.alcalyn.app/widgets/openhex/-/svg-badge.svg)](https://weblate.alcalyn.app/projects/openhex/)
 
 HTML5 game inspired by Slay.
 
@@ -19,6 +19,12 @@ cd openhex/
 npm install
 npm start
 ```
+
+
+## Contribute
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for more information
+about developing on project, translating OpenHex...
 
 
 ## License
