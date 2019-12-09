@@ -52,10 +52,10 @@ export default class HexCell extends Component {
         if (hex.entity) {
             return (
                 <image
-                    x={-12}
-                    y={-12}
-                    width={24}
-                    height={24}
+                    x={-10}
+                    y={-10}
+                    width={20}
+                    height={20}
                     xlinkHref={Themes.getImageFor(hex.entity)}
                     className={this.hexContentClasses(hex)}
                 />

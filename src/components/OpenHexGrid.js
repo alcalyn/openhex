@@ -12,13 +12,15 @@ export default class OpenHexGrid extends Component {
         this.state = {
             warningEntities: [],
         };
+
+        this._handleOnContextMenu = this._handleOnContextMenu.bind(this);
     }
 
     hexUnitHasMove(hex) {
         if (!this.props.arbiter) {
             return false;
         }
-        
+
         if (this.props.arbiter.currentPlayer !== hex.player) {
             return false;
         }
@@ -38,7 +40,7 @@ export default class OpenHexGrid extends Component {
         return null !== hex.kingdom && hex.kingdom === this.props.arbiter.currentKingdom;
     }
 
-    createViewBox(hexs, layout) {
+    createViewBox(hexs, layout, padding) {
         const pixel0 = HexUtils.hexToPixel(hexs[0], layout);
         const worldBorders = [
             pixel0.x,
@@ -64,8 +66,8 @@ export default class OpenHexGrid extends Component {
         const viewBox = [
             worldBorders[0],
             worldBorders[1],
-            worldBorders[2] - worldBorders[0],
-            worldBorders[3] - worldBorders[1],
+            worldBorders[2] - worldBorders[0] + (padding * 2),
+            worldBorders[3] - worldBorders[1] + (padding * 2),
         ];
 
         return viewBox;
@@ -90,6 +92,20 @@ export default class OpenHexGrid extends Component {
         }
     }
 
+    _handleOnContextMenu(e) {
+        e.preventDefault();
+        if (!this.props.arbiter) return;
+        this.props.arbiter.smartSecondaryAction();
+    }
+
+    componentDidMount() {
+        document.addEventListener('contextmenu', this._handleOnContextMenu);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('contextmenu', this._handleOnContextMenu);
+    }
+
     update() {
         this.setState({
             warningEntities: this.state.warningEntities,
@@ -100,6 +116,7 @@ export default class OpenHexGrid extends Component {
 
     render() {
         const HEX_SIZE = 20;
+        const PADDING = 10;
         const { world, arbiter, width, height } = this.props;
 
         const layout = new Layout();
@@ -108,7 +125,7 @@ export default class OpenHexGrid extends Component {
         layout.spacing = 1.0;
         layout.origin = { x: 0, y: 0 };
 
-        const viewBox = this.createViewBox(world.hexs, layout);
+        const viewBox = this.createViewBox(world.hexs, layout, PADDING);
 
         return (
             <HexGrid width={ width } height={ height } viewBox={ viewBox.join(' ') }>
@@ -120,17 +137,21 @@ export default class OpenHexGrid extends Component {
                     className={ arbiter && arbiter.selection ? 'has-selection' : '' }
                 >
                     <g className={'all-hexs'}>
-                        { world.hexs.map((hex, i) => <HexCell
-                            key={i}
-                            hex={hex}
-                            highlight={this.isHexSelected(hex)}
-                            currentPlayer={arbiter && hex.player === arbiter.currentPlayer}
-                            clickable={arbiter && hex.kingdom && hex.player === arbiter.currentPlayer}
-                            warningEntity={hex.entity && (-1 !== this.state.warningEntities.indexOf(hex.entity))}
-                            unitHasMove={this.hexUnitHasMove(hex)}
-                            onClick={() => { this.clickHex(hex); }}
-                        />) }
-                        <g className={'selected-kingdom'}>
+                        { world.hexs.map((hex, i) =>
+                            <g transform={`translate(${PADDING} ${PADDING})`}>
+                                <HexCell
+                                    key={i}
+                                    hex={hex}
+                                    highlight={this.isHexSelected(hex)}
+                                    currentPlayer={arbiter && hex.player === arbiter.currentPlayer}
+                                    clickable={arbiter && hex.kingdom && hex.player === arbiter.currentPlayer}
+                                    warningEntity={hex.entity && (-1 !== this.state.warningEntities.indexOf(hex.entity))}
+                                    unitHasMove={this.hexUnitHasMove(hex)}
+                                    onClick={() => { this.clickHex(hex); }}
+                                />
+                            </g>
+                        ) }
+                        <g className={'selected-kingdom'} transform={`translate(${PADDING} ${PADDING})`}>
                             { arbiter && arbiter.currentKingdom ? (
                                 arbiter.currentKingdom.hexs.map((hex, i) => <HexCell
                                     key={i}
@@ -143,17 +164,41 @@ export default class OpenHexGrid extends Component {
                                 />)
                             ) : ''}
                         </g>
+                        <rect
+                            fill={`rgba(0, 0, 0, 0`}
+                            x={viewBox[0]}
+                            y={viewBox[1]}
+                            width={width}
+                            height={height}
+                            style={{ pointerEvents: arbiter && arbiter.winner ? 'auto' : 'none' }}
+                        />
                     </g>
                     <defs>
-                        <filter id="hexshadow" x="-200%" y="-200%" width="400%" height="400%">
-                            <feGaussianBlur in="SourceAlpha" stdDeviation="4"/>
+                        <filter id="hex-shadow" x="-200%" y="-200%" width="400%" height="400%">
+                            <feFlood floodColor="#FFFFFF" result="outsideColor"/>
+                            <feMorphology in="SourceAlpha" operator="dilate" radius="1.5"/>
+                            <feGaussianBlur in="outsideBlur" stdDeviation="0.5"/>
+                            <feComposite in="outsideColor" in2="outsideBlur" operator="in" result="outsideStroke"/>
+                            <feMerge>
+                                <feMergeNode in="outsideStroke"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                        <filter id="world-shadow" x="0" y="0" width="200%" height="200%">
+                            <feOffset result="offOut" in="SourceAlpha" dx="3" dy="6" />
+                            <feGaussianBlur in="offOut" stdDeviation="2"/>
                             <feMerge>
                                 <feMergeNode/>
                                 <feMergeNode in="SourceGraphic"/>
                             </feMerge>
                         </filter>
+                        <filter id="world-background" x="0" y="0" width="100%" height="100%">
+                            <feTile in="SourceGraphic" x="50" y="50"
+                                    width="100" height="100" />
+                            <feTile/>
+                        </filter>
                         <filter id="gold-highlight" x="-200%" y="-200%" width="400%" height="400%">
-                            <feGaussianBlur id="gold-shadow" in="SourceAlpha" stdDeviation="1.7" result="blur"/>
+                            <feGaussianBlur id="gold-shadow" in="SourceAlpha" stdDeviation="2" result="blur"/>
                             <feFlood floodColor="#FFFF00" result="offsetColor"/>
                             <feComposite in="offsetColor" in2="blur" operator="in" result="offsetBlur"/>
                             <feMerge>
@@ -174,10 +219,12 @@ export default class OpenHexGrid extends Component {
                         <animate
                             xlinkHref="#gold-shadow"
                             attributeName="stdDeviation"
-                            from="0.1"
-                            to="3.0"
+                            from="0.5"
+                            to="0.5"
+                            values="0.5; 5; 0.5"
+                            keyTimes="0; 0.5; 1"
                             begin="0s"
-                            dur="0.8s"
+                            dur="1s"
                             repeatCount="indefinite"
                         />
                     </defs>

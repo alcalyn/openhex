@@ -17,7 +17,8 @@
     "size": {
         "small": "Small",
         "medium": "Medium",
-        "large": "Large"
+        "large": "Large",
+        "insane": "Insane"
     },
     "project": {
         "description": "Simple strategy game inspired by Slay."
