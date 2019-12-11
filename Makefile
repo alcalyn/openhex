@@ -30,3 +30,7 @@ bash:
 
 node_modules:
 	docker-compose exec node sh -c "npm install"
+
+.PHONY: deploy
+deploy:
+	docker-compose exec node sh -c "apk add openssh git && npm run deploy"
