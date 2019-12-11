@@ -5,19 +5,22 @@ How to contribute to OpenHex ?
 
 ## Contribute to source code
 
-Requires git, NodeJS >=7.6 and NPM >=5.7
-
-``` bash
-git clone git@github.com:alcalyn/openhex.git
-cd openhex/
-
-npm install
-npm start
-```
-
-Then you'll be able to test the game, and develop in `src/`.
-
 It is a ReactJS application built with `create-react-app`.
+
+Folders:
+
+```
+src/
+    components/     # ReactJs components used for UI
+        GameRules/  # Contains text and tutorials for game rules page
+            locales/    # Translations for game rules
+    engine/         # Model classes in raw ES6
+        locales/    # Translations for OpenHex engine
+    i18n/           # Base installation for translations
+    locales/        # Translations for OpenHex UI
+    themes/         # Contains images for themes
+test/
+```
 
 
 ### Testing
@@ -31,67 +34,22 @@ Running tests:
 
 ``` bash
 npm test
+
+# Or with Docker
+make test
 ```
 
 
 ### Creating an unit test
 
-Unit tests are using a generated world with a constant seed.
+Most unit tests use generated worlds with a constant seed.
 
-So to visualize the generated world and see the hexs coords, do:
-
-- Create a symlink to `test/` in `src/`: `cd src/ && ln -s ../test`
-- Copy paste the test world in `src/App.js`, and replace the normal world:
-
-``` js
-class App extends Component {
-    constructor(props, context) {
-        super(props, context);
-
-        //const world = WorldGenerator.generate();
-        //const arbiter = new Arbiter(world);
-
-        //arbiter.setCurrentPlayer(world.config.players[0]);
-
-
-        const world = generateTestWorld('constant-seed-5');
-
-        const arbiter = new Arbiter(world);
-        const kingdom = world.getKingdomAt(new Hex(-3, 2, 1));
-        arbiter.setCurrentPlayer(kingdom.player);
-        arbiter.setCurrentKingdom(kingdom);
-
-        world.setEntityAt(new Hex(-1, 0, 1), new Tree(Tree.COASTAL));
-
-        // ...
-```
-
-- Don't forget to import `generateTestWorld` and missing engine classes:
-
-``` js
-import { generateTestWorld } from './test/engine/TestUtils';
-import { Hex, Tree } from './engine';
-```
-
-- Then run `npm start`
-
-You should see your testing world, and to see hex coords, open browser JS console, and click on the hex you want.
-
-
-### Deploy
-
-Deploy to `gh-pages`:
-
-``` bash
-npm run deploy
-```
-
-Then it will be available at https://alcalyn.github.io/openhex/
+To visualize the generated world and see the hexs coords, you can copy paste the test world in `src/App.js`, and run the application to see and play the world.
 
 
 ## Contribute to translations
 
-OpenHex uses a self-hosted instance of [Weblate](https://weblate.alcalyn.app/projects/openhex/) for translations.
+You can translate OpenHex on this [self-hosted instance of Weblate](https://weblate.alcalyn.app/projects/openhex/).
 
 So translating strings should not be done in the repo, *except* for English.
 
@@ -128,3 +86,14 @@ Translations files are in `src/engine/locales/`
 For files relative to OpenHex user interface, in `src/App.js` and `src/components/`.
 
 Translations files are in `src/locales/`
+
+
+### Deploy
+
+Deploy to `gh-pages`:
+
+``` bash
+npm run deploy
+```
+
+Then it will be available at https://alcalyn.github.io/openhex/
