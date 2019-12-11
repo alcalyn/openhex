@@ -9,6 +9,7 @@ export default class Hex extends HexBase {
     constructor(q, r, s, player = null) {
         super(q, r, s);
 
+        this.hash = [q, r, s].join('|');
         this.player = player;
         this.kingdom = null;
         this.entity = null;

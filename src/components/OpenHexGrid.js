@@ -137,10 +137,9 @@ export default class OpenHexGrid extends Component {
                     className={ arbiter && arbiter.selection ? 'has-selection' : '' }
                 >
                     <g className={'all-hexs'}>
-                        { world.hexs.map((hex, i) =>
-                            <g transform={`translate(${PADDING} ${PADDING})`}>
+                        { world.hexs.map(hex =>
+                            <g key={hex.hash} transform={`translate(${PADDING} ${PADDING})`}>
                                 <HexCell
-                                    key={i}
                                     hex={hex}
                                     highlight={this.isHexSelected(hex)}
                                     currentPlayer={arbiter && hex.player === arbiter.currentPlayer}
@@ -153,8 +152,8 @@ export default class OpenHexGrid extends Component {
                         ) }
                         <g className={'selected-kingdom'} transform={`translate(${PADDING} ${PADDING})`}>
                             { arbiter && arbiter.currentKingdom ? (
-                                arbiter.currentKingdom.hexs.map((hex, i) => <HexCell
-                                    key={i}
+                                arbiter.currentKingdom.hexs.map(hex => <HexCell
+                                    key={hex.hash}
                                     hex={hex}
                                     highlight={this.isHexSelected(hex)}
                                     currentPlayer={hex.player === arbiter.currentPlayer}
