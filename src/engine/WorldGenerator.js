@@ -29,7 +29,7 @@ export default class WorldGenerator {
         const hexs = [];
         const hexsMap = new Map();
         const byHeight = (hexA, hexB) => {
-            return hexA._height < hexB._height ? 1 : -1;
+            return hexB._height - hexA._height;
         };
 
 
