@@ -18,6 +18,7 @@ export default class Arbiter {
         this.selection = null;
         this.currentPlayer = null;
         this.currentKingdom = null;
+        this.winner = null;
         this.undoManager = new UndoManager();
 
         if (this.world.config.players.length > 0) {
@@ -144,7 +145,7 @@ export default class Arbiter {
 
     buyTower() {
         this._checkKingdomSelected();
-        
+
         if (this.currentKingdom.money < Arbiter.TOWER_PRICE) {
             throw new IllegalMoveError('cannot_buy_tower.not_enough_money', [], {
                 playerMoney: this.currentKingdom.money,
@@ -213,12 +214,28 @@ export default class Arbiter {
         }
     }
 
+    /**
+     * Guess which action to do when the user right clicks
+     */
+    smartSecondaryAction() {
+        if (this.currentKingdom) {
+            // Attempt to buy/upgrade, fail silently
+            try {
+                this.buyUnit();
+                if (this.onUpdate) this.onUpdate();
+            } catch (_) {
+            }
+        }
+    }
+
     endTurn() {
         if (this.selection) {
             throw new IllegalMoveError('cannot_end_turn_selection_not_empty');
         }
 
         this._resetUnitsMove(this.currentPlayer);
+
+        if (this.checkWon() !== null) return this.currentKingdom = null;
 
         let nextIndex = this.world.config.players.indexOf(this.currentPlayer) + 1;
 
@@ -236,6 +253,15 @@ export default class Arbiter {
         TreeUtils.spawnTrees(this.world);
 
         this.setCurrentPlayer(nextPlayer);
+    }
+
+    checkWon() {
+        if (this.world.kingdoms.length === 1) {
+            this.winner = this.world.kingdoms[0].player;
+            this.world.hexs.filter(hex => hex.player !== this.winner).forEach(hex => hex.player = this.winner);
+            return this.winner;
+        }
+        return null;
     }
 
     undo() {

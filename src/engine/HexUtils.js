@@ -93,7 +93,7 @@ export default class HexUtils extends HexUtilsBase {
         ;
 
         alliedKingdoms.sort((kingdomA, kingdomB) => {
-            return kingdomB.hexs.length > kingdomA.hexs.length;
+            return kingdomB.hexs.length - kingdomA.hexs.length;
         });
 
         const widestKingdom = alliedKingdoms[0];
@@ -204,7 +204,7 @@ export default class HexUtils extends HexUtilsBase {
 
         // Put the widest kingdom at first
         subKingdoms.sort((subKingdomA, subKingdomB) => {
-            return subKingdomB.length > subKingdomA;
+            return subKingdomB.length - subKingdomA.length;
         });
 
         // Single hexs created by cutting have no longer kingdom
@@ -338,7 +338,7 @@ export default class HexUtils extends HexUtilsBase {
         ;
 
         protectingUnits.sort((unitA, unitB) => {
-            return unitA.level < unitB.level;
+            return unitB.level - unitA.level;
         });
 
         if (undefined === level) {

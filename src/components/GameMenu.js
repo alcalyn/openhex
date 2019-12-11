@@ -33,11 +33,11 @@ export default class GameMenu extends Component {
                         <div className="card-body">
                             <div className="inline-buttons">
                                 <button
-                                    className={ "btn btn-outline-primary" + this.enabledIf(arbiter.hasUndo()) }
+                                    className={ "btn btn-outline-primary" + this.enabledIf(arbiter.hasUndo() && !arbiter.winner) }
                                     onClick={ () => { this.undo(); } }
                                 >{ t('game_menu.undo') }</button>
                                 <button
-                                    className={ "btn btn-success" }
+                                    className={ "btn btn-success" + this.enabledIf(!arbiter.winner) }
                                     onClick={ () => { this.endTurn(); } }
                                 >{ t('game_menu.end_turn') }</button>
                             </div>

@@ -1,0 +1,12 @@
+version: '3.4'
+
+services:
+
+    node:
+        image: node:13-alpine
+        working_dir: /openhex
+        volumes:
+            - .:/openhex
+        command: sleep 1000000000
+        ports:
+            - 3000:3000
