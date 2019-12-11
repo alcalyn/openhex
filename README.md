@@ -12,6 +12,8 @@ Demo here: https://alcalyn.github.io/openhex/
 
 ## Install
 
+Requires git, NodeJS >=7.6 and NPM >=5.7
+
 ``` bash
 git clone git@github.com:alcalyn/openhex.git
 cd openhex/
@@ -19,6 +21,25 @@ cd openhex/
 npm install
 npm start
 ```
+
+Then go to <http://localhost:3000>
+
+### Using Docker
+
+If you don't want to install nodeJS, and have docker ready:
+
+``` bash
+git clone git@github.com:alcalyn/openhex.git
+cd openhex/
+
+# Install project
+make install
+
+# Run project
+make
+```
+
+Then go to <http://localhost:3000>
 
 
 ## Contribute
