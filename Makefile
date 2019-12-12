@@ -8,6 +8,10 @@ install: up node_modules
 start:
 	docker-compose exec node sh -c "npm start"
 
+.PHONY: start-prod
+start-prod:
+	docker-compose exec node sh -c "npm run start-prod"
+
 .PHONY: stop
 stop:
 	docker-compose down
