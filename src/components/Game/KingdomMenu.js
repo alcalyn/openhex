@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import Themes from '../themes';
-import { Unit, Tower } from '../engine';
+import Themes from '../../themes';
+import { Unit, Tower } from '../../engine';
 import { I18n } from 'react-i18next';
-import i18n from '../i18n';
+import i18n from '../../i18n';
 
 export default class KingdomMenu extends Component {
     buyUnit() {

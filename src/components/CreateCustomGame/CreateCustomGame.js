@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { I18n } from 'react-i18next';
-import i18n from '../i18n';
-import SizeButton from './SizeButton';
+import i18n from '../../i18n';
+import { SizeButton } from '.';
 
 export default class CreateCustomGame extends Component {
     constructor(props, context) {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { I18n } from 'react-i18next';
-import i18n from '../i18n';
+import i18n from '../../i18n';
 
 export default class GameMenu extends Component {
     endTurn() {

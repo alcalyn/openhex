@@ -3,7 +3,7 @@ import { I18n, Trans } from 'react-i18next';
 import i18nGameRules from './i18n';
 import Themes from '../../themes';
 import { WorldGenerator, WorldConfig, World, Hex, Player, Arbiter, Unit, Capital, Tower, Tree, Died } from '../../engine';
-import { OpenHexGrid } from '..';
+import { OpenHexGrid } from '../Game';
 import imgFight from './images/rules-fight.png';
 import imgProtect from './images/protect-hexs.png';
 

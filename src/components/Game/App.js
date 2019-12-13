@@ -1,14 +1,11 @@
 import { AutoSizer } from 'react-virtualized';
-import {ReactSVGPanZoom} from 'react-svg-pan-zoom';
+import { ReactSVGPanZoom } from 'react-svg-pan-zoom';
 import React, { Component } from 'react';
-import i18n from './i18n';
-import { WorldGenerator, Arbiter, WorldConfig } from './engine';
-import { Alerts, KingdomMenu, GameMenu, OpenHexGrid } from './components';
-import './bootstrap4-sketchy.min.css';
-import './bootstrap4-sketchy-override.css';
-import './fonts/fonts.css';
+import i18n from '../../i18n';
+import { WorldGenerator, Arbiter, WorldConfig } from '../../engine';
+import { Alerts, KingdomMenu, GameMenu, OpenHexGrid } from '.';
 import './App.css';
-import Themes from "./themes";
+import Themes from "../../themes";
 
 class App extends Component {
     constructor(props, context) {

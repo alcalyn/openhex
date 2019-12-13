@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { I18n } from 'react-i18next';
-import i18n from '../i18n';
-import { WorldGenerator } from '../engine';
-import { OpenHexGrid } from '.';
+import i18n from '../../i18n';
+import { WorldGenerator } from '../../engine';
+import { OpenHexGrid } from '../Game';
 
 export default class Home extends Component {
     render() {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { WorldConfig, WorldGenerator } from '../engine';
-import { OpenHexGrid } from '.';
+import { WorldConfig, WorldGenerator } from '../../engine';
+import { OpenHexGrid } from '../Game';
 
 export default class SizeButton extends Component {
 
