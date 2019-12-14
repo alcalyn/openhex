@@ -109,7 +109,6 @@ export default class GameRules extends Component {
 
 
         this.state = {
-            tldrMode: true,
             firstWorld,
             singleHexWorld,
             twoHexsWorld,
@@ -132,7 +131,6 @@ export default class GameRules extends Component {
 
     render() {
         const {
-            tldrMode,
             firstWorld,
             singleHexWorld,
             twoHexsWorld,
@@ -154,47 +152,9 @@ export default class GameRules extends Component {
         return (
             <I18n i18n={ i18nGameRules }>
                 {t => (
-                    <main className={'learn-to-play container' + (tldrMode ? ' tldr' : '')}>
+                    <main className={'learn-to-play container'}>
 
                         <Trans i18nKey="e93726c4" parent={ 'h1' }>OpenHex rules</Trans>
-
-                        <div className={'card border-info'}>
-                            <div className={'card-body'}>
-                                { tldrMode ? (
-                                    <div>
-                                        <Trans i18nKey="80be2dc6" parent={ 'h4' } className={'card-title'}>Simplified rules</Trans>
-                                        <Trans i18nKey="5a12d425" parent={ 'p' }>
-                                            If you already played some games, you can
-                                            switch to detailled rules.
-                                        </Trans>
-                                    </div>
-                                ) : (
-                                    <div>
-                                        <Trans i18nKey="c47d8ed9" parent={ 'h4' } className={'card-title'}>Detailled rules</Trans>
-                                        <Trans i18nKey="6a22b3eb" parent={ 'p' }>
-                                            If you are new to the game, you may want
-                                            to display only important rules.
-                                        </Trans>
-                                    </div>
-                                ) }
-
-                                <button
-                                    className={'btn btn-info'}
-                                    onClick={() => {
-                                        this.setState({
-                                            tldrMode: !tldrMode,
-                                        });
-                                    }}
-                                >
-                                    { tldrMode ? (
-                                        <Trans i18nKey="e6381e81">Display detailled game rules</Trans>
-                                    ) : (
-                                        <Trans i18nKey="25a56e40">Display simplified game rules</Trans>
-                                    ) }
-                                </button>
-                            </div>
-                        </div>
-
 
                         <Trans i18nKey="85d12a40" parent={ 'h2' }>Objectives</Trans>
 
@@ -222,45 +182,43 @@ export default class GameRules extends Component {
                             />
                             <Trans i18nKey="cc57c3d7" parent={ 'figcaption' } className={'figure-caption text-center'}>World with 6 players.</Trans>
                         </figure>
-                        
+
                         <Trans i18nKey="35a263ae" parent={ 'p' }>
                             The world is an island on which players start
                             with many random little kingdoms composed of hexs.
                         </Trans>
 
-                        <div className={ 'hidden-on-tldr' }>
-                            <Trans i18nKey="d3932341" parent={ 'h2' }>Hexs</Trans>
+                        <Trans i18nKey="d3932341" parent={ 'h2' }>Hexs</Trans>
 
-                            <figure className={'figure d-block'}>
-                                <OpenHexGrid
-                                    world={ singleHexWorld }
-                                    height={ 100 }
-                                />
-                                <Trans i18nKey="3778d04e" parent={ 'figcaption' } className={'figure-caption text-center'}>Empty hex to the red player.</Trans>
-                            </figure>
+                        <figure className={'figure d-block'}>
+                            <OpenHexGrid
+                                world={ singleHexWorld }
+                                height={ 100 }
+                            />
+                            <Trans i18nKey="3778d04e" parent={ 'figcaption' } className={'figure-caption text-center'}>Empty hex to the green player.</Trans>
+                        </figure>
 
-                            <Trans i18nKey="518894f9" parent={ 'p' }>
-                                A "hex" is a box where an entity (an unit, a tree, a tower...)
-                                can be.
-                            </Trans>
+                        <Trans i18nKey="518894f9" parent={ 'p' }>
+                            A "hex" is a box where an entity (an unit, a tree, a tower...)
+                            can be.
+                        </Trans>
 
-                            <Trans i18nKey="405207ca" parent={ 'p' }>
-                                A hex is always owned by a player, and take the player color.
-                            </Trans>
+                        <Trans i18nKey="405207ca" parent={ 'p' }>
+                            A hex is always owned by a player, and take the player color.
+                        </Trans>
 
-                            <Trans i18nKey="36d14f9b" parent={ 'p' }>
-                                If two hexs of the same player are adjacents,
-                                they are linked so a new kingdom is created.
-                            </Trans>
+                        <Trans i18nKey="36d14f9b" parent={ 'p' }>
+                            If two hexs of the same player are adjacents,
+                            they are linked so a new kingdom is created.
+                        </Trans>
 
-                            <figure className={'figure d-block'}>
-                                <OpenHexGrid
-                                    world={ twoHexsWorld }
-                                    height={ 100 }
-                                />
-                                <Trans i18nKey="edebb5b4" parent={ 'figcaption' } className={'figure-caption text-center'}>2-hexs kingdom with a capital.</Trans>
-                            </figure>
-                        </div>
+                        <figure className={'figure d-block'}>
+                            <OpenHexGrid
+                                world={ twoHexsWorld }
+                                height={ 100 }
+                            />
+                            <Trans i18nKey="edebb5b4" parent={ 'figcaption' } className={'figure-caption text-center'}>2-hexs kingdom with a capital.</Trans>
+                        </figure>
 
 
                         <Trans i18nKey="14d64948" parent={ 'h2' }>Kingdoms</Trans>
@@ -337,20 +295,20 @@ export default class GameRules extends Component {
                                 } }
                             />
                             <figcaption parent={ 'figcaption' } className={'figure-caption text-center'}>
-                                <Trans i18nKey="7a9ed2b5">Select your red kingdoms and buy what you want.</Trans>
+                                <Trans i18nKey="7a9ed2b5">Select your green kingdoms and buy what you want.</Trans>
                                 { null === this.state.kingdomsError ? '' : (
                                     <Trans i18nKey="e272210b" parent={ 'p'} className={'text-danger'}><br/>{ this.state.kingdomsError }</Trans>
                                 ) }
                             </figcaption>
                         </figure>
 
-                        <Trans i18nKey="b1396a49" parent={ 'p' } className={'hidden-on-tldr'}>
+                        <Trans i18nKey="b1396a49" parent={ 'p' }>
                             You need to capture hexs to make your kingdoms grow.
                             More they grow, more money you win every turn,
                             more units you can afford.
                         </Trans>
 
-                        <Trans i18nKey="3b56080f" parent={ 'p' } className={'hidden-on-tldr'}>
+                        <Trans i18nKey="3b56080f" parent={ 'p' }>
                             You also have to defend your kingdoms to prevent
                             ennemy to encroach them.
                         </Trans>
@@ -376,7 +334,7 @@ export default class GameRules extends Component {
                             somewhere else in the kingdom.
                         </Trans>
 
-                        <figure className={'hidden-on-tldr figure d-block'}>
+                        <figure className={'figure d-block'}>
                             <OpenHexGrid
                                 world={ defendingCapitalWorld }
                                 height={ 150 }
@@ -386,31 +344,29 @@ export default class GameRules extends Component {
                             </Trans>
                         </figure>
 
-                        <div className={'hidden-on-tldr'}>
-                            <Trans i18nKey="ea7d19f0" parent={ 'h3' }>Linking and cutting kingdoms</Trans>
+                        <Trans i18nKey="ea7d19f0" parent={ 'h3' }>Linking and cutting kingdoms</Trans>
 
-                            <Trans i18nKey="c6b876b1" parent={ 'p' }>
-                                If you capture an hex that make two of your kingdoms
-                                now adjacents, then these two kingdoms are merged
-                                to a single one more stronger.
-                            </Trans>
+                        <Trans i18nKey="c6b876b1" parent={ 'p' }>
+                            If you capture an hex that make two of your kingdoms
+                            now adjacents, then these two kingdoms are merged
+                            to a single one more stronger.
+                        </Trans>
 
-                            <Trans i18nKey="555e62d6" parent={ 'p' }>
-                                The economy is merged, the capital of the weakest
-                                kingdom is transfered to the strongest one.
-                            </Trans>
+                        <Trans i18nKey="555e62d6" parent={ 'p' }>
+                            The economy is merged, the capital of the weakest
+                            kingdom is transfered to the strongest one.
+                        </Trans>
 
-                            <Trans i18nKey="dceb13d4" parent={ 'p' }>
-                                Also, if a kingdom is cut by an unit, the economy
-                                is split depending on the size of the splitted kingdoms.
-                            </Trans>
+                        <Trans i18nKey="dceb13d4" parent={ 'p' }>
+                            Also, if a kingdom is cut by an unit, the economy
+                            is split depending on the size of the splitted kingdoms.
+                        </Trans>
 
-                            <Trans i18nKey="8fb157ce" parent={ 'p' }>
-                                This is a key of the game: try to merge your kingdoms
-                                to a stronger one, and cut your opponent kingdoms to divide
-                                his forces.
-                            </Trans>
-                        </div>
+                        <Trans i18nKey="8fb157ce" parent={ 'p' }>
+                            This is a key of the game: try to merge your kingdoms
+                            to a stronger one, and cut your opponent kingdoms to divide
+                            his forces.
+                        </Trans>
 
                         <Trans i18nKey="f37d6f44" parent={ 'h3' }>Kingdom bankrupt</Trans>
 
@@ -424,22 +380,22 @@ export default class GameRules extends Component {
                             </Trans>
                         </figure>
 
-                        <Trans i18nKey="22bfe358" parent={ 'p' } className={'hidden-on-tldr'}>
+                        <Trans i18nKey="22bfe358" parent={ 'p' }>
                             On the beginning of a turn, your kingdoms earn one gold
                             for each hexs it owns. Then, you pay your units maintenance.
                         </Trans>
 
-                        <Trans i18nKey="6bb71e3c" parent={ 'p' } className={'hidden-on-tldr'}>
+                        <Trans i18nKey="6bb71e3c" parent={ 'p' }>
                             At this moment, if you don't have enough money to pay them,
                             your kingdom falls into bankruptcy.
                         </Trans>
 
-                        <Trans i18nKey="70c73140" parent={ 'p' } className={'hidden-on-tldr'}>
+                        <Trans i18nKey="70c73140" parent={ 'p' }>
                             All your units of the kingdom die !
                             And the economy is reset to zero.
                         </Trans>
 
-                        <Trans i18nKey="f15c9e64" parent={ 'p' } className={'hidden-on-tldr'}>
+                        <Trans i18nKey="f15c9e64" parent={ 'p' }>
                             You just have to wait to the next turn to earn money.
                             But you still can play your other kingdoms:
                             bankruptcy does not apply to all kingdoms.
@@ -471,7 +427,7 @@ export default class GameRules extends Component {
                             You can buy unit in a kingdom.
                         </Trans>
 
-                        <Trans i18nKey="295a83a3" parent={ 'p' } className={'hidden-on-tldr'}>
+                        <Trans i18nKey="295a83a3" parent={ 'p' }>
                             An unit always costs 10 gold.
                         </Trans>
 
@@ -481,7 +437,7 @@ export default class GameRules extends Component {
                             and it cannot be sold.
                         </Trans>
 
-                        <Trans i18nKey="3e512256" parent={ 'p' } className={'hidden-on-tldr'}>
+                        <Trans i18nKey="3e512256" parent={ 'p' }>
                             An unit also has a maintenance cost every turn,
                             so keep an eye on your kingdom balance.
                         </Trans>
@@ -509,19 +465,19 @@ export default class GameRules extends Component {
                             <Trans i18nKey="5a336d39" parent={ 'li' }>cut a tree.</Trans>
                         </ul>
 
-                        <Trans i18nKey="15da6edb" parent={ 'p' } className={'hidden-on-tldr'}>
+                        <Trans i18nKey="15da6edb" parent={ 'p' }>
                             Once an unit made his action, it cannot be moved anymore,
                             stops bouncing, and stays on the hex until the next turn.
                         </Trans>
 
-                        <Trans i18nKey="23776b93" parent={ 'p' } className={'hidden-on-tldr'}>
+                        <Trans i18nKey="23776b93" parent={ 'p' }>
                             Moving only inside kingdom is not considered as an action,
                             so you can move it until the unit make an action.
                         </Trans>
 
                         <Trans i18nKey="587fad8a" parent={ 'h3' }>Capturing hexs</Trans>
 
-                        <Trans i18nKey="254a332e" parent={ 'p' } className={'hidden-on-tldr'}>
+                        <Trans i18nKey="254a332e" parent={ 'p' }>
                             You have to capture all hexs of the world to win,
                             however your opponents should surrender before.
                         </Trans>
@@ -593,12 +549,12 @@ export default class GameRules extends Component {
                             </Trans>
                         </figure>
 
-                        <Trans i18nKey="140c3f85" parent={ 'p' } className={'hidden-on-tldr'}>
+                        <Trans i18nKey="140c3f85" parent={ 'p' }>
                             At the end of the turn, keep an eye on the hexs you are defending
                             with your units placement. You may want to defend your frontiers.
                         </Trans>
 
-                        <figure className={'hidden-on-tldr figure d-block text-center'}>
+                        <figure className={'figure d-block text-center'}>
                             <img
                                 src={ imgProtect }
                                 alt={ 'units protecting'}
@@ -613,12 +569,12 @@ export default class GameRules extends Component {
 
                         <Trans i18nKey="415f2d67" parent={ 'h3' }>Upgrading units</Trans>
 
-                        <Trans i18nKey="3cc5f2f8" parent={ 'p' } className={'hidden-on-tldr'}>
+                        <Trans i18nKey="3cc5f2f8" parent={ 'p' }>
                             Level 1 units are good to provide a low cost,
                             wide and basic kingdom protection.
                         </Trans>
 
-                        <Trans i18nKey="bd88b087" parent={ 'p' } className={'hidden-on-tldr'}>
+                        <Trans i18nKey="bd88b087" parent={ 'p' }>
                             But as the enemy build units, you have to upgrade your units
                             in order to kill them, and defend your kingdom from stronger enemy.
                         </Trans>
@@ -639,13 +595,13 @@ export default class GameRules extends Component {
                             </Trans>
                         </figure>
 
-                        <Trans i18nKey="2db46e2d" parent={ 'p' } className={'hidden-on-tldr'}>
+                        <Trans i18nKey="2db46e2d" parent={ 'p' }>
                             The new created unit can do an action only
                             if you merged two units that could do an action
                             (so try to merge two units that aren't already do they actions).
                         </Trans>
 
-                        <Trans i18nKey="ebf87648" parent={ 'p' } className={'hidden-on-tldr'}>
+                        <Trans i18nKey="ebf87648" parent={ 'p' }>
                             You can also upgrade an unit by selecting it, and buy an unit.
                             It will simply upgrade the selected unit.
                         </Trans>
@@ -723,17 +679,17 @@ export default class GameRules extends Component {
                             so you should cut them.
                         </Trans>
 
-                        <Trans i18nKey="cc78afc4" parent={ 'p' } className={'hidden-on-tldr'}>
+                        <Trans i18nKey="cc78afc4" parent={ 'p' }>
                             You can cut a tree with any unit.
                             It counts as an action,
                             so your unit can cut only one tree per turn.
                         </Trans>
 
-                        <Trans i18nKey="6bce8d76" parent={ 'p' } className={'hidden-on-tldr'}>
+                        <Trans i18nKey="6bce8d76" parent={ 'p' }>
                             Trees appears only:
                         </Trans>
 
-                        <ul className={'hidden-on-tldr'}>
+                        <ul>
                             <Trans i18nKey="2d17c42c" parent={ 'li' }>at the beginning of the game,</Trans>
                             <Trans i18nKey="ba495e21" parent={ 'li' }>on the hexs where an unit has died from bankruptcy.</Trans>
                         </ul>
@@ -743,53 +699,51 @@ export default class GameRules extends Component {
                             new trees spawns on hexs adjacent to other trees.
                         </Trans>
 
-                        <Trans i18nKey="e7fb804e" parent={ 'p' } className={'hidden-on-tldr'}>
+                        <Trans i18nKey="e7fb804e" parent={ 'p' }>
                             More the game lasts, more they spawns quickly.
                             So try to keep them under control.
                         </Trans>
 
-                        <Trans i18nKey="d2373207" parent={ 'p' } className={'hidden-on-tldr'}>
+                        <Trans i18nKey="d2373207" parent={ 'p' }>
                             There is two types of trees.
                             The coastal trees and the continental trees.
                         </Trans>
 
-                        <Trans i18nKey="2e7af2eb" parent={ 'p' } className={'hidden-on-tldr'}>
+                        <Trans i18nKey="2e7af2eb" parent={ 'p' }>
                             Coastal trees grows only on world borders.
                             But they grow more quickly.
                         </Trans>
 
-                        <Trans i18nKey="d6cb2d37" parent={ 'p' } className={'hidden-on-tldr'}>
+                        <Trans i18nKey="d6cb2d37" parent={ 'p' }>
                             Continental trees grow only inside world, but more slowly.
                         </Trans>
 
-                        <div className={'hidden-on-tldr'}>
-                            <Trans i18nKey="3489fa9b" parent={ 'h2' }>Strategy tips</Trans>
+                        <Trans i18nKey="3489fa9b" parent={ 'h2' }>Strategy tips</Trans>
 
-                            <Trans i18nKey="47225f64" parent={ 'p' }>
-                                Upgraded units costs a lot of money each turns,
-                                so you should always upgrade your level 1 unit
-                                only if you already have a few other level 1 units,
-                                or you are at least 6 hexs in your kingdom.
-                            </Trans>
+                        <Trans i18nKey="47225f64" parent={ 'p' }>
+                            Upgraded units costs a lot of money each turns,
+                            so you should always upgrade your level 1 unit
+                            only if you already have a few other level 1 units,
+                            or you are at least 6 hexs in your kingdom.
+                        </Trans>
 
-                            <Trans i18nKey="d00bb9eb" parent={ 'p' }>
-                                And upgrading your level 2 unit to level 3
-                                is rare, do it only if you already have
-                                many level 2 units and a consequent kingdom,
-                                or if opponent has built many towers.
-                            </Trans>
+                        <Trans i18nKey="d00bb9eb" parent={ 'p' }>
+                            And upgrading your level 2 unit to level 3
+                            is rare, do it only if you already have
+                            many level 2 units and a consequent kingdom,
+                            or if opponent has built many towers.
+                        </Trans>
 
-                            <Trans i18nKey="d6880702" parent={ 'p' }>
-                                Level 4 units is for very late games,
-                                when you have almost all the world,
-                                but you need to kill a level 3 opponent unit.
-                            </Trans>
+                        <Trans i18nKey="d6880702" parent={ 'p' }>
+                            Level 4 units is for very late games,
+                            when you have almost all the world,
+                            but you need to kill a level 3 opponent unit.
+                        </Trans>
 
-                            <Trans i18nKey="21c72058" parent={ 'p' }>
-                                Usually, it is easiest to kill level 3 or level 4 opponent units
-                                by cutting his territory and reduce opponent kingdom income.
-                            </Trans>
-                        </div>
+                        <Trans i18nKey="21c72058" parent={ 'p' }>
+                            Usually, it is easiest to kill level 3 or level 4 opponent units
+                            by cutting his territory and reduce opponent kingdom income.
+                        </Trans>
 
                     </main>
                 )}
