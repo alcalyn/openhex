@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { I18n } from 'react-i18next';
+import { Translation } from 'react-i18next';
 import i18n from '../../i18n';
 import { SizeButton } from '.';
 
@@ -28,7 +28,7 @@ export default class CreateCustomGame extends Component {
 
     render() {
         return (
-            <I18n i18n={ i18n }>
+            <Translation i18n={ i18n }>
                 {t => (
                     <main className={'container create-custom-game'}>
                         <h2>{ t('custom_game') }</h2>
@@ -71,7 +71,7 @@ export default class CreateCustomGame extends Component {
                         >{ t('lets_play') }</Link>
                     </main>
                 )}
-            </I18n>
+            </Translation>
         );
     }
 }

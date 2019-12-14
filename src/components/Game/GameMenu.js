@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { I18n } from 'react-i18next';
+import { Translation } from 'react-i18next';
 import i18n from '../../i18n';
 
 export default class GameMenu extends Component {
@@ -26,7 +26,7 @@ export default class GameMenu extends Component {
         const arbiter = this.props.arbiter;
 
         return (
-            <I18n i18n={ i18n }>
+            <Translation i18n={ i18n }>
                 {t => (
                     <div className="game-menu">
                         <h3 className="card-header d-none d-md-block">{ t('game_menu.turn_number', { turn: arbiter.world.turn + 1 }) }</h3>
@@ -44,7 +44,7 @@ export default class GameMenu extends Component {
                         </div>
                     </div>
                 )}
-            </I18n>
+            </Translation>
         );
     }
 }

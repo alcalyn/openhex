@@ -14,4 +14,6 @@ i18n
 loadLocalesEngine(i18n);
 loadLocalesUi(i18n);
 
+//console.log(i18n);
+
 export default i18n;
