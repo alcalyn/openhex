@@ -1,9 +1,11 @@
+import './assets/css/bootstrap4-sketchy.min.css';
+import './assets/css/bootstrap4-sketchy-override.css';
+import './assets/fonts/fonts.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
-import { Home, CreateCustomGame, GameRules } from './components';
-import { HashRouter, Route, Switch } from 'react-router-dom'
+import { HashRouter, Route, Switch } from 'react-router-dom';
 import registerServiceWorker from './registerServiceWorker';
+import { App, CreateCustomGame, GameRules, Home } from './components';
 
 ReactDOM.render(
     (

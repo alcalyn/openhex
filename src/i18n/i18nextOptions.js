@@ -7,6 +7,9 @@ const baseI18nextOptions = {
         order: ['querystring', 'navigator'],
         lookupQuerystring: 'lng'
     },
+    react: {
+        useSuspense: false,
+    },
 };
 
 export default (options = {}) => {

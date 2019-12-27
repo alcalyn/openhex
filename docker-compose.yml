@@ -7,6 +7,10 @@ services:
         working_dir: /openhex
         volumes:
             - .:/openhex
+
+            # Used for deploy
+            - ~/.ssh:/root/.ssh:ro
+            - ~/.gitconfig:/root/.gitconfig:ro
         command: sleep 1000000000
         ports:
             - 3000:3000

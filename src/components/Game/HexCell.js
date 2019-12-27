@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Hexagon } from 'react-hexgrid';
-import Themes from '../themes';
-import { Arbiter } from '../engine';
+import Themes from '../../themes';
+import { Arbiter } from '../../engine';
 
 export default class HexCell extends Component {
     onClick(e) {
