@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import Themes from '../themes';
-import { Unit, Tower } from '../engine';
-import { I18n } from 'react-i18next';
-import i18n from '../i18n';
+import Themes from '../../themes';
+import { Unit, Tower } from '../../engine';
+import { Translation } from 'react-i18next';
+import i18n from '../../i18n';
 
 export default class KingdomMenu extends Component {
     buyUnit() {
@@ -63,7 +63,7 @@ export default class KingdomMenu extends Component {
         }
 
         return (
-            <I18n i18n={ i18n }>
+            <Translation i18n={ i18n }>
                 {t => (
                     <div className="kingdom-menu">
                         <h3 className="card-header d-none d-md-block">{ t('kingdom_menu') }</h3>
@@ -141,7 +141,7 @@ export default class KingdomMenu extends Component {
                         </div>
                     </div>
                 )}
-            </I18n>
+            </Translation>
         );
     }
 }

@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/alcalyn/openhex.svg?branch=master)](https://travis-ci.org/alcalyn/openhex)
 [![Translation status](https://weblate.alcalyn.app/widgets/openhex/-/svg-badge.svg)](https://weblate.alcalyn.app/projects/openhex/)
 
-HTML5 game inspired by Slay.
+HTML5 strategy game inspired by Slay.
 
 Demo here: https://alcalyn.github.io/openhex/
 

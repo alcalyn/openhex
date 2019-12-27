@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { HexGrid, Layout } from 'react-hexgrid';
-import { World, HexUtils, Arbiter } from '../engine';
+import { World, HexUtils, Arbiter } from '../../engine';
 import { HexCell } from '.';
 
 export default class OpenHexGrid extends Component {

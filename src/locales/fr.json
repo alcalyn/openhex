@@ -20,7 +20,7 @@
         "large": "Grand"
     },
     "project": {
-        "description": "Jeu de stratégie simple inspiré par Slay."
+        "description": "Jeu de stratégie en HTML5 inspiré par Slay."
     },
     "lets_play": "Jouer !",
     "seed": {

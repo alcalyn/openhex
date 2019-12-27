@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Alert from './Alert';
+import { Alert } from '.';
 
 export default class Alerts extends Component {
     render() {
