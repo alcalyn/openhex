@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { I18n } from 'react-i18next';
-import i18n from '../i18n';
-import { WorldGenerator } from '../engine';
-import { OpenHexGrid } from '.';
+import { Translation } from 'react-i18next';
+import i18n from '../../i18n';
+import { WorldGenerator } from '../../engine';
+import { OpenHexGrid } from '../Game';
 
 export default class Home extends Component {
     render() {
         const world = WorldGenerator.generate();
 
         return (
-            <I18n i18n={ i18n }>
+            <Translation i18n={ i18n }>
                 {t => (
                     <div className={'home'}>
                         <main>
@@ -41,7 +41,7 @@ export default class Home extends Component {
                         </div>
                     </div>
                 )}
-            </I18n>
+            </Translation>
         );
     }
 }

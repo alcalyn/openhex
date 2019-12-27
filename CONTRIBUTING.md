@@ -51,10 +51,6 @@ To visualize the generated world and see the hexs coords, you can copy paste the
 
 You can translate OpenHex on this [self-hosted instance of Weblate](https://weblate.alcalyn.app/projects/openhex/).
 
-So translating strings should not be done in the repo, *except* for English.
-
-It uses translations key, so it is easier to translate by having an English source instead of translation key.
-
 
 ### Adding a new translation key
 
@@ -73,7 +69,7 @@ That will scan for new translations keys and add it to translations files.
 
 Then translate your key *at least* in English in `src/engine/locales/en.json` or `src/locales/en.json`.
 
-There is two separate translations folders, because there is two differents components:
+There is multiple separate translations folders, one for each component:
 
 - Engine
 
@@ -83,9 +79,15 @@ Translations files are in `src/engine/locales/`
 
 - UI
 
-For files relative to OpenHex user interface, in `src/App.js` and `src/components/`.
+For files relative to OpenHex user interface, in `src/components/`.
 
 Translations files are in `src/locales/`
+
+- Game rules
+
+For files relative to rules, in `src/GameRules`.
+
+Translations files are in `src/GameRules/locales/`
 
 
 ### Deploy

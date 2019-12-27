@@ -1,8 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
-import { Arbiter, WorldConfig, WorldGenerator } from './engine';
-import { OpenHexGrid } from './components';
+import { Arbiter, WorldConfig, WorldGenerator } from '../../engine';
+import { App, OpenHexGrid } from '.';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
