@@ -160,7 +160,7 @@ export default class GameRules extends Component {
 
                         <ul>
                             <Trans parent={ 'li' }>
-                                Conquier all the Island2
+                                Conquer the entire Island
                             </Trans>
                             <Trans parent={ 'li' }>
                                 or make your opponents surrender.
@@ -168,8 +168,8 @@ export default class GameRules extends Component {
                         </ul>
 
                         <Trans parent={ 'p' }>
-                            Buy units, capture hexs, defend your kingdoms,
-                            upgrade your units, kill opponent units.
+                            Buy units, capture hexes, defend your kingdoms,
+                            upgrade your units and kill enemy units.
                         </Trans>
 
 
@@ -180,36 +180,37 @@ export default class GameRules extends Component {
                                 world={ firstWorld }
                                 height={ 400 }
                             />
-                            <Trans parent={ 'figcaption' } className={'figure-caption text-center'}>World with 6 players.</Trans>
+                            <Trans parent={ 'figcaption' } className={'figure-caption text-center'}>World with six players.</Trans>
                         </figure>
 
                         <Trans parent={ 'p' }>
-                            The world is an island on which players start
-                            with many random little kingdoms composed of hexs.
+                            The world is an island on which players start with
+                            many small random kingdoms composed of hexes.
                         </Trans>
 
-                        <Trans parent={ 'h2' }>Hexs</Trans>
+                        <Trans parent={ 'h2' }>Hexes</Trans>
 
                         <figure className={'figure d-block'}>
                             <OpenHexGrid
                                 world={ singleHexWorld }
                                 height={ 100 }
                             />
-                            <Trans parent={ 'figcaption' } className={'figure-caption text-center'}>Empty hex to the green player.</Trans>
+                            <Trans parent={ 'figcaption' } className={'figure-caption text-center'}>An empty hex that belongs to the green player.</Trans>
                         </figure>
 
                         <Trans parent={ 'p' }>
-                            A "hex" is a box where an entity (an unit, a tree, a tower...)
-                            can be.
+                            A “hex” is a box where an entity (a unit, a tree, a
+                            tower …) can be.
                         </Trans>
 
                         <Trans parent={ 'p' }>
-                            A hex is always owned by a player, and take the player color.
+                            A hex is always owned by a player, and take the
+                            player's color.
                         </Trans>
 
                         <Trans parent={ 'p' }>
-                            If two hexs of the same player are adjacents,
-                            they are linked so a new kingdom is created.
+                            If two hexes of the same color are adjacents, they
+                            are merged to form a new kingdom.
                         </Trans>
 
                         <figure className={'figure d-block'}>
@@ -217,25 +218,25 @@ export default class GameRules extends Component {
                                 world={ twoHexsWorld }
                                 height={ 100 }
                             />
-                            <Trans parent={ 'figcaption' } className={'figure-caption text-center'}>2-hexs kingdom with a capital.</Trans>
+                            <Trans parent={ 'figcaption' } className={'figure-caption text-center'}>A two-hex kingdom with a capital.</Trans>
                         </figure>
 
 
                         <Trans parent={ 'h2' }>Kingdoms</Trans>
 
                         <Trans parent={ 'p' }>
-                            A kingdom is a group of at least 2 adjacent hexs.
+                            A kingdom is a group of at least two adjacent hexes.
                         </Trans>
 
                         <Trans parent={ 'p' }>
-                            Each kingdom has its own economy, one capital,
-                            and earns every turn as enough money
-                            as there is hexs inside.
+                            Each kingdom has its own economy, a capital, and
+                            every turn, it earns as much money as there are
+                            hexes inside.
                         </Trans>
 
                         <Trans parent={ 'p' }>
-                            You can select a kingdom by clicking on it.
-                            Once you control a kingdom, you can:
+                            You can select a kingdom by clicking on it. Once
+                            you control a kingdom, you can:
                         </Trans>
 
                         <ul>
@@ -277,7 +278,7 @@ export default class GameRules extends Component {
                                     }}
                                 ><Trans>Buy towers</Trans></button>,
                             </li>
-                            <Trans parent={ 'li' }>play units in this kingdom.</Trans>
+                            <Trans parent={ 'li' }>move units in this kingdom.</Trans>
                         </ul>
 
                         <figure className={'figure d-block'}>
@@ -303,14 +304,14 @@ export default class GameRules extends Component {
                         </figure>
 
                         <Trans parent={ 'p' }>
-                            You need to capture hexs to make your kingdoms grow.
-                            More they grow, more money you win every turn,
-                            more units you can afford.
+                            You need to capture hexes to make your kingdoms
+                            grow. The more they grow, the more money you earn
+                            per turn and the more units you can afford.
                         </Trans>
 
                         <Trans parent={ 'p' }>
                             You also have to defend your kingdoms to prevent
-                            ennemy to encroach them.
+                            your enemies encroaching them.
                         </Trans>
 
                         <Trans parent={ 'h3' }>Kingdom capital</Trans>
@@ -324,14 +325,14 @@ export default class GameRules extends Component {
                         </figure>
 
                         <Trans parent={ 'p' }>
-                            Your capital stores your kingdom money,
-                            and provides a protection to adjacents hexs.
+                            Your capital stores your kingdom's money and
+                            provides protection for adjacents hexes.
                         </Trans>
 
                         <Trans parent={ 'p' }>
-                            If the ennemy destroy your capital, you lose
-                            your money and your capital is rebuilt
-                            somewhere else in the kingdom.
+                            If the enemy destroy your capital, you lose your
+                            money and your capital is rebuilt somewhere else in
+                            the kingdom.
                         </Trans>
 
                         <figure className={'figure d-block'}>
@@ -340,32 +341,34 @@ export default class GameRules extends Component {
                                 height={ 150 }
                             />
                             <Trans parent={ 'figcaption' } className={'figure-caption text-center'}>
-                                Capital defending his hexs and all adjacents with level 1.
+                                Capital defending its hex and all adjacents
+                                with level 1.
                             </Trans>
                         </figure>
 
                         <Trans parent={ 'h3' }>Linking and cutting kingdoms</Trans>
 
                         <Trans parent={ 'p' }>
-                            If you capture an hex that make two of your kingdoms
-                            now adjacents, then these two kingdoms are merged
-                            to a single one more stronger.
+                            If you by capturing a hex make two of your kingdoms
+                            share a border, they will merge to form a single
+                            stronger one.
                         </Trans>
 
                         <Trans parent={ 'p' }>
-                            The economy is merged, the capital of the weakest
-                            kingdom is transfered to the strongest one.
+                            The economies are merged and the capital of the
+                            weakest kingdom will transfer to the stronger one.
                         </Trans>
 
                         <Trans parent={ 'p' }>
-                            Also, if a kingdom is cut by an unit, the economy
-                            is split depending on the size of the splitted kingdoms.
+                            Also, if a kingdom is cut by a unit, the economy is
+                            split depending on the size of the split up
+                            kingdoms.
                         </Trans>
 
                         <Trans parent={ 'p' }>
-                            This is a key of the game: try to merge your kingdoms
-                            to a stronger one, and cut your opponent kingdoms to divide
-                            his forces.
+                            This is a key to the game: try to merge your
+                            kingdoms to stronger ones and cut your opponent
+                            kingdoms to divide his forces.
                         </Trans>
 
                         <Trans parent={ 'h3' }>Kingdom bankrupt</Trans>
@@ -376,29 +379,31 @@ export default class GameRules extends Component {
                                 height={ 150 }
                             />
                             <Trans parent={ 'figcaption' } className={'figure-caption text-center'}>
-                                If you don't have enough money to pay units maintenance, they all die !
+                                If you don't have enough money to pay
+                                maintenance for your units, they'll all die!
                             </Trans>
                         </figure>
 
                         <Trans parent={ 'p' }>
-                            On the beginning of a turn, your kingdoms earn one gold
-                            for each hexs it owns. Then, you pay your units maintenance.
+                            At the beginning of a turn, your kingdoms earn one
+                            gold for each hex it owns. Then you pay your unit
+                            maintenance.
                         </Trans>
 
                         <Trans parent={ 'p' }>
-                            At this moment, if you don't have enough money to pay them,
+                            If you then don't have enough money to pay them,
                             your kingdom falls into bankruptcy.
                         </Trans>
 
                         <Trans parent={ 'p' }>
-                            All your units of the kingdom die !
-                            And the economy is reset to zero.
+                            All units of your kingdom die and the economy is
+                            reset to zero.
                         </Trans>
 
                         <Trans parent={ 'p' }>
-                            You just have to wait to the next turn to earn money.
-                            But you still can play your other kingdoms:
-                            bankruptcy does not apply to all kingdoms.
+                            You have to wait for the next turn to earn money,
+                            but you can still play your other kingdoms: the
+                            bankruptcy affects only one kingdoms.
                         </Trans>
 
 
@@ -417,42 +422,41 @@ export default class GameRules extends Component {
                         </Trans>
 
                         <ul>
-                            <Trans parent={ 'li' }>capture hexs, and make your kingdom grow,</Trans>
-                            <Trans parent={ 'li' }>kill ennemy units and structures (capitals, towers)</Trans>
+                            <Trans parent={ 'li' }>capture hexes and make your kingdom grow,</Trans>
+                            <Trans parent={ 'li' }>kill enemy units and structures (capitals, towers)</Trans>
                         </ul>
 
                         <Trans parent={ 'h3' }>Getting new units</Trans>
 
                         <Trans parent={ 'p' }>
-                            You can buy unit in a kingdom.
+                            You can buy units in a kingdom.
                         </Trans>
 
                         <Trans parent={ 'p' }>
-                            An unit always costs 10 gold.
+                            A unit always costs 10 gold.
                         </Trans>
 
                         <Trans parent={ 'p' }>
-                            An unit belongs to its kingdom,
-                            it cannot transfered to another kingdom,
-                            and it cannot be sold.
+                            A unit belongs to its kingdom, cannot be transfered
+                            to another kingdom and can not be sold.
                         </Trans>
 
                         <Trans parent={ 'p' }>
-                            An unit also has a maintenance cost every turn,
-                            so keep an eye on your kingdom balance.
+                            A unit also has a maintenance cost every turn, so
+                            keep an eye on your kingdom's balance.
                         </Trans>
 
                         <Trans parent={ 'h3' }>Moving your units</Trans>
 
                         <Trans parent={ 'p' }>
-                            Each unit can move anywhere inside his kingdom.
-                            But an unit can do only one action per turn.
+                            Each unit can move freely inside its kingdom. But a
+                            unit can only do one action per turn.
                         </Trans>
 
                         <Trans parent={ 'p' }>
-                            To move an unit, click on it, then the unit is put
-                            in your selection.
-                            Then click on the hex you want to put the unit.
+                            To move a unit, you simply click on it to select
+                            it. Then you can click on the hex you want to put
+                            the unit.
                         </Trans>
 
                         <Trans parent={ 'p' }>
@@ -461,30 +465,33 @@ export default class GameRules extends Component {
 
                         <ul>
                             <Trans parent={ 'li' }>capturing an adjacent hex,</Trans>
-                            <Trans parent={ 'li' }>killing an ennemy entity,</Trans>
-                            <Trans parent={ 'li' }>cut a tree.</Trans>
+                            <Trans parent={ 'li' }>killing an enemy entity,</Trans>
+                            <Trans parent={ 'li' }>cutting a tree.</Trans>
                         </ul>
 
                         <Trans parent={ 'p' }>
-                            Once an unit made his action, it cannot be moved anymore,
-                            stops bouncing, and stays on the hex until the next turn.
+                            Once a unit made its action, it cannot be moved
+                            anymore, stops bouncing and stays on the hex until
+                            the next turn.
                         </Trans>
 
                         <Trans parent={ 'p' }>
-                            Moving only inside kingdom is not considered as an action,
-                            so you can move it until the unit make an action.
+                            Moving only inside kingdom is not considered as an
+                            action, so you can move it until the unit has made
+                            an action.
                         </Trans>
 
-                        <Trans parent={ 'h3' }>Capturing hexs</Trans>
+                        <Trans parent={ 'h3' }>Capturing hexes</Trans>
 
                         <Trans parent={ 'p' }>
-                            You have to capture all hexs of the world to win,
-                            however your opponents should surrender before.
+                            You have to capture all hexes of the world to win,
+                            but your opponents might surrender before that.
                         </Trans>
 
                         <Trans parent={ 'p' }>
-                            To capture a hex, you have to capture hexs adjacents to your kingdom.
-                            Then, the captured hex now belongs to your kingdom.
+                            You can only capture hexes adjacents to your
+                            kingdom. The captured hex will become part of your
+                            kingdom.
                         </Trans>
 
                         <figure className={'figure d-block'}>
@@ -494,25 +501,26 @@ export default class GameRules extends Component {
                                 height={ 400 }
                             />
                             <Trans parent={ 'figcaption' } className={'figure-caption text-center'}>
-                                Capture unprotected adjacents hexs.
+                                Capture unprotected adjacents hexes.
                                 <br/>
-                                Bonus: try to link your kingdoms together.
+                                Bonus: try linking your kingdoms together.
                             </Trans>
                         </figure>
 
                         <Trans parent={ 'p' }>
-                            Each hex generates 1 gold to your kingdom each turn.
+                            Each hex generates 1 gold to your kingdom per turn.
                         </Trans>
 
                         <Trans parent={ 'h3' }>Unit fight</Trans>
 
                         <Trans parent={ 'p' }>
-                            Your unit defends its own hexs, and all the adjacent ones.
+                            Your unit defends its own hex and all the adjacent
+                            ones.
                         </Trans>
 
                         <Trans parent={ 'p' }>
-                            It defends them at the same level as the unit level, and only
-                            hexs in unit kingdom.
+                            It defends them at the same level as the unit's
+                            level, and only hexes in its own kingdom.
                         </Trans>
 
                         <figure className={'figure d-block'}>
@@ -521,20 +529,21 @@ export default class GameRules extends Component {
                                 height={ 150 }
                             />
                             <Trans parent={ 'figcaption' } className={'figure-caption text-center'}>
-                                This level 1 unit defend all adjacent hexs at level 1.
-                                So only level 2 enemy units can capture them and kill your unit.
+                                This level 1 unit defend all adjacent hexes at
+                                level 1. Only level 2 enemy units can capture
+                                them and kill your unit.
                             </Trans>
                         </figure>
 
                         <Trans parent={ 'p' }>
-                            You can kill enemy units by placing your unit on the enemy unit.
-                            It is possible if:
+                            You can kill enemy units by placing your units on
+                            the enemy. It is possible if:
                         </Trans>
 
                         <ul>
                             <Trans parent={ 'li' }>your unit has a higher level than the enemy unit,</Trans>
-                            <Trans parent={ 'li' }>the enemy unit is on an hex adjacent to your kingdom,</Trans>
-                            <Trans parent={ 'li' }>the enemy unit is not defended (i.e on adjacent hex) by an higher level unit or tower.</Trans>
+                            <Trans parent={ 'li' }>the enemy unit is on a hex adjacent to your kingdom</Trans>
+                            <Trans parent={ 'li' }>and the enemy unit is not defended by a higher level unit or tower.</Trans>
                         </ul>
 
                         <figure className={'figure d-block text-center'}>
@@ -544,14 +553,16 @@ export default class GameRules extends Component {
                                 className={'img-fluid'}
                             />
                             <Trans parent={ 'figcaption' } className={'figure-caption text-center'}>
-                                You can kill units and/or capture hexs less protected than you unit level.
-                                Note that a capital is like a level 1 unit.
+                                You can kill units and capture hexes less
+                                protected than your unit's level. Note that a
+                                capital is treated like a level 1 unit.
                             </Trans>
                         </figure>
 
                         <Trans parent={ 'p' }>
-                            At the end of the turn, keep an eye on the hexs you are defending
-                            with your units placement. You may want to defend your frontiers.
+                            Keep an eye on the hexes you are defending with
+                            your unit placement at the end of the turn. You may
+                            want to defend your frontiers.
                         </Trans>
 
                         <figure className={'figure d-block text-center'}>
@@ -561,27 +572,31 @@ export default class GameRules extends Component {
                                 className={'img-fluid'}
                             />
                             <Trans parent={ 'figcaption' } className={'figure-caption text-center'}>
-                                Units level 1 and 2 here do their best defending frontiers,
-                                but be careful of your critical points, where enemy
-                                can easily cut your kingdom.
+                                Units level 1 and 2 here do their best
+                                defending frontiers, but be aware of your
+                                critical points, where enemy can divide your
+                                kingdom easily.
                             </Trans>
                         </figure>
 
                         <Trans parent={ 'h3' }>Upgrading units</Trans>
 
                         <Trans parent={ 'p' }>
-                            Level 1 units are good to provide a low cost,
-                            wide and basic kingdom protection.
+                            Level 1 units are good to provide a low cost, wide
+                            and basic kingdom protection.
                         </Trans>
 
                         <Trans parent={ 'p' }>
-                            But as the enemy build units, you have to upgrade your units
-                            in order to kill them, and defend your kingdom from stronger enemy.
+                            But as the enemy build units, you have to upgrade
+                            your units to be able to defend your kingdom from a
+                            stronger enemy.
                         </Trans>
 
                         <Trans parent={ 'p' }>
-                            To upgrade an unit, just merge two units together by placing an unit on another.
-                            It creates a single stronger unit, and can beat stronger enemy units and structures.
+                            To upgrade a unit, you simply merge two units
+                            together by placing one unit on another. This
+                            creates a single stronger unit that can beat
+                            stronger enemy units and structures.
                         </Trans>
 
                         <figure className={'figure d-block'}>
@@ -591,25 +606,29 @@ export default class GameRules extends Component {
                                 height={ 150 }
                             />
                             <Trans parent={ 'figcaption' } className={'figure-caption text-center'}>
-                                Upgrade units by taking one and placing it on another.
+                                Upgrade units by taking one and placing it on
+                                another.
                             </Trans>
                         </figure>
 
                         <Trans parent={ 'p' }>
-                            The new created unit can do an action only
-                            if you merged two units that could do an action
-                            (so try to merge two units that aren't already do they actions).
+                            The newly created unit can only make an action if
+                            you merged two units that could make an action (so
+                            try to merge two units that haven't already made
+                            their actions).
                         </Trans>
 
                         <Trans parent={ 'p' }>
-                            You can also upgrade an unit by selecting it, and buy an unit.
-                            It will simply upgrade the selected unit.
+                            You can also upgrade a unit by selecting it and buy
+                            a new unit. This will simply upgrade the selected
+                            unit.
                         </Trans>
 
-                        <Trans parent={ 'h3' }>Units costs and maintenance</Trans>
+                        <Trans parent={ 'h3' }>Unit costs and maintenance</Trans>
 
                         <Trans parent={ 'p' }>
-                            Each unit costs 10 gold to buy, and costs 10 gold to upgrade.
+                            Each unit costs 10 gold to buy and costs 10 gold to
+                            upgrade.
                         </Trans>
 
                         <Trans parent={ 'p' }>
@@ -617,11 +636,12 @@ export default class GameRules extends Component {
                         </Trans>
 
                         <Trans parent={ 'p' }>
-                            And the maintenance cost is 3 times expensive each level the unit upgrades.
+                            And the maintenance cost is tripled each level the
+                            unit upgrades.
                         </Trans>
 
                         <Trans parent={ 'p' }>
-                            Units maintenance costs:
+                            Unit maintenance costs:
                         </Trans>
 
                         <ul className={'maintenance-list'}>
@@ -632,8 +652,8 @@ export default class GameRules extends Component {
                         </ul>
 
                         <Trans parent={ 'p' }>
-                            So upgraded units need more and more space,
-                            so upgrade only as your kingdom grow.
+                            Upgraded units will thus need more and more
+                            territory, so upgrade only as your kingdom grow.
                         </Trans>
 
 
@@ -645,7 +665,8 @@ export default class GameRules extends Component {
                                 height={ 150 }
                             />
                             <Trans parent={ 'figcaption' } className={'figure-caption text-center'}>
-                                Tower defending his hexs and all adjacents with level 2.
+                                Tower defending its hex and all adjacents ones
+                                with level 2.
                             </Trans>
                         </figure>
 
@@ -655,8 +676,8 @@ export default class GameRules extends Component {
 
                         <ul>
                             <Trans parent={ 'li' }>it costs 15 gold,</Trans>
-                            <Trans parent={ 'li' }>it has not maintenance costs,</Trans>
-                            <Trans parent={ 'li' }>it defend from level 2 units,</Trans>
+                            <Trans parent={ 'li' }>it has not maintenance cost,</Trans>
+                            <Trans parent={ 'li' }>it defends from level 2 units,</Trans>
                             <Trans parent={ 'li' }>and can be destroyed by a level 3 unit.</Trans>
                         </ul>
 
@@ -674,15 +695,15 @@ export default class GameRules extends Component {
                         </figure>
 
                         <Trans parent={ 'p' }>
-                            If a tree is on a hex of your kingdom,
-                            it prevents the hex to generate gold,
-                            so you should cut them.
+                            If a tree stands on a hex in your kingdom, the hex
+                            will not generate any income, so you should cut
+                            them.
                         </Trans>
 
                         <Trans parent={ 'p' }>
-                            You can cut a tree with any unit.
-                            It counts as an action,
-                            so your unit can cut only one tree per turn.
+                            You can cut a tree with any unit. It counts as an
+                            action, so your unit can only cut one tree per
+                            turn.
                         </Trans>
 
                         <Trans parent={ 'p' }>
@@ -691,58 +712,60 @@ export default class GameRules extends Component {
 
                         <ul>
                             <Trans parent={ 'li' }>at the beginning of the game,</Trans>
-                            <Trans parent={ 'li' }>on the hexs where an unit has died from bankruptcy.</Trans>
+                            <Trans parent={ 'li' }>on a hex where a unit has died from bankruptcy.</Trans>
                         </ul>
 
                         <Trans parent={ 'p' }>
-                            And most importantly, trees multiply over time:
-                            new trees spawns on hexs adjacent to other trees.
+                            And most importantly, trees multiply over time: new
+                            trees spawns on hexes adjacent to other trees.
                         </Trans>
 
                         <Trans parent={ 'p' }>
-                            More the game lasts, more they spawns quickly.
-                            So try to keep them under control.
+                            They spawn more quickly as the game goes on, so try
+                            keeping them under control.
                         </Trans>
 
                         <Trans parent={ 'p' }>
-                            There is two types of trees.
-                            The coastal trees and the continental trees.
+                            There are two types of trees: the coastal tree and
+                            the continental tree.
                         </Trans>
 
                         <Trans parent={ 'p' }>
-                            Coastal trees grows only on world borders.
-                            But they grow more quickly.
+                            Coastal trees grows only on world edges and they
+                            spread quickly.
                         </Trans>
 
                         <Trans parent={ 'p' }>
-                            Continental trees grow only inside world, but more slowly.
+                            Continental trees grow everywhere else, but don't
+                            spread as quickly.
                         </Trans>
 
                         <Trans parent={ 'h2' }>Strategy tips</Trans>
 
                         <Trans parent={ 'p' }>
-                            Upgraded units costs a lot of money each turns,
-                            so you should always upgrade your level 1 unit
-                            only if you already have a few other level 1 units,
-                            or you are at least 6 hexs in your kingdom.
+                            Upgraded units costs a lot of money each turn, so
+                            you should only upgrade your level 1 unit if you
+                            already have a few other level 1 units or have at
+                            least six hexes in your kingdom.
                         </Trans>
 
                         <Trans parent={ 'p' }>
-                            And upgrading your level 2 unit to level 3
-                            is rare, do it only if you already have
-                            many level 2 units and a consequent kingdom,
-                            or if opponent has built many towers.
+                            Upgrading your level 2 unit to level 3 is seldom
+                            necessary. Do it only if you already have many
+                            level 2 units and a stable kingdom, or if your
+                            opponent has built many towers.
                         </Trans>
 
                         <Trans parent={ 'p' }>
-                            Level 4 units is for very late games,
-                            when you have almost all the world,
-                            but you need to kill a level 3 opponent unit.
+                            Level 4 units are for very late games, when you
+                            have almost conquered the entire world and need to
+                            kill a level 3 opponent unit.
                         </Trans>
 
                         <Trans parent={ 'p' }>
-                            Usually, it is easiest to kill level 3 or level 4 opponent units
-                            by cutting his territory and reduce opponent kingdom income.
+                            It is usually easiest to kill level 3 or level 4
+                            opponent units by cutting his territory, thus
+                            reducing the opponent kingdom's income.
                         </Trans>
 
                     </main>
