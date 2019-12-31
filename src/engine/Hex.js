@@ -1,4 +1,4 @@
-import { Hex as HexBase } from 'react-hexgrid';
+import { Hex as HexBase, HexUtils } from 'react-hexgrid';
 import Unit from './Unit';
 import Tower from './Tower';
 import Died from './Died';
@@ -9,7 +9,7 @@ export default class Hex extends HexBase {
     constructor(q, r, s, player = null) {
         super(q, r, s);
 
-        this.hash = [q, r, s].join('|');
+        this.hash = HexUtils.getID(this);
         this.player = player;
         this.kingdom = null;
         this.entity = null;
