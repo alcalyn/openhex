@@ -476,7 +476,7 @@ export default class GameRules extends Component {
                         </Trans>
 
                         <Trans parent={ 'p' }>
-                            Moving only inside kingdom is not considered as an
+                            Moving only inside kingdom is not considered an
                             action, so you can move it until the unit has made
                             an action.
                         </Trans>
