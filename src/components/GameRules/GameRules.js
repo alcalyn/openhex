@@ -330,7 +330,7 @@ export default class GameRules extends Component {
                         </Trans>
 
                         <Trans parent={ 'p' }>
-                            If the enemy destroy your capital, you lose your
+                            If the enemy destroys your capital, you lose your
                             money and your capital is rebuilt somewhere else in
                             the kingdom.
                         </Trans>
@@ -456,7 +456,7 @@ export default class GameRules extends Component {
                         <Trans parent={ 'p' }>
                             To move a unit, you simply click on it to select
                             it. Then you can click on the hex you want to put
-                            the unit.
+                            the unit on.
                         </Trans>
 
                         <Trans parent={ 'p' }>
@@ -470,7 +470,7 @@ export default class GameRules extends Component {
                         </ul>
 
                         <Trans parent={ 'p' }>
-                            Once a unit made its action, it cannot be moved
+                            Once a unit has made its action, it cannot be moved
                             anymore, stops bouncing and stays on the hex until
                             the next turn.
                         </Trans>
@@ -572,9 +572,9 @@ export default class GameRules extends Component {
                                 className={'img-fluid'}
                             />
                             <Trans parent={ 'figcaption' } className={'figure-caption text-center'}>
-                                Units level 1 and 2 here do their best
-                                defending frontiers, but be aware of your
-                                critical points, where enemy can divide your
+                                Level 1 and 2 units do their best here
+                                defending the borders, but be aware of your
+                                critical points where the enemy can divide your
                                 kingdom easily.
                             </Trans>
                         </figure>
@@ -582,12 +582,12 @@ export default class GameRules extends Component {
                         <Trans parent={ 'h3' }>Upgrading units</Trans>
 
                         <Trans parent={ 'p' }>
-                            Level 1 units are good to provide a low cost, wide
-                            and basic kingdom protection.
+                            Level 1 units are good for providing a low cost,
+                            wide and basic kingdom protection.
                         </Trans>
 
                         <Trans parent={ 'p' }>
-                            But as the enemy build units, you have to upgrade
+                            But as the enemy builds units, you have to upgrade
                             your units to be able to defend your kingdom from a
                             stronger enemy.
                         </Trans>
@@ -721,8 +721,8 @@ export default class GameRules extends Component {
                         </Trans>
 
                         <Trans parent={ 'p' }>
-                            They spawn more quickly as the game goes on, so try
-                            keeping them under control.
+                            They spawn quicker as the game goes on, so try to
+                            keep them under control.
                         </Trans>
 
                         <Trans parent={ 'p' }>
