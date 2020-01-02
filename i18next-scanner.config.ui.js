@@ -6,7 +6,7 @@ module.exports = {
             extensions: ['.js'],
         },
         trans: false,
-        lngs: ['en', 'fr', 'es'],
+        lngs: ['en', 'fr', 'sv'],
         ns: [
             'translation',
         ],
