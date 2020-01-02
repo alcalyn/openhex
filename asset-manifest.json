@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/openhex/static/css/main.03b4f833.chunk.css",
-    "main.js": "/openhex/static/js/main.ff74c592.chunk.js",
-    "main.js.map": "/openhex/static/js/main.ff74c592.chunk.js.map",
+    "main.js": "/openhex/static/js/main.352ff8d2.chunk.js",
+    "main.js.map": "/openhex/static/js/main.352ff8d2.chunk.js.map",
     "runtime-main.js": "/openhex/static/js/runtime-main.6ae5d7e6.js",
     "runtime-main.js.map": "/openhex/static/js/runtime-main.6ae5d7e6.js.map",
     "static/js/2.27d33dad.chunk.js": "/openhex/static/js/2.27d33dad.chunk.js",
     "static/js/2.27d33dad.chunk.js.map": "/openhex/static/js/2.27d33dad.chunk.js.map",
     "index.html": "/openhex/index.html",
-    "precache-manifest.c17878cd885ed8f8ac57c00e3eceb790.js": "/openhex/precache-manifest.c17878cd885ed8f8ac57c00e3eceb790.js",
+    "precache-manifest.005798472becf4fce46359a6869d62b0.js": "/openhex/precache-manifest.005798472becf4fce46359a6869d62b0.js",
     "service-worker.js": "/openhex/service-worker.js",
     "static/css/main.03b4f833.chunk.css.map": "/openhex/static/css/main.03b4f833.chunk.css.map",
     "static/js/2.27d33dad.chunk.js.LICENSE": "/openhex/static/js/2.27d33dad.chunk.js.LICENSE",
@@ -20,6 +20,6 @@
     "static/js/runtime-main.6ae5d7e6.js",
     "static/js/2.27d33dad.chunk.js",
     "static/css/main.03b4f833.chunk.css",
-    "static/js/main.ff74c592.chunk.js"
+    "static/js/main.352ff8d2.chunk.js"
   ]
 }
