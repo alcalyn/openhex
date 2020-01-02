@@ -329,19 +329,19 @@ export default class Arbiter {
             })
         ;
 
-        // On single hexs...
+        // For single hexs, ...
         const singleHexs = this.world.hexs
             .filter(hex => hex.player === player)
             .filter(hex => !hex.kingdom)
         ;
 
-        // Replace dieds with trees
+        // ... replace dieds with trees
         singleHexs
             .filter(hex => hex.hasDied())
             .forEach(hex => hex.entity = TreeUtils.createTreeForHex(this.world, hex))
         ;
 
-        // Kill units on a single hex kingdom
+        // ... kill units on a single hex kingdom
         singleHexs
             .filter(hex => hex.hasUnit())
             .forEach(hex => hex.entity = new Died())

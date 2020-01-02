@@ -1,1 +1,33 @@
-{}
+{
+    "cannot_select": {
+        "not_your_kingdom": "",
+        "not_in_current_kingdom": "",
+        "no_unit_here": "",
+        "already_played": "",
+        "selection_not_empty": ""
+    },
+    "cannot_buy_unit": {
+        "not_enough_money": "",
+        "selection_not_empty": "",
+        "already_max_level": ""
+    },
+    "cannot_buy_tower": {
+        "not_enough_money": "",
+        "selection_not_empty": ""
+    },
+    "cannot_change_kingdom_selection_not_empty": "",
+    "cannot_end_turn_selection_not_empty": "",
+    "cannot_capture": {
+        "hex_not_adjacent": "",
+        "hex_protected": ""
+    },
+    "cannot_place_unit": {
+        "blocked_by_tower": "",
+        "blocked_by_capital": "",
+        "sum_of_merged_unit_level_overflow": ""
+    },
+    "cannot_place_tower": {
+        "hex_outside_of_current_kingdom": "",
+        "hex_not_empty": ""
+    }
+}
