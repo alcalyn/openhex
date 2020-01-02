@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Translation, Trans } from 'react-i18next';
+import { Translation, Trans, setI18n } from 'react-i18next';
 import i18nGameRules from './i18n';
 import Themes from '../../themes';
 import { WorldGenerator, WorldConfig, World, Hex, Player, Arbiter, Unit, Capital, Tower, Tree, Died } from '../../engine';
@@ -148,6 +148,8 @@ export default class GameRules extends Component {
             defendingCapitalWorld,
             deadWorld,
         } = this.state;
+
+        setI18n(i18nGameRules);
 
         return (
             <Translation i18n={ i18nGameRules }>
