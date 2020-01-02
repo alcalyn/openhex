@@ -1,5 +1,5 @@
 import { AutoSizer } from 'react-virtualized';
-import { ReactSVGPanZoom } from 'react-svg-pan-zoom';
+import { UncontrolledReactSVGPanZoom } from 'react-svg-pan-zoom';
 import React, { Component } from 'react';
 import i18n from '../../i18n';
 import { WorldGenerator, Arbiter, WorldConfig } from '../../engine';
@@ -112,6 +112,7 @@ class App extends Component {
 
     render() {
         const { world, alert } = this.state;
+        const positionNone = { position: 'none' };
 
         return (
             <div className={"App"}>
@@ -149,16 +150,17 @@ class App extends Component {
                     <AutoSizer>
                         {(({width, height}) => width === 0 || height === 0 ? null : (
 
-                            <ReactSVGPanZoom
+                            <UncontrolledReactSVGPanZoom
                                 width={width} height={height}
                                 tool={'auto'}
                                 SVGBackground={'rgba(0, 0, 0, 0)'}
                                 background={'rgba(0, 0, 0, 0)'}
-                                toolbarPosition={'none'}
-                                miniaturePosition={'none'}
+                                toolbarProps={positionNone}
+                                miniatureProps={positionNone}
                                 detectAutoPan={false}
                                 scaleFactorOnWheel={1.15}
                                 disableDoubleClickZoomWithToolAuto={true}
+                                preventPanOutside={true}
                                 ref={node => { this.reactSvg = node; }}
                             >
                                 <svg width={width} height={height}>
@@ -181,7 +183,7 @@ class App extends Component {
                                         />
                                     ) : ''}
                                 </svg>
-                            </ReactSVGPanZoom>
+                            </UncontrolledReactSVGPanZoom>
 
                         ))}
                     </AutoSizer>

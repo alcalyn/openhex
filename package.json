@@ -13,7 +13,7 @@
     "react-i18next": "^11.2.6",
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.3.0",
-    "react-svg-pan-zoom": "git+https://github.com/alcalyn/react-svg-pan-zoom.git#release/bugfix/onclick-on-mobile",
+    "react-svg-pan-zoom": "git+https://github.com/alcalyn/react-svg-pan-zoom.git#release/bugfix/onclick-on-mobile-v3",
     "react-virtualized": "^9.18.5",
     "seedrandom": "^3.0.5",
     "undo-manager": "^1.0.5"
