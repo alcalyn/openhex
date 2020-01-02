@@ -8,7 +8,7 @@
     "economy": {
         "last_turn": "Last turn: {{money}}",
         "income": "Income: +{{money}}",
-        "maintenance": "Units maintenance: -{{money}}"
+        "maintenance": "Unit maintenance: -{{money}}"
     },
     "selection": "Selection",
     "military": "Military",
@@ -23,11 +23,11 @@
     "project": {
         "description": "HTML5 strategy game inspired by Slay."
     },
-    "lets_play": "Play !",
+    "lets_play": "Play!",
     "seed": {
         "title": "Seed",
-        "placeholder": "World seed. Let empty for random.",
-        "help": "The seed is a string used for world generation. A same seed always generates the same world (assuming size is the same)."
+        "placeholder": "World seed. Leave empty for random.",
+        "help": "The seed is a string used for world generation. A seed always generates the same world (assuming size is the same)."
     },
     "game_rules": "Game rules"
 }
